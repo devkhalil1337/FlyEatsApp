@@ -41,11 +41,11 @@ namespace FlyEatsApp.Providers
                 {
                     var categories = new Categories();
                     categories.CategoryId = Convert.ToInt32(dataRow[Categories.Category_ID_COLUMN]);
-                    categories.BusinessId = Convert.ToString(dataRow[Categories.CATEGORY_BUSINESS_ID_COLUMN]);
+                    categories.BusinessId = Convert.ToInt32(dataRow[Categories.CATEGORY_BUSINESS_ID_COLUMN]);
                     categories.CategoryImage = Convert.ToString(dataRow[Categories.CATEGORY_IMAGE_COLUMN]);
                     categories.CategoryName = Convert.ToString(dataRow[Categories.CATEGORY_NAME_COLUMN]);
                     categories.CategoryDetails = Convert.ToString(dataRow[Categories.CATEGORY_DETAIL_COLUMN]);
-                    categories.CategorySortBy = Convert.ToString(dataRow[Categories.CATEGORY_SORT_BY_COLUMN]);
+                    categories.CategorySortBy = Convert.ToInt32(dataRow[Categories.CATEGORY_SORT_BY_COLUMN]);
                     categories.CreateDate = dataRow[Categories.CATEGORY_CREATE_DATE_COLUMN] == DBNull.Value ? null : (DateTime?)Convert.ToDateTime(dataRow[Categories.CATEGORY_CREATE_DATE_COLUMN]);
                     categories.ModifyDate = dataRow[Categories.CATEGORY_UPDATE_DATE_COLUMN] == DBNull.Value ? null : (DateTime?)Convert.ToDateTime(dataRow[Categories.CATEGORY_UPDATE_DATE_COLUMN]);
                     categories.IsDeleted = Convert.ToBoolean(dataRow[Categories.CATEGORY_DELETE_COLUMN]);
@@ -124,7 +124,7 @@ namespace FlyEatsApp.Providers
             try
             {
                 var result = dataAccessProvider.ExecuteNonQueryStoredProcedure(storedProcedureName, parameters);
-                return result;
+                return true;
             }
             catch (Exception ex)
             {
@@ -182,7 +182,7 @@ namespace FlyEatsApp.Providers
                try
                {
                    var result = dataAccessProvider.ExecuteNonQueryStoredProcedure(storedProcedureName, parameters);
-                   return result;
+                   return true;
                }
                catch (Exception ex)
                {

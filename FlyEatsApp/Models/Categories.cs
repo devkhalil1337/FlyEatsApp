@@ -20,11 +20,11 @@ namespace FlyEatsApp.Models
         public const string CATEGORY_ACTIVE_COLUMN = "Active";
 
         public int? CategoryId { get; set; }
-        public string? BusinessId { get; set; }
+        public int? BusinessId { get; set; }
         public string? CategoryImage { get; set; }
         public string? CategoryName { get; set; }
         public string? CategoryDetails { get; set; }
-        public string? CategorySortBy { get; set; }
+        public int? CategorySortBy { get; set; }
         public DateTime? CreateDate { get; set; }
         public string? CreationDate
     {
@@ -63,11 +63,11 @@ namespace FlyEatsApp.Models
         {
             var newObject = new Categories();
             newObject.CategoryId = Convert.ToInt32(dataRow[Category_ID_COLUMN]);
-            newObject.BusinessId = Convert.ToString(dataRow[CATEGORY_BUSINESS_ID_COLUMN]);
+            newObject.BusinessId = Convert.ToInt32(dataRow[CATEGORY_BUSINESS_ID_COLUMN]);
             newObject.CategoryImage = Convert.ToString(dataRow[CATEGORY_IMAGE_COLUMN]);
             newObject.CategoryName = Convert.ToString(dataRow[CATEGORY_NAME_COLUMN]);
             newObject.CategoryDetails = Convert.ToString(dataRow[CATEGORY_DETAIL_COLUMN]);
-            newObject.CategorySortBy = Convert.ToString(dataRow[CATEGORY_SORT_BY_COLUMN]);
+            newObject.CategorySortBy = Convert.ToInt32(dataRow[CATEGORY_SORT_BY_COLUMN]);
             newObject.CreateDate = dataRow[CATEGORY_CREATE_DATE_COLUMN] == DBNull.Value ? null : (DateTime?)Convert.ToDateTime(dataRow[CATEGORY_CREATE_DATE_COLUMN]);
             newObject.ModifyDate = dataRow[CATEGORY_UPDATE_DATE_COLUMN] == DBNull.Value ? null : (DateTime?)Convert.ToDateTime(dataRow[CATEGORY_UPDATE_DATE_COLUMN]);
             newObject.IsDeleted = Convert.ToBoolean(dataRow[CATEGORY_DELETE_COLUMN]);
@@ -75,5 +75,5 @@ namespace FlyEatsApp.Models
             
             return newObject;
         }
-    }
-}
+    }   
+}       
