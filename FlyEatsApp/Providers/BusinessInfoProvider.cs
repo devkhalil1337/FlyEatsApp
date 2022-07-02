@@ -17,7 +17,7 @@ namespace FlyEatsApp.Providers
 
         public BusinessInfoProvider()
         {
-            _ConnectionString = "Data Source=.;Initial Catalog=Flyeats;Integrated Security=True"; //ConfigurationManager.ConnectionStrings["foodBuyConnectionString"].ConnectionString;
+            _ConnectionString = "Data Source=DESKTOP-9FIV1UO\\SQLEXPRESS;Initial Catalog=Flyeats;Integrated Security=True"; //ConfigurationManager.ConnectionStrings["foodBuyConnectionString"].ConnectionString;
         }
 
         public IList<BusinessInfo> GetAllBusinesUnits()
@@ -82,7 +82,7 @@ namespace FlyEatsApp.Providers
                 { "BusinessTempClose", businessInfo.BusinessTempClose },
                 { "ClosetillDate", businessInfo.ClosetillDate },
                 { "BusinessExpiryDate", businessInfo.BusinessExpiryDate },
-                { "CreationDate", businessInfo.CreationDate },
+                { "CreationDate", statusChangedDateTime },
                 { "UpdateDate", statusChangedDateTime },
                 { "Deleted", businessInfo.Deleted },
                 { "Active", businessInfo.Active },

@@ -18,7 +18,7 @@
 
   <ItemGroup>
     <Reference Include="Microsoft.Practices.EnterpriseLibrary.Logging">
-      <HintPath>D:\Projects\ProfileMyDriverPortal-master\ProfileMyDriverPortal-master\DriversHub\DriversHub\bin\Microsoft.Practices.EnterpriseLibrary.Logging.dll</HintPath>
+      <HintPath>..\Microsoft.Practices.EnterpriseLibrary.Logging.dll</HintPath>
     </Reference>
   </ItemGroup>
 
