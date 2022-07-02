@@ -87,9 +87,10 @@ namespace FlyEatsApp.Providers
             var joinDate = DateTime.UtcNow;
 
             Dictionary<string, object> parameters = new Dictionary<string, object> {
+                { "businessId", user.BusinessId },
                 { "email", user.Email },
                 { "password", user.Password },
-                { "accountType", user.Type },
+                { "accountType", user.accountType },
             };
 
             try
@@ -137,13 +138,13 @@ namespace FlyEatsApp.Providers
             }
             catch (Exception ex)
             {
-                /*LogEntry logEntry = new LogEntry()
+                LogEntry logEntry = new LogEntry()
                 {
                     Severity = System.Diagnostics.TraceEventType.Error,
                     Title = string.Format("Get User with email: {0}", email),
                     Message = ex.Message + Environment.NewLine + ex.StackTrace
                 };
-                Logger.Write(logEntry);*/
+                Logger.Write(logEntry);
             }
 
 
@@ -228,13 +229,14 @@ namespace FlyEatsApp.Providers
         {
             //Generate new code
             string newCode = GetRandomCode(16);
-
+            //Generate new code
+            newCode = GetRandomCode(16);
             //Check if code is unique
-            while (!IsDriverCodeUnique(newCode))
-            {
-                //Generate new code
-                newCode = GetRandomCode(16);
-            }
+            /* while (!IsDriverCodeUnique(newCode))
+             {
+                 //Generate new code
+                 newCode = GetRandomCode(16);
+             }*/
 
             return newCode;
 
