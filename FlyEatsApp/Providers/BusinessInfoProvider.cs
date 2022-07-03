@@ -133,7 +133,6 @@ namespace FlyEatsApp.Providers
                 { "BusinessTempClose", businessInfo.BusinessTempClose },
                 { "ClosetillDate", businessInfo.ClosetillDate },
                 { "BusinessExpiryDate", businessInfo.BusinessExpiryDate },
-                { "CreationDate", businessInfo.CreationDate },
                 { "UpdateDate", statusChangedDateTime },
                 { "Deleted", businessInfo.Deleted },
                 { "Active", businessInfo.Active },

@@ -115,7 +115,6 @@ namespace FlyEatsApp.Providers
                 { "CategoryName", categories.CategoryName },
                 { "CategoryDetails", categories.CategoryDetails },
                 { "CategorySortBy", categories.CategorySortBy },
-                { "CreationDate", statusChangedDateTime },
                 { "UpdateDate", statusChangedDateTime },
                 { "IsDeleted", categories.IsDeleted },
                 { "Active", categories.Active },
