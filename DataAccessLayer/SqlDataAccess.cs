@@ -146,6 +146,42 @@ namespace DataAccessLayer
             return result;
         }
 
+        public object ExecuteStoredProcedureWithReturnMessage(string procName, Dictionary<string, object> parameters)
+        {
+            var result = new ResponseModel();
+
+            try
+            {
+                this._SqlConnection.Open();
+                var command = new SqlCommand(procName, this._SqlConnection) { CommandType = CommandType.StoredProcedure };
+
+                if (parameters != null)
+                {
+                    foreach (KeyValuePair<string, object> pair in parameters)
+                    {
+                        var parameter = new SqlParameter(pair.Key, pair.Value);
+                        SetSqlType(ref parameter, pair.Value);
+                        command.Parameters.Add(parameter);
+                    }
+                }
+
+                int rowsAffected = command.ExecuteNonQuery();
+                result.success = rowsAffected > 0;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+                Debug.WriteLine(ex.StackTrace);
+                result.message = ex.Message;
+                result.success = false;
+            }
+            finally
+            {
+                this._SqlConnection.Close();
+            }
+            return result;
+        }
+
         private void SetSqlType(ref SqlParameter parameter, object value)
         {
             if (value is long)

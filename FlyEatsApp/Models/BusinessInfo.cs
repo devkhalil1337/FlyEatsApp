@@ -31,25 +31,25 @@ namespace FlyEatsApp.Models
         public const string BUSINESS_DELETED_COLUMN = "Deleted";
         public const string BUSINESS_ACTIVE_COLUMN = "Active";
 
-        public int BusinessId { get; set; }
-        public string Localization { get; set; }
-        public string BusinessLogo { get; set; }
-        public string BusinessName { get; set; }
-        public string BusinessContact { get; set; }
-        public string BusinessEmail { get; set; }
-        public string BusinessAddress { get; set; }
-        public string BusinessPostcode { get; set; }
-        public string BusinessCity { get; set; }
-        public string BusinessCountry { get; set; }
-        public string BusinessDetails { get; set; }
-        public string BusinessLatitude { get; set; }
-        public string BusinessLongitude { get; set; }
-        public string BusinessCurrency { get; set; }
-        public string BusinessWebsiteUrl { get; set; }
-        public bool BusinessTempClose { get; set; }
+        public int? BusinessId { get; set; }
+        public string? Localization { get; set; }
+        public string? BusinessLogo { get; set; }
+        public string? BusinessName { get; set; }
+        public string? BusinessContact { get; set; }
+        public string? BusinessEmail { get; set; }
+        public string? BusinessAddress { get; set; }
+        public string? BusinessPostcode { get; set; }
+        public string? BusinessCity { get; set; }
+        public string? BusinessCountry { get; set; }
+        public string? BusinessDetails { get; set; }
+        public string? BusinessLatitude { get; set; }
+        public string? BusinessLongitude { get; set; }
+        public string? BusinessCurrency { get; set; }
+        public string? BusinessWebsiteUrl { get; set; }
+        public bool? BusinessTempClose { get; set; }
        
         public DateTime? TempCloseDate { get; set; }
-        public string ClosetillDate
+        public string? ClosetillDate
         {
             get
             {
@@ -66,7 +66,7 @@ namespace FlyEatsApp.Models
         }
 
         public DateTime? ExpiryDate { get; set; }
-        public string BusinessExpiryDate
+        public string? BusinessExpiryDate
         {
             get { return ExpiryDate.HasValue ? ExpiryDate.Value.ToString("yyyy-MM-dd hh:mm:ss") : null;}
 
@@ -80,7 +80,7 @@ namespace FlyEatsApp.Models
         }
 
         public DateTime? CreateDate { get; set; }
-        public string CreationDate
+        public string? CreationDate
         {
             get {
                 return CreateDate.HasValue ? CreateDate.Value.ToString("yyyy-MM-dd hh:mm:ss") : null;
@@ -96,7 +96,7 @@ namespace FlyEatsApp.Models
         }
 
         public DateTime? ModifyDate { get; set; }
-        public string UpdateDate
+        public string? UpdateDate
         {
             get { return ModifyDate.HasValue ? ModifyDate.Value.ToString("yyyy-MM-dd hh:mm:ss") : null; }
 
@@ -109,8 +109,8 @@ namespace FlyEatsApp.Models
             }
         }
 
-        public bool Deleted { get; set; }
-        public bool Active { get; set; }
+        public bool? Deleted { get; set; }
+        public bool? Active { get; set; }
         
 
         public static BusinessInfo ExtractObject(DataRow dataRow)

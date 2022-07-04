@@ -16,5 +16,7 @@ namespace DataAccessLayer
         DataSet ExecuteStoredProcedure(string procName, Dictionary<string, object> parameters);
         object ExecuteStoredProcedureWithReturnObject(string procName, Dictionary<string, object> parameters);
         bool ExecuteNonQueryStoredProcedure(string procName, Dictionary<string, object> parameters);
+
+        object ExecuteStoredProcedureWithReturnMessage(string procName, Dictionary<string, object> parameters);
     }
 }
