@@ -28,7 +28,7 @@ namespace FlyEatsApp.Providers
             var storedProcedureName = "SP_GetAllProductsByBusinessId";
             Dictionary<string, object> parameters = new Dictionary<string, object> {
                 { "BusinessId", businessId },
-               
+
             };
             try
             {
@@ -43,6 +43,7 @@ namespace FlyEatsApp.Providers
                     newObject.ProductId = Convert.ToInt32(dataRow[Products.PRODUCT_ID_COLUMN]);
                     newObject.CategoryId = Convert.ToInt32(dataRow[Products.PRODUCT_CATEGORY_ID_COLUMN]);
                     newObject.BusinessId = Convert.ToInt32(dataRow[Products.PRODUCT_BUSINESS_ID_COLUMN]);
+                    newObject.CategoryName = Convert.ToString(dataRow[Products.CATEGORY_NAME_COLUMN]);
                     newObject.ProductImage = Convert.ToString(dataRow[Products.PRODUCT_IMAGE_COLUMN]);
                     newObject.ProductName = Convert.ToString(dataRow[Products.PRODUCT_NAME_COLUMN]);
                     newObject.ProductDescription = Convert.ToString(dataRow[Products.PRODUCT_DESCRITPTION_COLUMN]);
@@ -70,9 +71,9 @@ namespace FlyEatsApp.Providers
             return AllProducts;
             ;
         }
-        public long AddNewProduct (Products product)
+        public long AddNewProduct(Products product)
         {
-            
+
             IDatabaseAccessProvider dataAccessProvider = new SqlDataAccess(_ConnectionString);
             var storedProcedureName = "SP_AddNewProduct";
 
@@ -107,18 +108,18 @@ namespace FlyEatsApp.Providers
             }
             catch (Exception ex)
             {
-               /* LogEntry logEntry = new LogEntry()
-                {
-                    Severity = System.Diagnostics.TraceEventType.Error,
-                    Title = string.Format("Creating New business Info for a customer ", categories.BusinessName),
-                    Message = ex.Message + Environment.NewLine + ex.StackTrace
-                };
-                Logger.Write(logEntry);*/
+                /* LogEntry logEntry = new LogEntry()
+                 {
+                     Severity = System.Diagnostics.TraceEventType.Error,
+                     Title = string.Format("Creating New business Info for a customer ", categories.BusinessName),
+                     Message = ex.Message + Environment.NewLine + ex.StackTrace
+                 };
+                 Logger.Write(logEntry);*/
             }
             return -1;
-        
-       } 
-       public bool UpdateProduct(Products product)
+
+        }
+        public bool UpdateProduct(Products product)
         {
             IDatabaseAccessProvider dataAccessProvider = new SqlDataAccess(_ConnectionString);
             var storedProcedureName = "SP_UpdateProduct";
@@ -154,7 +155,7 @@ namespace FlyEatsApp.Providers
             }
             catch (Exception ex)
             {
-               
+
             }
 
 
@@ -188,33 +189,33 @@ namespace FlyEatsApp.Providers
             }
             catch (Exception ex)
             {
-               
+
             }
-            
-            
+
+
             return GetProduct;
 
         }
-        
-           public bool DeleteProductById (int productId)
-           {
-               IDatabaseAccessProvider dataAccessProvider = new SqlDataAccess(_ConnectionString);
-               var storedProcedureName = "SP_DeleteProductById";
 
-               Dictionary<string, object> parameters = new Dictionary<string, object> {
+        public bool DeleteProductById(int productId)
+        {
+            IDatabaseAccessProvider dataAccessProvider = new SqlDataAccess(_ConnectionString);
+            var storedProcedureName = "SP_DeleteProductById";
+
+            Dictionary<string, object> parameters = new Dictionary<string, object> {
                    { "ProductId", productId}};
 
-               try
-               {
-                   var result = dataAccessProvider.ExecuteNonQueryStoredProcedure(storedProcedureName, parameters);
-                   return true;
-               }
-               catch (Exception ex)
-               {
-                  
-               }
+            try
+            {
+                var result = dataAccessProvider.ExecuteNonQueryStoredProcedure(storedProcedureName, parameters);
+                return true;
+            }
+            catch (Exception ex)
+            {
 
-               return false;
-           }
+            }
+
+            return false;
+        }
     }
 }

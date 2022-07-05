@@ -11,6 +11,7 @@ namespace FlyEatsApp.Models
         public const string PRODUCT_ID_COLUMN = "ProductId";
         public const string PRODUCT_CATEGORY_ID_COLUMN = "CategoryId";
         public const string PRODUCT_BUSINESS_ID_COLUMN = "BusinessId";
+        public const string CATEGORY_NAME_COLUMN = "CategoryName";
         public const string PRODUCT_IMAGE_COLUMN = "ProductImage";
         public const string PRODUCT_NAME_COLUMN = "ProductName";
         public const string PRODUCT_DESCRITPTION_COLUMN = "ProductDescription";
@@ -32,6 +33,7 @@ namespace FlyEatsApp.Models
         public int? ProductId { get; set; }
         public int? CategoryId { get; set; }
         public int? BusinessId { get; set; }
+        public string? CategoryName { get; set; }
         public string? ProductImage { get; set; }
         public string? ProductName { get; set; }
         public string? ProductDescription { get; set; }
@@ -85,6 +87,7 @@ namespace FlyEatsApp.Models
             newObject.ProductId = Convert.ToInt32(dataRow[PRODUCT_ID_COLUMN]);
             newObject.CategoryId = Convert.ToInt32(dataRow[PRODUCT_CATEGORY_ID_COLUMN]);
             newObject.BusinessId = Convert.ToInt32(dataRow[PRODUCT_BUSINESS_ID_COLUMN]);
+            newObject.CategoryName = Convert.ToString(dataRow[CATEGORY_NAME_COLUMN]);
             newObject.ProductImage = Convert.ToString(dataRow[PRODUCT_IMAGE_COLUMN]);
             newObject.ProductName = Convert.ToString(dataRow[PRODUCT_NAME_COLUMN]);
             newObject.ProductDescription = Convert.ToString(dataRow[PRODUCT_DESCRITPTION_COLUMN]);
