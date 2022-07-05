@@ -11,15 +11,15 @@ namespace FlyEatsApp.Controllers
     {
 
         [HttpPost]
-        public long AddNewCategory([FromBody] Categories categories)
+        public object AddNewCategory([FromBody] Categories categories)
         {
             CategoriesProvider categoriesProvider = new CategoriesProvider();
             var result = categoriesProvider.AddNewCategory(categories);
             return result;
         }
 
-       [HttpPut]
-        public Boolean UpdateCategory([FromBody] Categories categories)
+        [HttpPut]
+        public object UpdateCategory([FromBody] Categories categories)
         {
             CategoriesProvider categoriesProvider = new CategoriesProvider();
             var result = categoriesProvider.UpdateCategory(categories);
@@ -27,12 +27,12 @@ namespace FlyEatsApp.Controllers
         }
 
         [HttpGet]
-       public IEnumerable<Categories> GetCategoryById(int categoryId)
+        public IEnumerable<Categories> GetCategoryById(int categoryId)
         {
             CategoriesProvider categoriesProvider = new CategoriesProvider();
             var result = categoriesProvider.GetCategoryById(categoryId);
-           return result;
-       }
+            return result;
+        }
 
         [HttpGet]
         public IEnumerable<Categories> GetAllCategories(int businessId)
@@ -43,11 +43,11 @@ namespace FlyEatsApp.Controllers
         }
 
         [HttpPost]
-        public Boolean DeleteCategoryBy([FromBody] long categoryId)
+        public object DeleteCategoryBy(long categoryId)
         {
             CategoriesProvider categoriesProvider = new CategoriesProvider();
             var result = categoriesProvider.DeleteCategoryBy(categoryId);
-           return result;
-       }
+            return result;
+        }
     }
 }

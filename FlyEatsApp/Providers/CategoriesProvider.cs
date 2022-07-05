@@ -28,7 +28,7 @@ namespace FlyEatsApp.Providers
             var storedProcedureName = "SP_GetAllCategoriesByBusinessId";
             Dictionary<string, object> parameters = new Dictionary<string, object> {
                 { "BusinessId", businessId },
-               
+
             };
             try
             {
@@ -59,16 +59,16 @@ namespace FlyEatsApp.Providers
 
             return AllCategories;
         }
-        public long AddNewCategory (Categories categories)
+        public object AddNewCategory(Categories categories)
         {
-            
+
             IDatabaseAccessProvider dataAccessProvider = new SqlDataAccess(_ConnectionString);
             var storedProcedureName = "SP_AddNewCategory";
 
             var statusChangedDateTime = DateTime.UtcNow;
 
             Dictionary<string, object> parameters = new Dictionary<string, object> {
-            
+
 
                 { "BusinessId", categories.BusinessId},
                 { "CategoryImage", categories.CategoryImage },
@@ -83,25 +83,25 @@ namespace FlyEatsApp.Providers
 
             try
             {
-                var id = dataAccessProvider.ExecuteStoredProcedureWithReturnObject(storedProcedureName, parameters);
-                return id == null ? -1 : Convert.ToInt64(id);
+                var results = dataAccessProvider.ExecuteStoredProcedureWithReturnMessage(storedProcedureName, parameters);
+                return results;
             }
             catch (Exception ex)
             {
-               /* LogEntry logEntry = new LogEntry()
-                {
-                    Severity = System.Diagnostics.TraceEventType.Error,
-                    Title = string.Format("Creating New business Info for a customer ", categories.BusinessName),
-                    Message = ex.Message + Environment.NewLine + ex.StackTrace
-                };
-                Logger.Write(logEntry);*/
+                /* LogEntry logEntry = new LogEntry()
+                 {
+                     Severity = System.Diagnostics.TraceEventType.Error,
+                     Title = string.Format("Creating New business Info for a customer ", categories.BusinessName),
+                     Message = ex.Message + Environment.NewLine + ex.StackTrace
+                 };
+                 Logger.Write(logEntry);*/
             }
 
 
             return -1;
-        
-       } 
-       public bool UpdateCategory(Categories categories)
+
+        }
+        public object UpdateCategory(Categories categories)
         {
             IDatabaseAccessProvider dataAccessProvider = new SqlDataAccess(_ConnectionString);
             var storedProcedureName = "SP_UpdateCategory";
@@ -122,12 +122,12 @@ namespace FlyEatsApp.Providers
 
             try
             {
-                var result = dataAccessProvider.ExecuteNonQueryStoredProcedure(storedProcedureName, parameters);
-                return true;
+                var result = dataAccessProvider.ExecuteStoredProcedureWithReturnMessage(storedProcedureName, parameters);
+                return result;
             }
             catch (Exception ex)
             {
-               
+
             }
 
 
@@ -161,34 +161,34 @@ namespace FlyEatsApp.Providers
             }
             catch (Exception ex)
             {
-               
+
             }
-            
-            
+
+
             return GetCategories;
 
         }
-        
-           public bool DeleteCategoryBy (long categoryId)
-           {
-               IDatabaseAccessProvider dataAccessProvider = new SqlDataAccess(_ConnectionString);
-               var storedProcedureName = "SP_DeleteCategoryById";
 
-               Dictionary<string, object> parameters = new Dictionary<string, object> {
+        public object DeleteCategoryBy(long categoryId)
+        {
+            IDatabaseAccessProvider dataAccessProvider = new SqlDataAccess(_ConnectionString);
+            var storedProcedureName = "SP_DeleteCategoryById";
+
+            Dictionary<string, object> parameters = new Dictionary<string, object> {
                    { "CategoryId", categoryId}
                };
 
-               try
-               {
-                   var result = dataAccessProvider.ExecuteNonQueryStoredProcedure(storedProcedureName, parameters);
-                   return true;
-               }
-               catch (Exception ex)
-               {
-                  
-               }
+            try
+            {
+                var result = dataAccessProvider.ExecuteStoredProcedureWithReturnMessage(storedProcedureName, parameters);
+                return result;
+            }
+            catch (Exception ex)
+            {
 
-               return false;
-           }
+            }
+
+            return false;
+        }
     }
 }

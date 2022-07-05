@@ -27,8 +27,9 @@ namespace FlyEatsApp.Models
         public int? CategorySortBy { get; set; }
         public DateTime? CreateDate { get; set; }
         public string? CreationDate
-    {
-            get {
+        {
+            get
+            {
                 return CreateDate.HasValue ? CreateDate.Value.ToString("yyyy-MM-dd hh:mm:ss") : null;
             }
 
@@ -43,7 +44,7 @@ namespace FlyEatsApp.Models
 
         public DateTime? ModifyDate { get; set; }
         public string? UpdateDate
-    {
+        {
             get { return ModifyDate.HasValue ? ModifyDate.Value.ToString("yyyy-MM-dd hh:mm:ss") : null; }
 
             set
@@ -72,8 +73,8 @@ namespace FlyEatsApp.Models
             newObject.ModifyDate = dataRow[CATEGORY_UPDATE_DATE_COLUMN] == DBNull.Value ? null : (DateTime?)Convert.ToDateTime(dataRow[CATEGORY_UPDATE_DATE_COLUMN]);
             newObject.IsDeleted = Convert.ToBoolean(dataRow[CATEGORY_DELETE_COLUMN]);
             newObject.Active = Convert.ToBoolean(dataRow[CATEGORY_ACTIVE_COLUMN]);
-            
+
             return newObject;
         }
-    }   
-}       
+    }
+}
