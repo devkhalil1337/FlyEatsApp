@@ -11,7 +11,7 @@ namespace FlyEatsApp.Controllers
     {
 
         [HttpPost]
-        public long AddNewProduct([FromBody] Products product)
+        public object AddNewProduct([FromBody] Products product)
         {
             ProductsProvider productsProvider = new ProductsProvider();
             var result = productsProvider.AddNewProduct(product);
@@ -19,7 +19,7 @@ namespace FlyEatsApp.Controllers
         }
 
         [HttpPut]
-        public Boolean UpdateProduct([FromBody] Products product)
+        public object UpdateProduct([FromBody] Products product)
         {
             ProductsProvider productsProvider = new ProductsProvider();
             var result = productsProvider.UpdateProduct(product);
@@ -43,7 +43,7 @@ namespace FlyEatsApp.Controllers
         }
 
         [HttpPost]
-        public Boolean DeleteProductById([FromBody] int productId)
+        public object DeleteProductById([FromBody] int productId)
         {
             ProductsProvider productsProvider = new ProductsProvider();
             var result = productsProvider.DeleteProductById(productId);

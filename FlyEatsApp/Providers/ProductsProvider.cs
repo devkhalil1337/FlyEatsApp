@@ -71,7 +71,7 @@ namespace FlyEatsApp.Providers
             return AllProducts;
             ;
         }
-        public long AddNewProduct(Products product)
+        public object AddNewProduct(Products product)
         {
 
             IDatabaseAccessProvider dataAccessProvider = new SqlDataAccess(_ConnectionString);
@@ -103,8 +103,8 @@ namespace FlyEatsApp.Providers
 
             try
             {
-                var id = dataAccessProvider.ExecuteStoredProcedureWithReturnObject(storedProcedureName, parameters);
-                return id == null ? -1 : Convert.ToInt64(id);
+                var results = dataAccessProvider.ExecuteStoredProcedureWithReturnMessage(storedProcedureName, parameters);
+                return results;
             }
             catch (Exception ex)
             {
@@ -119,7 +119,7 @@ namespace FlyEatsApp.Providers
             return -1;
 
         }
-        public bool UpdateProduct(Products product)
+        public object UpdateProduct(Products product)
         {
             IDatabaseAccessProvider dataAccessProvider = new SqlDataAccess(_ConnectionString);
             var storedProcedureName = "SP_UpdateProduct";
@@ -150,8 +150,8 @@ namespace FlyEatsApp.Providers
 
             try
             {
-                var result = dataAccessProvider.ExecuteNonQueryStoredProcedure(storedProcedureName, parameters);
-                return true;
+                var results = dataAccessProvider.ExecuteStoredProcedureWithReturnMessage(storedProcedureName, parameters);
+                return results;
             }
             catch (Exception ex)
             {
@@ -197,7 +197,7 @@ namespace FlyEatsApp.Providers
 
         }
 
-        public bool DeleteProductById(int productId)
+        public object DeleteProductById(int productId)
         {
             IDatabaseAccessProvider dataAccessProvider = new SqlDataAccess(_ConnectionString);
             var storedProcedureName = "SP_DeleteProductById";
@@ -207,8 +207,8 @@ namespace FlyEatsApp.Providers
 
             try
             {
-                var result = dataAccessProvider.ExecuteNonQueryStoredProcedure(storedProcedureName, parameters);
-                return true;
+                var results = dataAccessProvider.ExecuteStoredProcedureWithReturnMessage(storedProcedureName, parameters);
+                return results;
             }
             catch (Exception ex)
             {
