@@ -124,7 +124,7 @@ namespace FlyEatsApp.Providers
             IDatabaseAccessProvider dataAccessProvider = new SqlDataAccess(_ConnectionString);
             var storedProcedureName = "SP_UpdateProduct";
 
-            var statusChangedDateTime = DateTime.UtcNow;
+            var productUpdateChangedDateTime = DateTime.UtcNow;
 
             Dictionary<string, object> parameters = new Dictionary<string, object> {
                 { "ProductId", product.ProductId},
@@ -143,7 +143,7 @@ namespace FlyEatsApp.Providers
                 { "ProductQuantity", product.ProductQuantity},
                 { "HasVariations", product.HasVariations},
                 { "Featured", product.Featured},
-                { "UpdateDate", product.UpdateDate},
+                { "UpdateDate", productUpdateChangedDateTime},
                 { "IsDeleted", product.IsDeleted},
                 { "Active", product.Active},
             };
