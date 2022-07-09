@@ -140,7 +140,7 @@ namespace FlyEatsApp.Providers
 
             try
             {
-                var result = dataAccessProvider.ExecuteStoredProcedureWithReturnMessage(storedProcedureName, parameters);
+                var result = dataAccessProvider.ExecuteNonQueryStoredProcedure(storedProcedureName, parameters);
                 return result;
             }
             catch (Exception ex)
@@ -182,7 +182,7 @@ namespace FlyEatsApp.Providers
             
             return GetBusinessUnits;
 
-        }
+        } 
         public bool DeleteBusinessUnit(long BusinessId)
            {
                IDatabaseAccessProvider dataAccessProvider = new SqlDataAccess(_ConnectionString);
@@ -194,7 +194,7 @@ namespace FlyEatsApp.Providers
 
                try
                {
-                   var result = dataAccessProvider.ExecuteStoredProcedureWithReturnMessage(storedProcedureName, parameters);
+                   var result = dataAccessProvider.ExecuteNonQueryStoredProcedure(storedProcedureName, parameters);
                    return result;
                }
                catch (Exception ex)
