@@ -131,7 +131,7 @@ namespace FlyEatsApp.Providers
 
             return false;
         }
-        public object DeleteSelectionsBy(long choicesId)
+        public object DeleteSelectionChoicesById(long choicesId)
         {
             IDatabaseAccessProvider dataAccessProvider = new SqlDataAccess(_ConnectionString);
             var storedProcedureName = "SP_DeleteSelectionChoicesById";
