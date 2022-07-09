@@ -161,9 +161,6 @@ namespace FlyEatsApp.Providers
 
             return false;
         }
-
-
-
         public IList<Products> GetProductsById(int productId)
         {
             List<Products> GetProduct = new List<Products>();

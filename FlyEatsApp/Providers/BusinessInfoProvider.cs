@@ -90,7 +90,7 @@ namespace FlyEatsApp.Providers
 
             try
             {
-                var id = dataAccessProvider.ExecuteStoredProcedureWithReturnObject(storedProcedureName, parameters);
+                var id = dataAccessProvider.ExecuteStoredProcedureWithReturnMessage(storedProcedureName, parameters);
                 return id == null ? -1 : Convert.ToInt64(id);
             }
             catch (Exception ex)
@@ -140,7 +140,7 @@ namespace FlyEatsApp.Providers
 
             try
             {
-                var result = dataAccessProvider.ExecuteNonQueryStoredProcedure(storedProcedureName, parameters);
+                var result = dataAccessProvider.ExecuteStoredProcedureWithReturnMessage(storedProcedureName, parameters);
                 return result;
             }
             catch (Exception ex)
@@ -151,9 +151,6 @@ namespace FlyEatsApp.Providers
 
             return false;
         }
-
-
-
         public IList<BusinessInfo> GetBusinessUnitById(int BusinessId)
         {
             List<BusinessInfo> GetBusinessUnits = new List<BusinessInfo>();
@@ -186,8 +183,7 @@ namespace FlyEatsApp.Providers
             return GetBusinessUnits;
 
         }
-        
-           public bool DeleteBusinessUnit(long BusinessId)
+        public bool DeleteBusinessUnit(long BusinessId)
            {
                IDatabaseAccessProvider dataAccessProvider = new SqlDataAccess(_ConnectionString);
                var storedProcedureName = "SP_DeleteBusinessInfo";
@@ -198,7 +194,7 @@ namespace FlyEatsApp.Providers
 
                try
                {
-                   var result = dataAccessProvider.ExecuteNonQueryStoredProcedure(storedProcedureName, parameters);
+                   var result = dataAccessProvider.ExecuteStoredProcedureWithReturnMessage(storedProcedureName, parameters);
                    return result;
                }
                catch (Exception ex)

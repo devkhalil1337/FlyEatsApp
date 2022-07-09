@@ -82,7 +82,7 @@ namespace FlyEatsApp.Providers
 
             try
             {
-                var id = dataAccessProvider.ExecuteStoredProcedureWithReturnObject(storedProcedureName, parameters);
+                var id = dataAccessProvider.ExecuteStoredProcedureWithReturnMessage(storedProcedureName, parameters);
                 return id == null ? -1 : Convert.ToInt64(id);
             }
             catch (Exception ex)
@@ -98,7 +98,7 @@ namespace FlyEatsApp.Providers
             return -1;
         
        } 
-       public bool UpdateProductVariant(ProductVariants productVariants)
+        public bool UpdateProductVariant(ProductVariants productVariants)
         {
             IDatabaseAccessProvider dataAccessProvider = new SqlDataAccess(_ConnectionString);
             var storedProcedureName = "SP_UpdateProductVariant";
@@ -120,7 +120,7 @@ namespace FlyEatsApp.Providers
                 };
             try
             {
-                var result = dataAccessProvider.ExecuteNonQueryStoredProcedure(storedProcedureName, parameters);
+                var result = dataAccessProvider.ExecuteStoredProcedureWithReturnMessage(storedProcedureName, parameters);
                 return true;
             }
             catch (Exception ex)
@@ -131,10 +131,7 @@ namespace FlyEatsApp.Providers
 
             return false;
         }
-
-
-        
-           public bool DeleteProductVariantById (int variantId)
+        public bool DeleteProductVariantById (int variantId)
            {
                IDatabaseAccessProvider dataAccessProvider = new SqlDataAccess(_ConnectionString);
                var storedProcedureName = "SP_DeleteProductVariantById";
@@ -144,7 +141,7 @@ namespace FlyEatsApp.Providers
 
                try
                {
-                   var result = dataAccessProvider.ExecuteNonQueryStoredProcedure(storedProcedureName, parameters);
+                   var result = dataAccessProvider.ExecuteStoredProcedureWithReturnMessage(storedProcedureName, parameters);
                    return true;
                }
                catch (Exception ex)

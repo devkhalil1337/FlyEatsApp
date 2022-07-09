@@ -133,9 +133,6 @@ namespace FlyEatsApp.Providers
 
             return false;
         }
-
-
-
         public IList<Categories> GetCategoryById(int categoryId)
         {
             List<Categories> GetCategories = new List<Categories>();
@@ -168,7 +165,6 @@ namespace FlyEatsApp.Providers
             return GetCategories;
 
         }
-
         public object DeleteCategoryBy(long categoryId)
         {
             IDatabaseAccessProvider dataAccessProvider = new SqlDataAccess(_ConnectionString);
