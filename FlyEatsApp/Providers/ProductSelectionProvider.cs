@@ -1,0 +1,147 @@
+﻿
+using FlyEatsApp.Models;
+using System;
+using System.Collections.Generic;
+using System.Configuration;
+using System.Data;
+using DataAccessLayer;
+using Microsoft.Extensions.Logging.Abstractions;
+
+namespace FlyEatsApp.Providers
+{
+    public class ProductSelectionProvider
+    {
+
+
+        string _ConnectionString;
+
+        public ProductSelectionProvider()
+        {
+            _ConnectionString = "Data Source=DESKTOP-9FIV1UO\\SQLEXPRESS;Initial Catalog=Flyeats;Integrated Security=True"; //ConfigurationManager.ConnectionStrings["foodBuyConnectionString"].ConnectionString;
+        }
+
+        public IList<ProductSelection> GetAllProductSelection(int productId)
+        {
+            List<ProductSelection> AllProductSelection = new List<ProductSelection>();
+
+            IDatabaseAccessProvider dataAccessProvider = new SqlDataAccess(_ConnectionString);
+            var storedProcedureName = "SP_GetAllProductSelectionByProductId";
+            Dictionary<string, object> parameters = new Dictionary<string, object> {
+                { "ProductId", productId },
+
+            };
+            try
+            {
+                var dataSet = dataAccessProvider.ExecuteStoredProcedure(storedProcedureName, parameters);
+
+                if (dataSet.Tables.Count < 1 || dataSet.Tables[0].Rows.Count < 1)
+                    return null;
+
+                foreach (DataRow dataRow in dataSet.Tables[0].Rows)
+                {
+                    var newObject = new ProductSelection();
+                    newObject.ProductSelectionId = Convert.ToInt32(dataRow[ProductSelection.PRODUCT_SELECTION_ID_COLUMN]);
+                    newObject.ProductId = Convert.ToInt32(dataRow[ProductSelection.PRODUCT_ID_COLUMN]);
+                    newObject.SelectionId = Convert.ToInt32(dataRow[ProductSelection.SELECTION_ID_COLUMN]);
+                    newObject.BusinessId = Convert.ToInt32(dataRow[ProductSelection.PRODUCT_SELECTION_BUSINESS_ID_COLUMN]);
+                    newObject.CreateDate = dataRow[ProductSelection.PRODUCT_SELECTION_CREATE_DATE_COLUMN] == DBNull.Value ? null : (DateTime?)Convert.ToDateTime(dataRow[ProductSelection.PRODUCT_SELECTION_CREATE_DATE_COLUMN]);
+                    newObject.ModifyDate = dataRow[ProductSelection.PRODUCT_SELECTION_UPDATE_DATE_COLUMN] == DBNull.Value ? null : (DateTime?)Convert.ToDateTime(dataRow[ProductSelection.PRODUCT_SELECTION_UPDATE_DATE_COLUMN]);
+                    AllProductSelection.Add(newObject);
+                }
+            }
+            catch (Exception ex)
+            {
+            }
+
+            return AllProductSelection;
+        }
+        public object AddNewProductSelection(ProductSelection productSelection)
+        {
+
+            IDatabaseAccessProvider dataAccessProvider = new SqlDataAccess(_ConnectionString);
+            var storedProcedureName = "SP_AddNewProductSelection";
+
+            var statusChangedDateTime = DateTime.UtcNow;
+
+            Dictionary<string, object> parameters = new Dictionary<string, object> {
+
+
+                { "ProductId", productSelection.ProductId},
+                { "SelectionId", productSelection.SelectionId},
+                { "BusinessId", productSelection.BusinessId },
+                { "CreationDate", statusChangedDateTime },
+                { "UpdateDate", statusChangedDateTime },
+              
+            };
+
+            try
+            {
+                var results = dataAccessProvider.ExecuteStoredProcedureWithReturnMessage(storedProcedureName, parameters);
+                return results;
+            }
+            catch (Exception ex)
+            {
+                /* LogEntry logEntry = new LogEntry()
+                 {
+                     Severity = System.Diagnostics.TraceEventType.Error,
+                     Title = string.Format("Creating New business Info for a customer ", categories.BusinessName),
+                     Message = ex.Message + Environment.NewLine + ex.StackTrace
+                 };
+                 Logger.Write(logEntry);*/
+            }
+
+
+            return -1;
+
+        }
+        public object UpdateProductSelection(ProductSelection productSelection)
+        {
+            IDatabaseAccessProvider dataAccessProvider = new SqlDataAccess(_ConnectionString);
+            var storedProcedureName = "SP_UpdateProductSelection";
+
+            var statusChangedDateTime = DateTime.UtcNow;
+
+            Dictionary<string, object> parameters = new Dictionary<string, object> {
+                { "ProductSelectionId", productSelection.ProductId},
+                { "ProductId", productSelection.ProductId},
+                { "SelectionId", productSelection.SelectionId},
+                { "BusinessId", productSelection.BusinessId },
+                { "UpdateDate", statusChangedDateTime },
+            };
+
+            try
+            {
+                var result = dataAccessProvider.ExecuteStoredProcedureWithReturnMessage(storedProcedureName, parameters);
+                return result;
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+
+            return false;
+        }
+        public object DeleteProductSelectionBy(long productSelectionId)
+        {
+            IDatabaseAccessProvider dataAccessProvider = new SqlDataAccess(_ConnectionString);
+            var storedProcedureName = "SP_DeleteProductSelectionById";
+
+            Dictionary<string, object> parameters = new Dictionary<string, object> {
+                   { "ProductSelectionId", productSelectionId}
+               };
+
+            try
+            {
+                var result = dataAccessProvider.ExecuteStoredProcedureWithReturnMessage(storedProcedureName, parameters);
+                return result;
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+            return false;
+        }
+    }
+}
