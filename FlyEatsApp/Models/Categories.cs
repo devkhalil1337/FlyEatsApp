@@ -6,7 +6,7 @@ using System.Web;
 
 namespace FlyEatsApp.Models
 {
-    public class Categories
+    public class Categories : BaseFilter
     {
         public const string Category_ID_COLUMN = "CategoryId";
         public const string CATEGORY_BUSINESS_ID_COLUMN = "BusinessId";
@@ -20,45 +20,10 @@ namespace FlyEatsApp.Models
         public const string CATEGORY_ACTIVE_COLUMN = "Active";
 
         public int? CategoryId { get; set; }
-        public int? BusinessId { get; set; }
         public string? CategoryImage { get; set; }
         public string? CategoryName { get; set; }
         public string? CategoryDetails { get; set; }
         public int? CategorySortBy { get; set; }
-        public DateTime? CreateDate { get; set; }
-        public string? CreationDate
-        {
-            get
-            {
-                return CreateDate.HasValue ? CreateDate.Value.ToString("yyyy-MM-dd hh:mm:ss") : null;
-            }
-
-            set
-            {
-                if (value != null)
-                {
-                    CreateDate = DateTime.ParseExact(value, "yyyy-MM-dd hh:mm:ss", System.Globalization.CultureInfo.InvariantCulture);
-                }
-            }
-        }
-
-        public DateTime? ModifyDate { get; set; }
-        public string? UpdateDate
-        {
-            get { return ModifyDate.HasValue ? ModifyDate.Value.ToString("yyyy-MM-dd hh:mm:ss") : null; }
-
-            set
-            {
-                if (value != null)
-                {
-                    ModifyDate = DateTime.ParseExact(value, "yyyy-MM-dd hh:mm:ss", System.Globalization.CultureInfo.InvariantCulture);
-                }
-            }
-        }
-
-        public bool? IsDeleted { get; set; }
-        public bool? Active { get; set; }
-
 
         public static Categories ExtractObject(DataRow dataRow)
         {
