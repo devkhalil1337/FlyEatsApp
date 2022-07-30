@@ -6,7 +6,7 @@ using System.Web;
 
 namespace FlyEatsApp.Models
 {
-    public class Products
+    public class Products: BaseFilter
     {
         public const string PRODUCT_ID_COLUMN = "ProductId";
         public const string PRODUCT_CATEGORY_ID_COLUMN = "CategoryId";
@@ -32,7 +32,6 @@ namespace FlyEatsApp.Models
 
         public int? ProductId { get; set; }
         public int? CategoryId { get; set; }
-        public int? BusinessId { get; set; }
         public string? CategoryName { get; set; }
         public string? ProductImage { get; set; }
         public string? ProductName { get; set; }
@@ -47,38 +46,6 @@ namespace FlyEatsApp.Models
         public int? ProductQuantity { get; set; }
         public bool? HasVariations { get; set; }
         public bool? Featured { get; set; }
-        public DateTime? CreateDate { get; set; }
-        public string? CreationDate
-    {
-            get {
-                return CreateDate.HasValue ? CreateDate.Value.ToString("yyyy-MM-dd hh:mm:ss") : null;
-            }
-
-            set
-            {
-                if (value != null)
-                {
-                    CreateDate = DateTime.ParseExact(value, "yyyy-MM-dd hh:mm:ss", System.Globalization.CultureInfo.InvariantCulture);
-                }
-            }
-        }
-
-        public DateTime? ModifyDate { get; set; }
-        public string? UpdateDate
-    {
-            get { return ModifyDate.HasValue ? ModifyDate.Value.ToString("yyyy-MM-dd hh:mm:ss") : null; }
-
-            set
-            {
-                if (value != null)
-                {
-                    ModifyDate = DateTime.ParseExact(value, "yyyy-MM-dd hh:mm:ss", System.Globalization.CultureInfo.InvariantCulture);
-                }
-            }
-        }
-
-        public bool? IsDeleted { get; set; }
-        public bool? Active { get; set; }
 
 
         public static Products ExtractObject(DataRow dataRow)
