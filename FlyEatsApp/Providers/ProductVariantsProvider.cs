@@ -17,7 +17,7 @@ namespace FlyEatsApp.Providers
 
         public ProductVariantsProvider()
         {
-            _ConnectionString = "Data Source=DESKTOP-9FIV1UO\\SQLEXPRESS;Initial Catalog=Flyeats;Integrated Security=True"; //ConfigurationManager.ConnectionStrings["foodBuyConnectionString"].ConnectionString;
+            _ConnectionString = "Data Source=.;Initial Catalog=Flyeats;Integrated Security=True"; //ConfigurationManager.ConnectionStrings["foodBuyConnectionString"].ConnectionString;
         }
 
         public IList<ProductVariants> GetAllProductVariants(int productId)
@@ -61,75 +61,79 @@ namespace FlyEatsApp.Providers
             return AllProductVariants;
             ;
         }
-        public long AddNewProductVariants(ProductVariants productVariants)
+        public object AddNewProductVariants(List<ProductVariants> productVariants,int productId)
         {
-            
+            var results = new Object();
             IDatabaseAccessProvider dataAccessProvider = new SqlDataAccess(_ConnectionString);
             var storedProcedureName = "SP_AddNewProductVariant";
 
             var statusChangedDateTime = DateTime.UtcNow;
-
-            Dictionary<string, object> parameters = new Dictionary<string, object> {
-                { "ProductId", productVariants.ProductId},
-                { "BusinessId", productVariants.BusinessId},
-                { "VariationName", productVariants.VariationName},
-                { "VariationPrice", productVariants.VariationPrice},
+            for(int i = 0; i < productVariants.Count; i++)
+            {
+                Dictionary<string, object> parameters = new Dictionary<string, object> {
+                { "ProductId", productId},
+                { "BusinessId", productVariants[i].BusinessId},
+                { "VariationName", productVariants[i].VariationName},
+                { "VariationPrice", productVariants[i].VariationPrice},
                 { "CreationDate", statusChangedDateTime},
                 { "UpdateDate", statusChangedDateTime},
-                { "IsDeleted", productVariants.IsDeleted},
-                { "Active", productVariants.Active},
+                { "IsDeleted", productVariants[i].IsDeleted},
+                { "Active", productVariants[i].Active},
             };
 
-            try
-            {
-                var id = dataAccessProvider.ExecuteStoredProcedureWithReturnMessage(storedProcedureName, parameters);
-                return id == null ? -1 : Convert.ToInt64(id);
-            }
-            catch (Exception ex)
-            {
-               /* LogEntry logEntry = new LogEntry()
+                try
                 {
-                    Severity = System.Diagnostics.TraceEventType.Error,
-                    Title = string.Format("Creating New business Info for a customer ", categories.BusinessName),
-                    Message = ex.Message + Environment.NewLine + ex.StackTrace
-                };
-                Logger.Write(logEntry);*/
+                    results = dataAccessProvider.ExecuteStoredProcedureWithReturnMessage(storedProcedureName, parameters);
+                }
+                catch (Exception ex)
+                {
+                    /* LogEntry logEntry = new LogEntry()
+                     {
+                         Severity = System.Diagnostics.TraceEventType.Error,
+                         Title = string.Format("Creating New business Info for a customer ", categories.BusinessName),
+                         Message = ex.Message + Environment.NewLine + ex.StackTrace
+                     };
+                     Logger.Write(logEntry);*/
+                }
             }
-            return -1;
+           
+            return results;
         
        } 
-        public bool UpdateProductVariant(ProductVariants productVariants)
+        public object UpdateProductVariant(List<ProductVariants> productVariants)
         {
+            var result = new object();
             IDatabaseAccessProvider dataAccessProvider = new SqlDataAccess(_ConnectionString);
             var storedProcedureName = "SP_UpdateProductVariant";
 
             var statusChangedDateTime = DateTime.UtcNow;
+            for (int i = 0; i < productVariants.Count; i++)
+            {
+                Dictionary<string, object> parameters = new Dictionary<string, object> {
 
-            Dictionary<string, object> parameters = new Dictionary<string, object> {
-
-                { "VariantId", productVariants.VariantId},
-               { "ProductId", productVariants.ProductId},
-                { "BusinessId", productVariants.BusinessId},
-                { "VariationName", productVariants.VariationName},
-                { "VariationPrice", productVariants.VariationPrice},
+                { "VariantId", productVariants[i].VariantId},
+               { "ProductId", productVariants[i].ProductId},
+                { "BusinessId", productVariants[i].BusinessId},
+                { "VariationName", productVariants[i].VariationName},
+                { "VariationPrice", productVariants[i].VariationPrice},
                 { "CreationDate", statusChangedDateTime},
                 { "UpdateDate", statusChangedDateTime},
-                { "IsDeleted", productVariants.IsDeleted},
-                { "Active", productVariants.Active}
+                { "IsDeleted", productVariants[i].IsDeleted},
+                { "Active", productVariants[i].Active},
 
                 };
-            try
-            {
-                var result = dataAccessProvider.ExecuteStoredProcedureWithReturnMessage(storedProcedureName, parameters);
-                return true;
-            }
-            catch (Exception ex)
-            {
-               
+                try
+                {
+                    result = dataAccessProvider.ExecuteStoredProcedureWithReturnMessage(storedProcedureName, parameters);
+                }
+                catch (Exception ex)
+                {
+
+                }
             }
 
 
-            return false;
+            return result;
         }
         public bool DeleteProductVariantById (int variantId)
            {

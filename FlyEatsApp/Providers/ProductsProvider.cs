@@ -17,7 +17,7 @@ namespace FlyEatsApp.Providers
 
         public ProductsProvider()
         {
-            _ConnectionString = "Data Source=DESKTOP-9FIV1UO\\SQLEXPRESS;Initial Catalog=Flyeats;Integrated Security=True"; //ConfigurationManager.ConnectionStrings["foodBuyConnectionString"].ConnectionString;
+            _ConnectionString = "Data Source=.;Initial Catalog=Flyeats;Integrated Security=True"; //ConfigurationManager.ConnectionStrings["foodBuyConnectionString"].ConnectionString;
         }
 
         public IList<Products> GetAllProducts(int businessId)
@@ -71,7 +71,7 @@ namespace FlyEatsApp.Providers
             return AllProducts;
             ;
         }
-        public object AddNewProduct(Products product)
+        public int AddNewProduct(Products product)
         {
 
             IDatabaseAccessProvider dataAccessProvider = new SqlDataAccess(_ConnectionString);
@@ -103,8 +103,9 @@ namespace FlyEatsApp.Providers
 
             try
             {
-                var results = dataAccessProvider.ExecuteStoredProcedureWithReturnMessage(storedProcedureName, parameters);
-                return results;
+                var productId = dataAccessProvider.ExecuteStoredProcedureWithReturnObject(storedProcedureName, parameters);
+
+                return (int)(productId == null ? -1 : Convert.ToInt64(productId));
             }
             catch (Exception ex)
             {

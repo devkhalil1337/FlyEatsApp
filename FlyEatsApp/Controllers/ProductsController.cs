@@ -14,16 +14,28 @@ namespace FlyEatsApp.Controllers
         public object AddNewProduct([FromBody] Products product)
         {
             ProductsProvider productsProvider = new ProductsProvider();
-            var result = productsProvider.AddNewProduct(product);
-            return result;
+            var results = new object();
+            int productId = productsProvider.AddNewProduct(product);
+            if(productId != -1)
+            {
+                ProductVariantsProvider productVariantsProvider = new ProductVariantsProvider();
+                results = productVariantsProvider.AddNewProductVariants(product.ProductVariants, productId);
+            }
+            return results;
         }
 
         [HttpPut]
         public object UpdateProduct([FromBody] Products product)
         {
+            var results = new Object();
             ProductsProvider productsProvider = new ProductsProvider();
             var result = productsProvider.UpdateProduct(product);
-            return result;
+            if(result != null)
+            {
+                ProductVariantsProvider productVariantsProvider = new ProductVariantsProvider();
+                results = productVariantsProvider.UpdateProductVariant(product.ProductVariants);
+            }
+            return results;
         }
 
         [HttpGet]

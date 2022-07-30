@@ -47,6 +47,7 @@ namespace FlyEatsApp.Models
         public bool? HasVariations { get; set; }
         public bool? Featured { get; set; }
 
+        public List<ProductVariants> ProductVariants { get; set; }
 
         public static Products ExtractObject(DataRow dataRow)
         {

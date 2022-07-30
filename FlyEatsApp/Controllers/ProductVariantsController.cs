@@ -10,7 +10,7 @@ namespace FlyEatsApp.Controllers
     public class ProductVariantsController : ControllerBase
     {
 
-        [HttpPost]
+        /*[HttpPost]
         public long AddNewProductVariants([FromBody] ProductVariants productVariants)
         {
             ProductVariantsProvider productVariantsProvider = new ProductVariantsProvider();
@@ -25,6 +25,7 @@ namespace FlyEatsApp.Controllers
             var result = productVariantsProvider.UpdateProductVariant(productVariants);
             return result;
         }
+        */
 
         [HttpGet]
         public IEnumerable<ProductVariants> GetAllProductVariants (int productId)
