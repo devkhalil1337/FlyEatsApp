@@ -6,7 +6,7 @@ using System.Web;
 
 namespace FlyEatsApp.Models
 {
-    public class BusinessInfo
+    public class BusinessInfo: BaseFilter
     {
         public const string BUSINESS_ID_COLUMN = "BusinessId";
         public const string BUSINESS_LOCALIZATION_COLUMN = "Localization";
@@ -31,7 +31,6 @@ namespace FlyEatsApp.Models
         public const string BUSINESS_DELETED_COLUMN = "Deleted";
         public const string BUSINESS_ACTIVE_COLUMN = "Active";
 
-        public int? BusinessId { get; set; }
         public string? Localization { get; set; }
         public string? BusinessLogo { get; set; }
         public string? BusinessName { get; set; }
@@ -79,38 +78,8 @@ namespace FlyEatsApp.Models
             }
         }
 
-        public DateTime? CreateDate { get; set; }
-        public string? CreationDate
-        {
-            get {
-                return CreateDate.HasValue ? CreateDate.Value.ToString("yyyy-MM-dd hh:mm:ss") : null;
-            }
-
-            set
-            {
-                if (value != null)
-                {
-                    CreateDate = DateTime.ParseExact(value, "yyyy-MM-dd hh:mm:ss", System.Globalization.CultureInfo.InvariantCulture);
-                }
-            }
-        }
-
-        public DateTime? ModifyDate { get; set; }
-        public string? UpdateDate
-        {
-            get { return ModifyDate.HasValue ? ModifyDate.Value.ToString("yyyy-MM-dd hh:mm:ss") : null; }
-
-            set
-            {
-                if (value != null)
-                {
-                    ModifyDate = DateTime.ParseExact(value, "yyyy-MM-dd hh:mm:ss", System.Globalization.CultureInfo.InvariantCulture);
-                }
-            }
-        }
 
         public bool? Deleted { get; set; }
-        public bool? Active { get; set; }
         
 
         public static BusinessInfo ExtractObject(DataRow dataRow)

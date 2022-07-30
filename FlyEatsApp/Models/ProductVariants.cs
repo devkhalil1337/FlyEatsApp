@@ -6,7 +6,7 @@ using System.Web;
 
 namespace FlyEatsApp.Models
 {
-    public class ProductVariants
+    public class ProductVariants: BaseFilter
     {
         public const string PRODUCT_VARIANT_ID_COLUMN = "VariantId";
         public const string PRODUCT_ID_COLUMN = "ProductId";
@@ -20,42 +20,8 @@ namespace FlyEatsApp.Models
 
         public int? VariantId { get; set; }
         public int? ProductId { get; set; }
-        public int? BusinessId { get; set; }
         public string? VariationName { get; set; }
         public double? VariationPrice { get; set; }
-        public DateTime? CreateDate { get; set; }
-        public string? CreationDate
-    {
-            get {
-                return CreateDate.HasValue ? CreateDate.Value.ToString("yyyy-MM-dd hh:mm:ss") : null;
-            }
-
-            set
-            {
-                if (value != null)
-                {
-                    CreateDate = DateTime.ParseExact(value, "yyyy-MM-dd hh:mm:ss", System.Globalization.CultureInfo.InvariantCulture);
-                }
-            }
-        }
-
-        public DateTime? ModifyDate { get; set; }
-        public string? UpdateDate
-    {
-            get { return ModifyDate.HasValue ? ModifyDate.Value.ToString("yyyy-MM-dd hh:mm:ss") : null; }
-
-            set
-            {
-                if (value != null)
-                {
-                    ModifyDate = DateTime.ParseExact(value, "yyyy-MM-dd hh:mm:ss", System.Globalization.CultureInfo.InvariantCulture);
-                }
-            }
-        }
-
-        public bool? IsDeleted { get; set; }
-        public bool? Active { get; set; }
-
 
         public static ProductVariants ExtractObject(DataRow dataRow)
         {

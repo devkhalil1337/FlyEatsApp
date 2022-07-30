@@ -6,7 +6,7 @@ using System.Web;
 
 namespace FlyEatsApp.Models
 {
-    public class Selections
+    public class Selections: BaseFilter
     {
         public const string SELECTION_ID_COLUMN = "SelectionId";
         public const string SELECTION_BUSINESS_ID_COLUMN = "BusinessId";     
@@ -19,44 +19,9 @@ namespace FlyEatsApp.Models
         public const string SELECTION_ACTIVE_COLUMN = "Active";
 
         public int? SelectionId { get; set; }
-        public int? BusinessId { get; set; }
         public string? SelectionName { get; set; }
         public int? MinimumSelection { get; set; }
         public int? MaximumSelection { get; set; }
-        public DateTime? CreateDate { get; set; }
-        public string? CreationDate
-        {
-            get
-            {
-                return CreateDate.HasValue ? CreateDate.Value.ToString("yyyy-MM-dd hh:mm:ss") : null;
-            }
-
-            set
-            {
-                if (value != null)
-                {
-                    CreateDate = DateTime.ParseExact(value, "yyyy-MM-dd hh:mm:ss", System.Globalization.CultureInfo.InvariantCulture);
-                }
-            }
-        }
-
-        public DateTime? ModifyDate { get; set; }
-        public string? UpdateDate
-        {
-            get { return ModifyDate.HasValue ? ModifyDate.Value.ToString("yyyy-MM-dd hh:mm:ss") : null; }
-
-            set
-            {
-                if (value != null)
-                {
-                    ModifyDate = DateTime.ParseExact(value, "yyyy-MM-dd hh:mm:ss", System.Globalization.CultureInfo.InvariantCulture);
-                }
-            }
-        }
-
-        public bool? IsDeleted { get; set; }
-        public bool? Active { get; set; }
-
 
         public static Selections ExtractObject(DataRow dataRow)
         {
