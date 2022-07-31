@@ -10,6 +10,8 @@ namespace FlyEatsApp.Controllers
     public class CategoriesController : ControllerBase
     {
 
+
+     
         [HttpPost]
         public object AddNewCategory([FromBody] Categories categories)
         {

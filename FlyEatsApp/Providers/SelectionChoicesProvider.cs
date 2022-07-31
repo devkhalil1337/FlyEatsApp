@@ -17,7 +17,8 @@ namespace FlyEatsApp.Providers
 
         public SelectionChoicesProvider()
         {
-            _ConnectionString = "Data Source=DESKTOP-9FIV1UO\\SQLEXPRESS;Initial Catalog=Flyeats;Integrated Security=True"; //ConfigurationManager.ConnectionStrings["foodBuyConnectionString"].ConnectionString;
+            var builder = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json", optional: true);
+            _ConnectionString = builder.Build().GetSection("ConnectionStrings").GetSection("DefaultConnection").Value;
         }
 
         public IList<SelectionChoices> GetAllSelectionChoices(int selectionId)

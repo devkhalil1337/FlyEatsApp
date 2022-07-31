@@ -17,7 +17,8 @@ namespace FlyEatsApp.Providers
 
         public ProductsProvider()
         {
-            _ConnectionString = "Data Source=.;Initial Catalog=Flyeats;Integrated Security=True"; //ConfigurationManager.ConnectionStrings["foodBuyConnectionString"].ConnectionString;
+            var builder = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json", optional: true);
+            _ConnectionString = builder.Build().GetSection("ConnectionStrings").GetSection("DefaultConnection").Value;
         }
 
         public IList<Products> GetAllProducts(int businessId)
