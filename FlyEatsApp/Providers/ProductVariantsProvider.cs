@@ -21,7 +21,7 @@ namespace FlyEatsApp.Providers
             _ConnectionString = builder.Build().GetSection("ConnectionStrings").GetSection("DefaultConnection").Value;
         }
 
-        public IList<ProductVariants> GetAllProductVariants(int productId)
+        public List<ProductVariants> GetAllProductVariants(int productId)
         {
             List<ProductVariants> AllProductVariants = new List<ProductVariants>();
 

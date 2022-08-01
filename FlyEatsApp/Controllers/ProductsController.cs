@@ -19,7 +19,7 @@ namespace FlyEatsApp.Controllers
             if(productId != -1)
             {
                 ProductVariantsProvider productVariantsProvider = new ProductVariantsProvider();
-                results = productVariantsProvider.AddNewProductVariants(product.ProductVariants, productId);
+                results = productVariantsProvider.AddNewProductVariants(product.productVariants, productId);
             }
             return results;
         }
@@ -33,7 +33,7 @@ namespace FlyEatsApp.Controllers
             if(result != null)
             {
                 ProductVariantsProvider productVariantsProvider = new ProductVariantsProvider();
-                results = productVariantsProvider.UpdateProductVariant(product.ProductVariants);
+                results = productVariantsProvider.UpdateProductVariant(product.productVariants);
             }
             return results;
         }

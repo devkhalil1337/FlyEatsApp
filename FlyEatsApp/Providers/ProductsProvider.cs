@@ -166,14 +166,12 @@ namespace FlyEatsApp.Providers
         public IList<Products> GetProductsById(int productId)
         {
             List<Products> GetProduct = new List<Products>();
-
             IDatabaseAccessProvider dataAccessProvider = new SqlDataAccess(_ConnectionString);
             var storedProcedureName = "SP_GetProductDetailById";
 
             Dictionary<string, object> parameters = new Dictionary<string, object> {
                    { "ProductId", productId }
                };
-
             try
             {
                 var dataSet = dataAccessProvider.ExecuteStoredProcedure(storedProcedureName, parameters);
@@ -182,9 +180,13 @@ namespace FlyEatsApp.Providers
                     return null;
                 foreach (DataRow dataRow in dataSet.Tables[0].Rows)
                 {
-                    var category = Products.ExtractObject(dataRow);
-                    GetProduct.Add(category);
+                    var product = Products.ExtractObject(dataRow);
+                    GetProduct.Add(product);
                 }
+                ProductVariantsProvider productVariantsProvider = new ProductVariantsProvider();
+                var result = productVariantsProvider.GetAllProductVariants(productId);
+                GetProduct[0].productVariants = result;
+//              objectList = GetProduct.Cast<object>().Concat(result).ToList();
             }
             catch (Exception ex)
             {
