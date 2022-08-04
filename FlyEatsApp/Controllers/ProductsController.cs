@@ -14,13 +14,7 @@ namespace FlyEatsApp.Controllers
         public object AddNewProduct([FromBody] Products product)
         {
             ProductsProvider productsProvider = new ProductsProvider();
-            var results = new object();
-            int productId = productsProvider.AddNewProduct(product);
-            if(productId != -1)
-            {
-                ProductVariantsProvider productVariantsProvider = new ProductVariantsProvider();
-                results = productVariantsProvider.AddNewProductVariants(product.productVariants, productId);
-            }
+            var results = productsProvider.AddNewProduct(product);
             return results;
         }
 

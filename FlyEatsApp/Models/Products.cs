@@ -32,6 +32,7 @@ namespace FlyEatsApp.Models
 
         public int? ProductId { get; set; }
         public int? CategoryId { get; set; }
+        public int[]? selectionId { get; set; }
         public string? CategoryName { get; set; }
         public string? ProductImage { get; set; }
         public string? ProductName { get; set; }

@@ -72,9 +72,9 @@ namespace FlyEatsApp.Providers
             return AllProducts;
             ;
         }
-        public int AddNewProduct(Products product)
+        public object AddNewProduct(Products product)
         {
-
+            var results = new ResponseModel();
             IDatabaseAccessProvider dataAccessProvider = new SqlDataAccess(_ConnectionString);
             var storedProcedureName = "SP_AddNewProduct";
 
@@ -106,10 +106,28 @@ namespace FlyEatsApp.Providers
             {
                 var productId = dataAccessProvider.ExecuteStoredProcedureWithReturnObject(storedProcedureName, parameters);
 
-                return (int)(productId == null ? -1 : Convert.ToInt64(productId));
+               int _productId =  (int)(productId == null ? -1 : Convert.ToInt64(productId));
+               int _businessId = (int) product.BusinessId;
+                //Product Selections
+                if(_productId > -1 && product.selectionId != null && product.selectionId.Length > 0)
+                {
+                    ProductSelectionProvider productSelectionProvider = new ProductSelectionProvider();
+                    productSelectionProvider.AddNewProductSelection(product.selectionId, _productId, _businessId);
+                }
+                //Produect Variants
+                if (_productId != -1 && product.productVariants != null && product.productVariants.Count > 0)
+                {
+
+                    ProductVariantsProvider productVariantsProvider = new ProductVariantsProvider();
+                    productVariantsProvider.AddNewProductVariants(product.productVariants, _productId, _businessId);
+                }
+
+                return results.onSuccess();
             }
             catch (Exception ex)
             {
+
+                return results.onError(ex.Message);
                 /* LogEntry logEntry = new LogEntry()
                  {
                      Severity = System.Diagnostics.TraceEventType.Error,

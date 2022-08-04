@@ -9,7 +9,7 @@ namespace FlyEatsApp.Controllers
     [ApiController]
     public class ProductSelectionController : ControllerBase
     {
-
+        /*
         [HttpPost]
         public object AddNewProductSelection( [FromBody] ProductSelection productSelections)
         {
@@ -17,6 +17,7 @@ namespace FlyEatsApp.Controllers
             var result = productSelection.AddNewProductSelection(productSelections);
             return result;
         }
+        */
 
         [HttpPut]
         public object UpdateProductSelection([FromBody] ProductSelection productSelections)

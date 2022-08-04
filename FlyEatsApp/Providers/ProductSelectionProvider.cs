@@ -56,45 +56,48 @@ namespace FlyEatsApp.Providers
 
             return AllProductSelection;
         }
-        public object AddNewProductSelection(ProductSelection productSelection)
-        {
 
+        public object AddNewProductSelection(int[] selectionIds,int productId,int BusinessId)
+        {
+            var results = new Object();
             IDatabaseAccessProvider dataAccessProvider = new SqlDataAccess(_ConnectionString);
             var storedProcedureName = "SP_AddNewProductSelection";
 
             var statusChangedDateTime = DateTime.UtcNow;
+            for (int i = 0; i < selectionIds.Length; i++)
+            {
+                Dictionary<string, object> parameters = new Dictionary<string, object> {
 
-            Dictionary<string, object> parameters = new Dictionary<string, object> {
 
-
-                { "ProductId", productSelection.ProductId},
-                { "SelectionId", productSelection.SelectionId},
-                { "BusinessId", productSelection.BusinessId },
+                { "ProductId", productId},
+                { "SelectionId", selectionIds[i]},
+                { "BusinessId", BusinessId },
                 { "CreationDate", statusChangedDateTime },
                 { "UpdateDate", statusChangedDateTime },
-              
+
             };
 
-            try
-            {
-                var results = dataAccessProvider.ExecuteStoredProcedureWithReturnMessage(storedProcedureName, parameters);
-                return results;
-            }
-            catch (Exception ex)
-            {
-                /* LogEntry logEntry = new LogEntry()
-                 {
-                     Severity = System.Diagnostics.TraceEventType.Error,
-                     Title = string.Format("Creating New business Info for a customer ", categories.BusinessName),
-                     Message = ex.Message + Environment.NewLine + ex.StackTrace
-                 };
-                 Logger.Write(logEntry);*/
-            }
+                try
+                {
+                    results = dataAccessProvider.ExecuteStoredProcedureWithReturnMessage(storedProcedureName, parameters);
+                    
+                }
+                catch (Exception ex)
+                {
+                    /* LogEntry logEntry = new LogEntry()
+                     {
+                         Severity = System.Diagnostics.TraceEventType.Error,
+                         Title = string.Format("Creating New business Info for a customer ", categories.BusinessName),
+                         Message = ex.Message + Environment.NewLine + ex.StackTrace
+                     };
+                     Logger.Write(logEntry);*/
+                }
 
-
-            return -1;
+            }
+            return results;
 
         }
+
         public object UpdateProductSelection(ProductSelection productSelection)
         {
             IDatabaseAccessProvider dataAccessProvider = new SqlDataAccess(_ConnectionString);

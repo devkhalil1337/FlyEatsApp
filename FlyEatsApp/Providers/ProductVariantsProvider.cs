@@ -62,7 +62,7 @@ namespace FlyEatsApp.Providers
             return AllProductVariants;
             ;
         }
-        public object AddNewProductVariants(List<ProductVariants> productVariants,int productId)
+        public object AddNewProductVariants(List<ProductVariants> productVariants,int productId,int businessId)
         {
             var results = new Object();
             IDatabaseAccessProvider dataAccessProvider = new SqlDataAccess(_ConnectionString);
@@ -73,7 +73,7 @@ namespace FlyEatsApp.Providers
             {
                 Dictionary<string, object> parameters = new Dictionary<string, object> {
                 { "ProductId", productId},
-                { "BusinessId", productVariants[i].BusinessId},
+                { "BusinessId", businessId},
                 { "VariationName", productVariants[i].VariationName},
                 { "VariationPrice", productVariants[i].VariationPrice},
                 { "CreationDate", statusChangedDateTime},
@@ -100,7 +100,7 @@ namespace FlyEatsApp.Providers
            
             return results;
         
-       } 
+       }
         public object UpdateProductVariant(List<ProductVariants> productVariants)
         {
             var result = new object();
