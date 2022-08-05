@@ -69,19 +69,31 @@ namespace FlyEatsApp.Providers
             var storedProcedureName = "SP_AddNewProductVariant";
 
             var statusChangedDateTime = DateTime.UtcNow;
+            Boolean isUpdateCall = false;
             for(int i = 0; i < productVariants.Count; i++)
             {
+                if (productVariants[i].VariantId != null && productVariants[i].VariantId > 0)
+                {
+                    storedProcedureName = "SP_UpdateProductVariant";
+                    isUpdateCall = true;
+                }
+                else
+                {
+                    storedProcedureName = "SP_AddNewProductVariant";
+                    isUpdateCall = false;
+                }
                 Dictionary<string, object> parameters = new Dictionary<string, object> {
-                { "ProductId", productId},
-                { "BusinessId", businessId},
-                { "VariationName", productVariants[i].VariationName},
-                { "VariationPrice", productVariants[i].VariationPrice},
-                { "CreationDate", statusChangedDateTime},
-                { "UpdateDate", statusChangedDateTime},
-                { "IsDeleted", productVariants[i].IsDeleted},
-                { "Active", productVariants[i].Active},
-            };
-
+                    { "ProductId", productId},
+                    { "BusinessId", businessId},
+                    { "VariationName", productVariants[i].VariationName},
+                    { "VariationPrice", productVariants[i].VariationPrice},
+                    { "CreationDate", statusChangedDateTime},
+                    { "UpdateDate", statusChangedDateTime},
+                    { "IsDeleted", productVariants[i].IsDeleted},
+                    { "Active", productVariants[i].Active},
+                };
+                if(isUpdateCall)
+                    parameters.Add("VariantId", productVariants[i].VariantId);
                 try
                 {
                     results = dataAccessProvider.ExecuteStoredProcedureWithReturnMessage(storedProcedureName, parameters);
@@ -136,13 +148,13 @@ namespace FlyEatsApp.Providers
 
             return result;
         }
-        public bool DeleteProductVariantById (int variantId)
+        public bool DeleteProductVariantById (int productId)
            {
                IDatabaseAccessProvider dataAccessProvider = new SqlDataAccess(_ConnectionString);
                var storedProcedureName = "SP_DeleteProductVariantById";
 
                Dictionary<string, object> parameters = new Dictionary<string, object> {
-                   { "VariantId", variantId}};
+                   { "ProductId", productId}};
 
                try
                {

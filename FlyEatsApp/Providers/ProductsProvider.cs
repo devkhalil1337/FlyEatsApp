@@ -171,17 +171,24 @@ namespace FlyEatsApp.Providers
             try
             {
                 var results = (ResponseModel)  dataAccessProvider.ExecuteStoredProcedureWithReturnMessage(storedProcedureName, parameters);
-                if (results.success && product.productVariants != null && product.productVariants.Count > 0)
+                int _productId = (int)product.ProductId, _businessId = (int)product.BusinessId;
+                if (results.success)
                 {
                     ProductVariantsProvider productVariantsProvider = new ProductVariantsProvider();
-                    productVariantsProvider.UpdateProductVariant(product.productVariants);
-                }
-                if(product.selectionId != null && product.selectionId.Length > 0)
-                {
-                    ProductSelectionProvider productSelection = new ProductSelectionProvider();
-                    int _productId = (int) product.ProductId, _businessId = (int) product.BusinessId;
-                    productSelection.DeleteProductSelectionBy(_productId);
-                    productSelection.AddNewProductSelection(product.selectionId, _productId, _businessId);
+                    if (product.productVariants != null && product.productVariants.Count > 0)
+                    {
+                        productVariantsProvider.AddNewProductVariants(product.productVariants, _productId, _businessId);
+                    }
+                    else
+                    {
+                        productVariantsProvider.DeleteProductVariantById(_productId);
+                    }
+                    if (product.selectionId != null && product.selectionId.Length > 0)
+                    {
+                        ProductSelectionProvider productSelection = new ProductSelectionProvider();
+                        productSelection.DeleteProductSelectionBy(_productId); // Clear selections ids from reference table before adding/updating new entries
+                        productSelection.AddNewProductSelection(product.selectionId, _productId, _businessId);
+                    }
                 }
                 return results;
             }
