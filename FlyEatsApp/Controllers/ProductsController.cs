@@ -21,15 +21,9 @@ namespace FlyEatsApp.Controllers
         [HttpPut]
         public object UpdateProduct([FromBody] Products product)
         {
-            var results = new Object();
             ProductsProvider productsProvider = new ProductsProvider();
             var result = productsProvider.UpdateProduct(product);
-            if(result != null)
-            {
-                ProductVariantsProvider productVariantsProvider = new ProductVariantsProvider();
-                results = productVariantsProvider.UpdateProductVariant(product.productVariants);
-            }
-            return results;
+            return result;
         }
 
         [HttpGet]

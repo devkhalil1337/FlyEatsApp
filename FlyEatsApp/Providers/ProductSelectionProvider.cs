@@ -98,41 +98,43 @@ namespace FlyEatsApp.Providers
 
         }
 
-        public object UpdateProductSelection(ProductSelection productSelection)
+       /* public object UpdateProductSelection(int[] selectionIds)
         {
             IDatabaseAccessProvider dataAccessProvider = new SqlDataAccess(_ConnectionString);
             var storedProcedureName = "SP_UpdateProductSelection";
 
             var statusChangedDateTime = DateTime.UtcNow;
-
-            Dictionary<string, object> parameters = new Dictionary<string, object> {
+            for(int i = 0; i < selectionIds.Length; i++)
+            {
+                Dictionary<string, object> parameters = new Dictionary<string, object> {
                 { "ProductSelectionId", productSelection.ProductId},
                 { "ProductId", productSelection.ProductId},
-                { "SelectionId", productSelection.SelectionId},
+                { "SelectionId", selectionIds[.SelectionId},
                 { "BusinessId", productSelection.BusinessId },
                 { "UpdateDate", statusChangedDateTime },
             };
 
-            try
-            {
-                var result = dataAccessProvider.ExecuteStoredProcedureWithReturnMessage(storedProcedureName, parameters);
-                return result;
-            }
-            catch (Exception ex)
-            {
+                try
+                {
+                    var result = dataAccessProvider.ExecuteStoredProcedureWithReturnMessage(storedProcedureName, parameters);
+                    return result;
+                }
+                catch (Exception ex)
+                {
 
+                }
             }
 
 
             return false;
-        }
-        public object DeleteProductSelectionBy(long productSelectionId)
+        }*/
+        public object DeleteProductSelectionBy(long productId)
         {
             IDatabaseAccessProvider dataAccessProvider = new SqlDataAccess(_ConnectionString);
             var storedProcedureName = "SP_DeleteProductSelectionById";
 
             Dictionary<string, object> parameters = new Dictionary<string, object> {
-                   { "ProductSelectionId", productSelectionId}
+                   { "ProductId", productId}
                };
 
             try

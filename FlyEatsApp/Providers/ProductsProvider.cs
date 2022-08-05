@@ -170,7 +170,19 @@ namespace FlyEatsApp.Providers
 
             try
             {
-                var results = dataAccessProvider.ExecuteStoredProcedureWithReturnMessage(storedProcedureName, parameters);
+                var results = (ResponseModel)  dataAccessProvider.ExecuteStoredProcedureWithReturnMessage(storedProcedureName, parameters);
+                if (results.success && product.productVariants != null && product.productVariants.Count > 0)
+                {
+                    ProductVariantsProvider productVariantsProvider = new ProductVariantsProvider();
+                    productVariantsProvider.UpdateProductVariant(product.productVariants);
+                }
+                if(product.selectionId != null && product.selectionId.Length > 0)
+                {
+                    ProductSelectionProvider productSelection = new ProductSelectionProvider();
+                    int _productId = (int) product.ProductId, _businessId = (int) product.BusinessId;
+                    productSelection.DeleteProductSelectionBy(_productId);
+                    productSelection.AddNewProductSelection(product.selectionId, _productId, _businessId);
+                }
                 return results;
             }
             catch (Exception ex)

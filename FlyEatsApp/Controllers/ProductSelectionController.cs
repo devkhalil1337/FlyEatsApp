@@ -19,13 +19,13 @@ namespace FlyEatsApp.Controllers
         }
         */
 
-        [HttpPut]
+       /* [HttpPut]
         public object UpdateProductSelection([FromBody] ProductSelection productSelections)
         {
             ProductSelectionProvider productSelection = new ProductSelectionProvider();
             var result = productSelection.UpdateProductSelection(productSelections);
             return result;
-        }
+        }*/
 
 
         [HttpGet]

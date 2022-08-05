@@ -113,7 +113,7 @@ namespace FlyEatsApp.Providers
                 Dictionary<string, object> parameters = new Dictionary<string, object> {
 
                 { "VariantId", productVariants[i].VariantId},
-               { "ProductId", productVariants[i].ProductId},
+                { "ProductId", productVariants[i].ProductId},
                 { "BusinessId", productVariants[i].BusinessId},
                 { "VariationName", productVariants[i].VariationName},
                 { "VariationPrice", productVariants[i].VariationPrice},
