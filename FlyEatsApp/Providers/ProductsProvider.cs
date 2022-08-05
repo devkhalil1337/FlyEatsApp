@@ -221,8 +221,11 @@ namespace FlyEatsApp.Providers
                     GetProduct.Add(product);
                 }
                 ProductVariantsProvider productVariantsProvider = new ProductVariantsProvider();
+                ProductSelectionProvider productSelection = new ProductSelectionProvider();
+                var _productSelections = productSelection.GetAllProductSelection(productId);
                 var result = productVariantsProvider.GetAllProductVariants(productId);
                 GetProduct[0].productVariants = result;
+                GetProduct[0].selectionId = _productSelections;
 //              objectList = GetProduct.Cast<object>().Concat(result).ToList();
             }
             catch (Exception ex)

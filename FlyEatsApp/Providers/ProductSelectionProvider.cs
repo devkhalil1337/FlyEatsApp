@@ -21,10 +21,10 @@ namespace FlyEatsApp.Providers
             _ConnectionString = builder.Build().GetSection("ConnectionStrings").GetSection("DefaultConnection").Value;
         }
 
-        public IList<ProductSelection> GetAllProductSelection(int productId)
+        public int[] GetAllProductSelection(int productId)
         {
             List<ProductSelection> AllProductSelection = new List<ProductSelection>();
-
+            int[] selectionsId;
             IDatabaseAccessProvider dataAccessProvider = new SqlDataAccess(_ConnectionString);
             var storedProcedureName = "SP_GetAllProductSelectionByProductId";
             Dictionary<string, object> parameters = new Dictionary<string, object> {
@@ -36,8 +36,9 @@ namespace FlyEatsApp.Providers
                 var dataSet = dataAccessProvider.ExecuteStoredProcedure(storedProcedureName, parameters);
 
                 if (dataSet.Tables.Count < 1 || dataSet.Tables[0].Rows.Count < 1)
-                    return null;
-
+                    return new int[] { };
+                selectionsId = new int[dataSet.Tables[0].Rows.Count];
+                int index = 0;
                 foreach (DataRow dataRow in dataSet.Tables[0].Rows)
                 {
                     var newObject = new ProductSelection();
@@ -48,13 +49,16 @@ namespace FlyEatsApp.Providers
                     newObject.CreateDate = dataRow[ProductSelection.PRODUCT_SELECTION_CREATE_DATE_COLUMN] == DBNull.Value ? null : (DateTime?)Convert.ToDateTime(dataRow[ProductSelection.PRODUCT_SELECTION_CREATE_DATE_COLUMN]);
                     newObject.ModifyDate = dataRow[ProductSelection.PRODUCT_SELECTION_UPDATE_DATE_COLUMN] == DBNull.Value ? null : (DateTime?)Convert.ToDateTime(dataRow[ProductSelection.PRODUCT_SELECTION_UPDATE_DATE_COLUMN]);
                     AllProductSelection.Add(newObject);
+                    selectionsId[index] = (int) newObject.SelectionId;
+                    index++;
                 }
+                return selectionsId;
             }
             catch (Exception ex)
             {
             }
 
-            return AllProductSelection;
+            return new int[] { };
         }
 
         public object AddNewProductSelection(int[] selectionIds,int productId,int BusinessId)

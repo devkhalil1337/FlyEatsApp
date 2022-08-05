@@ -19,29 +19,29 @@ namespace FlyEatsApp.Controllers
         }
         */
 
-       /* [HttpPut]
-        public object UpdateProductSelection([FromBody] ProductSelection productSelections)
-        {
-            ProductSelectionProvider productSelection = new ProductSelectionProvider();
-            var result = productSelection.UpdateProductSelection(productSelections);
-            return result;
-        }*/
+        /* [HttpPut]
+         public object UpdateProductSelection([FromBody] ProductSelection productSelections)
+         {
+             ProductSelectionProvider productSelection = new ProductSelectionProvider();
+             var result = productSelection.UpdateProductSelection(productSelections);
+             return result;
+         }*/
 
 
-        [HttpGet]
-        public IEnumerable<ProductSelection> GetAllProductSelection(int productId)
-        {
-            ProductSelectionProvider productSelection = new ProductSelectionProvider();
-            var result = productSelection.GetAllProductSelection(productId);
-            return result;
-        }
-
-        [HttpPost]
+        /* [HttpGet]
+         public int[] GetAllProductSelection(int productId)
+         {
+             ProductSelectionProvider productSelection = new ProductSelectionProvider();
+             var result = productSelection.GetAllProductSelection(productId);
+             return result;
+         }
+        */
+        /*[HttpPost]
         public object DeleteProductSelectionBy(long productSelectionId)
         {
             ProductSelectionProvider productSelection = new ProductSelectionProvider();
             var result = productSelection.DeleteProductSelectionBy(productSelectionId);
             return result;
-        }
+        }*/
     }
 }
