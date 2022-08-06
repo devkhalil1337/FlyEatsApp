@@ -54,7 +54,7 @@ namespace FlyEatsApp.Providers
                     result = selectionChoicesProvider.GetAllSelectionChoices((int) newObject.SelectionId);
                     if (result != null)
                     {
-                        newObject.selectionChocices = (List<SelectionChoices>?)result;
+                        newObject.selectionChoices = (List<SelectionChoices>?)result;
                     }
                     AllSelections.Add(newObject);
                 }
@@ -91,10 +91,10 @@ namespace FlyEatsApp.Providers
                 var productId = dataAccessProvider.ExecuteStoredProcedureWithReturnObject(storedProcedureName, parameters);
                 int _productId = (int)(productId == null ? -1 : Convert.ToInt64(productId));
                 int _businessId = (int) selections.BusinessId;
-                if (_productId > -1 && selections.selectionChocices != null && selections.selectionChocices.Count > 0)
+                if (_productId > -1 && selections.selectionChoices != null && selections.selectionChoices.Count > 0)
                 {
                     SelectionChoicesProvider selectionChoicesProvider = new SelectionChoicesProvider();
-                    selectionChoicesProvider.AddNewSelectionChoices(selections.selectionChocices, _productId, _businessId);
+                    selectionChoicesProvider.AddNewSelectionChoices(selections.selectionChoices, _productId, _businessId);
                 }
 
                 return results.onSuccess();
@@ -143,10 +143,10 @@ namespace FlyEatsApp.Providers
                 {
                     int selectionId = (int) selections.SelectionId;
                     int _businessId = (int) selections.BusinessId;
-                    if (selectionId > -1 && selections.selectionChocices != null && selections.selectionChocices.Count > 0)
+                    if (selectionId > -1 && selections.selectionChoices != null && selections.selectionChoices.Count > 0)
                     {
                         SelectionChoicesProvider selectionChoicesProvider = new SelectionChoicesProvider();
-                        selectionChoicesProvider.AddNewSelectionChoices(selections.selectionChocices, selectionId, _businessId);
+                        selectionChoicesProvider.AddNewSelectionChoices(selections.selectionChoices, selectionId, _businessId);
                     }
                 }
                 return result.onSuccess();
@@ -183,7 +183,7 @@ namespace FlyEatsApp.Providers
                     result = selectionChoicesProvider.GetAllSelectionChoices((int) selections.SelectionId);
                     if(result != null)
                     {
-                        selections.selectionChocices = (List<SelectionChoices>?) result;
+                        selections.selectionChoices = (List<SelectionChoices>?) result;
                     }
                     GetSelection.Add(selections);
                 }
