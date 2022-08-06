@@ -59,42 +59,55 @@ namespace FlyEatsApp.Providers
 
             return AllSelectionChoices;
         }
-        public object AddNewSelectionChoices(SelectionChoices selectionChoices)
+        public object AddNewSelectionChoices(List<SelectionChoices> selectionChoices, int selectionId, int businessId)
         {
 
             IDatabaseAccessProvider dataAccessProvider = new SqlDataAccess(_ConnectionString);
             var storedProcedureName = "SP_AddNewSelectionChoice";
 
             var statusChangedDateTime = DateTime.UtcNow;
+            Boolean isUpdateCall = false;
+            for(int i = 0; i < selectionChoices.Count; i++)
+            {
+                if (selectionChoices[i].ChoicesId != null && selectionChoices[i].ChoicesId > -1) {
+                    isUpdateCall = true;
+                    storedProcedureName = "SP_UpdateSelectionChoice";
+                }
+                else
+                {
+                    storedProcedureName = "SP_AddNewSelectionChoice";
+                    isUpdateCall = false;
+                }
+                Dictionary<string, object> parameters = new Dictionary<string, object> {
 
-            Dictionary<string, object> parameters = new Dictionary<string, object> {
 
-
-                { "SelectionId", selectionChoices.SelectionId},
-                { "BusinessId", selectionChoices.BusinessId},
-                { "ChoiceName", selectionChoices.ChoiceName },
-                { "ChoicePrice", selectionChoices.ChoicePrice },
-                { "ChoiceSortedBy", selectionChoices.ChoiceSortedBy },
+                { "SelectionId", selectionId},
+                { "BusinessId", businessId},
+                { "ChoiceName", selectionChoices[i].ChoiceName },
+                { "ChoicePrice", selectionChoices[i].ChoicePrice },
+                { "ChoiceSortedBy", selectionChoices[i].ChoiceSortedBy },
                 { "CreationDate", statusChangedDateTime },
                 { "UpdateDate", statusChangedDateTime },
-                { "IsDeleted", selectionChoices.IsDeleted },
-              
-            };
+                { "IsDeleted", selectionChoices[i].IsDeleted },
 
-            try
-            {
-                var results = dataAccessProvider.ExecuteStoredProcedureWithReturnMessage(storedProcedureName, parameters);
-                return results;
-            }
-            catch (Exception ex)
-            {
-                /* LogEntry logEntry = new LogEntry()
-                 {
-                     Severity = System.Diagnostics.TraceEventType.Error,
-                     Title = string.Format("Creating New business Info for a customer ", categories.BusinessName),
-                     Message = ex.Message + Environment.NewLine + ex.StackTrace
-                 };
-                 Logger.Write(logEntry);*/
+            };
+                if(isUpdateCall)
+                    parameters.Add("ChoicesId", selectionChoices[i].ChoicesId);
+
+                try
+                {
+                    dataAccessProvider.ExecuteStoredProcedureWithReturnMessage(storedProcedureName, parameters);
+                }
+                catch (Exception ex)
+                {
+                    /* LogEntry logEntry = new LogEntry()
+                     {
+                         Severity = System.Diagnostics.TraceEventType.Error,
+                         Title = string.Format("Creating New business Info for a customer ", categories.BusinessName),
+                         Message = ex.Message + Environment.NewLine + ex.StackTrace
+                     };
+                     Logger.Write(logEntry);*/
+                }
             }
 
 

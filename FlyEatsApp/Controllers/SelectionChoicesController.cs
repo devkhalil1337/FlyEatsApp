@@ -9,7 +9,7 @@ namespace FlyEatsApp.Controllers
     [ApiController]
     public class SelectionChoicesController : ControllerBase
     {
-
+/*
         [HttpPost]
         public object AddNewSelectionChoices([FromBody] SelectionChoices selectionChoices)
         {
@@ -17,8 +17,8 @@ namespace FlyEatsApp.Controllers
             var result = selectionChoicesProvider.AddNewSelectionChoices(selectionChoices);
             return result;
         }
-
-        [HttpPut]
+*/
+       /* [HttpPut]
         public object UpdateSelectionChoices([FromBody] SelectionChoices selectionChoices)
         {
            SelectionChoicesProvider selectionChoicesProvider = new SelectionChoicesProvider();
@@ -41,6 +41,6 @@ namespace FlyEatsApp.Controllers
            SelectionChoicesProvider selectionChoicesProvider = new SelectionChoicesProvider();
             var result = selectionChoicesProvider.DeleteSelectionChoicesById(choicesId);
             return result;
-        }
+        }*/
     }
 }

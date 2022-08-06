@@ -1,0 +1,17 @@
+﻿USE [Flyeats]
+GO
+/****** Object:  StoredProcedure [dbo].[SP_GetAllSelectionChoicesBySelectionId]    Script Date: 8/6/2022 9:28:06 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+ALTER PROCEDURE [dbo].[SP_GetAllSelectionChoicesBySelectionId]
+(
+	@SelectionId int
+)
+AS  
+BEGIN  
+
+   select * from SelectionChoices where SelectionId=@SelectionId AND IsDeleted = 0;
+END  

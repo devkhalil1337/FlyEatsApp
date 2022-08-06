@@ -24,7 +24,8 @@ namespace FlyEatsApp.Providers
         public IList<Selections> GetAllSelections(int businessId)
         {
             List<Selections> AllSelections = new List<Selections>();
-
+            SelectionChoicesProvider selectionChoicesProvider = new SelectionChoicesProvider();
+            var result = new Object();
             IDatabaseAccessProvider dataAccessProvider = new SqlDataAccess(_ConnectionString);
             var storedProcedureName = "SP_GetAllSelectionByBusinessId";
             Dictionary<string, object> parameters = new Dictionary<string, object> {
@@ -50,6 +51,11 @@ namespace FlyEatsApp.Providers
                     newObject.ModifyDate = dataRow[Selections.SELECTION_UPDATE_DATE_COLUMN] == DBNull.Value ? null : (DateTime?)Convert.ToDateTime(dataRow[Selections.SELECTION_UPDATE_DATE_COLUMN]);
                     newObject.IsDeleted = Convert.ToBoolean(dataRow[Selections.SELECTION_DELETE_COLUMN]);
                     newObject.Active = Convert.ToBoolean(dataRow[Selections.SELECTION_ACTIVE_COLUMN]);
+                    result = selectionChoicesProvider.GetAllSelectionChoices((int) newObject.SelectionId);
+                    if (result != null)
+                    {
+                        newObject.selectionChocices = (List<SelectionChoices>?)result;
+                    }
                     AllSelections.Add(newObject);
                 }
             }
@@ -61,7 +67,7 @@ namespace FlyEatsApp.Providers
         }
         public object AddNewSelections(Selections selections)
         {
-
+            var results = new ResponseModel();
             IDatabaseAccessProvider dataAccessProvider = new SqlDataAccess(_ConnectionString);
             var storedProcedureName = "SP_AddNewSelection";
 
@@ -82,11 +88,21 @@ namespace FlyEatsApp.Providers
 
             try
             {
-                var results = dataAccessProvider.ExecuteStoredProcedureWithReturnMessage(storedProcedureName, parameters);
-                return results;
+                var productId = dataAccessProvider.ExecuteStoredProcedureWithReturnObject(storedProcedureName, parameters);
+                int _productId = (int)(productId == null ? -1 : Convert.ToInt64(productId));
+                int _businessId = (int) selections.BusinessId;
+                if (_productId > -1 && selections.selectionChocices != null && selections.selectionChocices.Count > 0)
+                {
+                    SelectionChoicesProvider selectionChoicesProvider = new SelectionChoicesProvider();
+                    selectionChoicesProvider.AddNewSelectionChoices(selections.selectionChocices, _productId, _businessId);
+                }
+
+                return results.onSuccess();
             }
             catch (Exception ex)
             {
+
+                return results.onError(ex.Message);
                 /* LogEntry logEntry = new LogEntry()
                  {
                      Severity = System.Diagnostics.TraceEventType.Error,
@@ -102,6 +118,7 @@ namespace FlyEatsApp.Providers
         }
         public object UpdateSelections(Selections selections)
         {
+            var result = new ResponseModel();
             IDatabaseAccessProvider dataAccessProvider = new SqlDataAccess(_ConnectionString);
             var storedProcedureName = "SP_UpdateSelection";
 
@@ -113,6 +130,7 @@ namespace FlyEatsApp.Providers
                 { "SelectionName", selections.SelectionName },
                 { "MinimumSelection", selections.MinimumSelection },
                 { "MaximumSelection", selections.MaximumSelection },
+                { "CreationDate", statusChangedDateTime },
                 { "UpdateDate", statusChangedDateTime },
                 { "IsDeleted", selections.IsDeleted },
                 { "Active", selections.Active },
@@ -120,12 +138,22 @@ namespace FlyEatsApp.Providers
 
             try
             {
-                var result = dataAccessProvider.ExecuteStoredProcedureWithReturnMessage(storedProcedureName, parameters);
-                return result;
+                result = (ResponseModel) dataAccessProvider.ExecuteStoredProcedureWithReturnMessage(storedProcedureName, parameters);
+                if (result.success)
+                {
+                    int selectionId = (int) selections.SelectionId;
+                    int _businessId = (int) selections.BusinessId;
+                    if (selectionId > -1 && selections.selectionChocices != null && selections.selectionChocices.Count > 0)
+                    {
+                        SelectionChoicesProvider selectionChoicesProvider = new SelectionChoicesProvider();
+                        selectionChoicesProvider.AddNewSelectionChoices(selections.selectionChocices, selectionId, _businessId);
+                    }
+                }
+                return result.onSuccess();
             }
             catch (Exception ex)
             {
-
+                return result.onError(ex.Message);
             }
 
 
@@ -134,7 +162,8 @@ namespace FlyEatsApp.Providers
         public IList<Selections> GetSelectionsById(int selectionId)
         {
             List<Selections> GetSelection = new List<Selections>();
-
+            SelectionChoicesProvider selectionChoicesProvider = new SelectionChoicesProvider();
+            var result = new Object();
             IDatabaseAccessProvider dataAccessProvider = new SqlDataAccess(_ConnectionString);
             var storedProcedureName = "SP_GetSelectionById";
 
@@ -151,6 +180,11 @@ namespace FlyEatsApp.Providers
                 foreach (DataRow dataRow in dataSet.Tables[0].Rows)
                 {
                     var selections = Selections.ExtractObject(dataRow);
+                    result = selectionChoicesProvider.GetAllSelectionChoices((int) selections.SelectionId);
+                    if(result != null)
+                    {
+                        selections.selectionChocices = (List<SelectionChoices>?) result;
+                    }
                     GetSelection.Add(selections);
                 }
             }

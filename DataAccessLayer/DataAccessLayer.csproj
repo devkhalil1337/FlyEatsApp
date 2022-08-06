@@ -55,6 +55,7 @@
   <ItemGroup>
     <Content Include="Scripts\SP_DeleteProductSelectionById.txt" />
     <Content Include="Scripts\SP_DeleteProductVariantById.txt" />
+    <Content Include="Scripts\SP_GetAllSelectionChoicesBySelectionId.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

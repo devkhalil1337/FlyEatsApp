@@ -22,7 +22,7 @@ namespace FlyEatsApp.Models
         public string? SelectionName { get; set; }
         public int? MinimumSelection { get; set; }
         public int? MaximumSelection { get; set; }
-
+        public List<SelectionChoices>? selectionChocices { get; set; }
         public static Selections ExtractObject(DataRow dataRow)
         {
             var newObject = new Selections();
