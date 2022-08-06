@@ -37,7 +37,7 @@ namespace FlyEatsApp.Providers
                 var dataSet = dataAccessProvider.ExecuteStoredProcedure(storedProcedureName, parameters);
 
                 if (dataSet.Tables.Count < 1 || dataSet.Tables[0].Rows.Count < 1)
-                    return null;
+                    return new List<Selections>();
 
                 foreach (DataRow dataRow in dataSet.Tables[0].Rows)
                 {

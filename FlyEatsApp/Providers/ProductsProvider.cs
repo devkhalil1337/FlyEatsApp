@@ -141,6 +141,7 @@ namespace FlyEatsApp.Providers
         }
         public object UpdateProduct(Products product)
         {
+            ProductSelectionProvider productSelection = new ProductSelectionProvider();
             IDatabaseAccessProvider dataAccessProvider = new SqlDataAccess(_ConnectionString);
             var storedProcedureName = "SP_UpdateProduct";
 
@@ -185,9 +186,14 @@ namespace FlyEatsApp.Providers
                     }
                     if (product.selectionId != null && product.selectionId.Length > 0)
                     {
-                        ProductSelectionProvider productSelection = new ProductSelectionProvider();
-                        productSelection.DeleteProductSelectionBy(_productId); // Clear selections ids from reference table before adding/updating new entries
+                        // Clear selections ids from reference table before adding/updating new entries
+                        productSelection.DeleteProductSelectionBy(_productId); 
                         productSelection.AddNewProductSelection(product.selectionId, _productId, _businessId);
+                    }
+                    else
+                    {
+                        // Clear All selections ids from reference table
+                        productSelection.DeleteProductSelectionBy(_productId);
                     }
                 }
                 return results;
