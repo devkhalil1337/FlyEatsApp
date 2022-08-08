@@ -4,7 +4,13 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
 -->
 <Project>
   <PropertyGroup>
-    <History>True|2022-08-06T22:06:46.9305462Z;True|2022-08-06T23:11:13.5762051+05:00;True|2022-08-06T23:10:55.6043012+05:00;True|2022-08-06T23:07:57.0263887+05:00;True|2022-08-06T21:31:26.9723516+05:00;True|2022-08-06T02:17:04.7666922+05:00;True|2022-08-06T01:50:59.9751944+05:00;True|2022-08-01T23:51:58.5873726+05:00;True|2022-07-03T12:59:48.4722407+05:00;False|2022-07-03T12:59:13.6857023+05:00;</History>
+    <History>True|2022-08-08T16:42:12.5024929Z;True|2022-08-08T21:35:46.5178907+05:00;True|2022-08-08T20:44:50.2607261+05:00;True|2022-08-07T03:06:46.9305462+05:00;True|2022-08-06T23:11:13.5762051+05:00;True|2022-08-06T23:10:55.6043012+05:00;True|2022-08-06T23:07:57.0263887+05:00;True|2022-08-06T21:31:26.9723516+05:00;True|2022-08-06T02:17:04.7666922+05:00;True|2022-08-06T01:50:59.9751944+05:00;True|2022-08-01T23:51:58.5873726+05:00;True|2022-07-03T12:59:48.4722407+05:00;False|2022-07-03T12:59:13.6857023+05:00;</History>
     <_PublishTargetUrl>C:\Users\Khalil Gulraiz\source\repos\FlyEatsApp\FlyEatsApp\bin\Release\net6.0\publish\</_PublishTargetUrl>
+    <TimeStampOfAssociatedLegacyPublishXmlFile />
   </PropertyGroup>
+  <ItemGroup>
+    <DestinationConnectionStrings Include="DefaultConnection">
+      <Value>workstation id=Flyeats.mssql.somee.com%3bpacket size=4096%3buser id=khalil1337_SQLLogin_1%3bpwd=ir5nksg7uv%3bdata source=Flyeats.mssql.somee.com%3bpersist security info=False%3binitial catalog=Flyeats</Value>
+    </DestinationConnectionStrings>
+  </ItemGroup>
 </Project>

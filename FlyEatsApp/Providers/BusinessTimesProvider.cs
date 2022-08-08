@@ -57,8 +57,15 @@ namespace FlyEatsApp.Providers
             var storedProcedureName = "SP_AddBusinessTimes";
             String errorMessage = "";
             Boolean isUpdateCall = false;
+            bool isDeleteCall = false;
             for (int i = 0; i < businessTimes.Count; i++)
             {
+                isDeleteCall = businessTimes[i].isDeleted;
+                if (isDeleteCall != null && isDeleteCall)
+                {
+                    DeleteBusinessTimeById((int)businessTimes[i].BusinessTimesId);
+                    continue;
+                }
                 if(businessTimes[i].BusinessTimesId != null  && businessTimes[i].BusinessTimesId > -1)
                 {
                     isUpdateCall = true;
@@ -125,7 +132,7 @@ namespace FlyEatsApp.Providers
             return errorMessage.Length > 0 ? result.onError(errorMessage) : result.onSuccess();
         }
 
-        public object DeleteBusinessTimeById(long BusinessTimesId)
+        public object DeleteBusinessTimeById(int BusinessTimesId)
         {
             IDatabaseAccessProvider dataAccessProvider = new SqlDataAccess(_ConnectionString);
             var storedProcedureName = "SP_DeleteBusinessTimesById";
