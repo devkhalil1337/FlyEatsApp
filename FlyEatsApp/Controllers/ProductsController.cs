@@ -57,7 +57,7 @@ namespace FlyEatsApp.Controllers
             try
             {
                 var file = Request.Form.Files[0];
-                var folderName = Path.Combine("Resources", "Images");
+                var folderName = Path.Combine("wwwroot", "Images");
                 var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
                 if (file.Length > 0)
                 {
