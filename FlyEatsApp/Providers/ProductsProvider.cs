@@ -36,8 +36,9 @@ namespace FlyEatsApp.Providers
                 var dataSet = dataAccessProvider.ExecuteStoredProcedure(storedProcedureName, parameters);
 
                 if (dataSet.Tables.Count < 1 || dataSet.Tables[0].Rows.Count < 1)
-                    return null;
-
+                    return new List<Products>();
+                ProductVariantsProvider productVariantsProvider = new ProductVariantsProvider();
+                ProductSelectionProvider productSelection = new ProductSelectionProvider();
                 foreach (DataRow dataRow in dataSet.Tables[0].Rows)
                 {
                     var newObject = new Products();
@@ -62,6 +63,8 @@ namespace FlyEatsApp.Providers
                     newObject.ModifyDate = dataRow[Products.PRODUCT_UPDATE_DATE_COLUMN] == DBNull.Value ? null : (DateTime?)Convert.ToDateTime(dataRow[Products.PRODUCT_UPDATE_DATE_COLUMN]);
                     newObject.IsDeleted = Convert.ToBoolean(dataRow[Products.PRODUCT_DELETE_COLUMN]);
                     newObject.Active = Convert.ToBoolean(dataRow[Products.PRODUCT_ACTIVE_COLUMN]);
+                    newObject.selectionId = productSelection.GetAllProductSelection((int)newObject.ProductId);
+                    newObject.productVariants = productVariantsProvider.GetAllProductVariants((int)newObject.ProductId);
                     AllProducts.Add(newObject);
                 }
             }
@@ -209,6 +212,8 @@ namespace FlyEatsApp.Providers
         public IList<Products> GetProductsById(int productId)
         {
             List<Products> GetProduct = new List<Products>();
+            ProductVariantsProvider productVariantsProvider = new ProductVariantsProvider();
+            ProductSelectionProvider productSelection = new ProductSelectionProvider();
             IDatabaseAccessProvider dataAccessProvider = new SqlDataAccess(_ConnectionString);
             var storedProcedureName = "SP_GetProductDetailById";
 
@@ -220,19 +225,14 @@ namespace FlyEatsApp.Providers
                 var dataSet = dataAccessProvider.ExecuteStoredProcedure(storedProcedureName, parameters);
 
                 if (dataSet.Tables.Count < 1 || dataSet.Tables[0].Rows.Count < 1 || dataSet.Tables[0].Rows.Count < 1)
-                    return null;
+                    return new List<Products>();
                 foreach (DataRow dataRow in dataSet.Tables[0].Rows)
                 {
                     var product = Products.ExtractObject(dataRow);
+                    product.selectionId = productSelection.GetAllProductSelection(productId);
+                    product.productVariants = productVariantsProvider.GetAllProductVariants(productId);
                     GetProduct.Add(product);
                 }
-                ProductVariantsProvider productVariantsProvider = new ProductVariantsProvider();
-                ProductSelectionProvider productSelection = new ProductSelectionProvider();
-                var _productSelections = productSelection.GetAllProductSelection(productId);
-                var result = productVariantsProvider.GetAllProductVariants(productId);
-                GetProduct[0].productVariants = result;
-                GetProduct[0].selectionId = _productSelections;
-//              objectList = GetProduct.Cast<object>().Concat(result).ToList();
             }
             catch (Exception ex)
             {
