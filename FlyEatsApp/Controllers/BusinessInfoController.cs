@@ -18,8 +18,8 @@ namespace FlyEatsApp.Controllers
             return result;
         }
 
-       [HttpPut]
-        public Boolean UpdateBusinessUnit(BusinessInfo businessInfo)
+       [HttpPost]
+        public object UpdateBusinessUnit(BusinessInfo businessInfo)
         {
             BusinessInfoProvider businessInfoProvider = new BusinessInfoProvider();
             var result = businessInfoProvider.UpdateBusinessUnit(businessInfo);

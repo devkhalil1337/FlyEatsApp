@@ -108,7 +108,7 @@ namespace FlyEatsApp.Providers
 
             return -1;
         }
-        public bool UpdateBusinessUnit(BusinessInfo businessInfo)
+        public object UpdateBusinessUnit(BusinessInfo businessInfo)
         {
             IDatabaseAccessProvider dataAccessProvider = new SqlDataAccess(_ConnectionString);
             var storedProcedureName = "SP_UpdateBusinesInfo";
@@ -141,7 +141,7 @@ namespace FlyEatsApp.Providers
 
             try
             {
-                var result = dataAccessProvider.ExecuteNonQueryStoredProcedure(storedProcedureName, parameters);
+                var result = dataAccessProvider.ExecuteStoredProcedureWithReturnMessage(storedProcedureName, parameters);
                 return result;
             }
             catch (Exception ex)
