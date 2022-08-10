@@ -176,7 +176,7 @@ namespace FlyEatsApp.Providers
                 var dataSet = dataAccessProvider.ExecuteStoredProcedure(storedProcedureName, parameters);
 
                 if (dataSet.Tables.Count < 1 || dataSet.Tables[0].Rows.Count < 1 || dataSet.Tables[0].Rows.Count < 1)
-                    return null;
+                    return new List<Selections>(); ;
                 foreach (DataRow dataRow in dataSet.Tables[0].Rows)
                 {
                     var selections = Selections.ExtractObject(dataRow);
@@ -191,6 +191,49 @@ namespace FlyEatsApp.Providers
             catch (Exception ex)
             {
 
+            }
+
+
+            return GetSelection;
+
+        }
+
+        public IList<Selections> GetMultipleSelectionsById(int[] selectionId)
+        {
+            List<Selections> GetSelection = new List<Selections>();
+            SelectionChoicesProvider selectionChoicesProvider = new SelectionChoicesProvider();
+            var result = new Object();
+            var selections = new Selections();
+            var dataSet = new DataSet();
+            IDatabaseAccessProvider dataAccessProvider = new SqlDataAccess(_ConnectionString);
+            var storedProcedureName = "SP_GetSelectionById";
+            for(int i = 0; i < selectionId.Length; i++)
+            {
+                Dictionary<string, object> parameters = new Dictionary<string, object> {
+                   { "SelectionId", selectionId[i] }
+               };
+
+                try
+                {
+                    dataSet = dataAccessProvider.ExecuteStoredProcedure(storedProcedureName, parameters);
+
+                    if (dataSet.Tables.Count < 1 || dataSet.Tables[0].Rows.Count < 1 || dataSet.Tables[0].Rows.Count < 1)
+                        return new List<Selections>(); ;
+                    foreach (DataRow dataRow in dataSet.Tables[0].Rows)
+                    {
+                        selections = Selections.ExtractObject(dataRow);
+                        result = selectionChoicesProvider.GetAllSelectionChoices((int)selections.SelectionId);
+                        if (result != null)
+                        {
+                            selections.selectionChoices = (List<SelectionChoices>?)result;
+                        }
+                        GetSelection.Add(selections);
+                    }
+                }
+                catch (Exception ex)
+                {
+
+                }
             }
 
 
