@@ -47,6 +47,7 @@ namespace FlyEatsApp.Models
         public int? ProductQuantity { get; set; }
         public bool? HasVariations { get; set; }
         public bool? Featured { get; set; }
+        public int? Quantity { get; set; }
 
         public List<ProductVariants>? productVariants { get; set; }
 
