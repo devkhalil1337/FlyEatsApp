@@ -75,7 +75,7 @@ namespace FlyEatsApp.Models
             newObject.ModifyDate = dataRow[PRODUCT_UPDATE_DATE_COLUMN] == DBNull.Value ? null : (DateTime?)Convert.ToDateTime(dataRow[PRODUCT_UPDATE_DATE_COLUMN]);
             newObject.IsDeleted = Convert.ToBoolean(dataRow[PRODUCT_DELETE_COLUMN]);
             newObject.Active = Convert.ToBoolean(dataRow[PRODUCT_ACTIVE_COLUMN]);
-            
+            newObject.Quantity = 1;
             return newObject;
         }
     }   
