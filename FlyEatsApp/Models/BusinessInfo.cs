@@ -88,7 +88,7 @@ namespace FlyEatsApp.Models
             newObject.BusinessId = Convert.ToInt32(dataRow[BUSINESS_ID_COLUMN]);
             newObject.Localization = Convert.ToString(dataRow[BUSINESS_LOCALIZATION_COLUMN]);
             newObject.BusinessLogo = Convert.ToString(dataRow[BUSINESS_LOGO_COLUMN]);
-            newObject.BusinessName = Convert.ToString(dataRow[BUSINESS_NAME_COLUMN]);
+            newObject.BusinessName = Convert.ToString(dataRow[BUSINESS_NAME_COLUMN]).Replace(" ", "");
             newObject.BusinessContact = Convert.ToString(dataRow[BUSINESS_CONTACT_COLUMN]);
             newObject.BusinessEmail = Convert.ToString(dataRow[BUSINESS_EMAIL_COLUMN]);
             newObject.BusinessAddress = Convert.ToString(dataRow[BUSINESS_ADDRESS_COLUMN]);

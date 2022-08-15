@@ -36,9 +36,7 @@ namespace FlyEatsApp.Providers
 
                 foreach (DataRow dataRow in dataSet.Tables[0].Rows)
                 {
-                    var newObject = new BusinessTimes();
-                    newObject = BusinessTimes.ExtractObject(dataRow);
-                    businessHours.Add(newObject);
+                    businessHours.Add(BusinessTimes.ExtractObject(dataRow));
                 }
             }
             catch (Exception ex)

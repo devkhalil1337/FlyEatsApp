@@ -39,10 +39,11 @@ namespace FlyEatsApp.Providers
                 if (dataSet.Tables.Count < 1 || dataSet.Tables[0].Rows.Count < 1)
                     return new List<Selections>();
 
+                var newObject = new Selections();
                 foreach (DataRow dataRow in dataSet.Tables[0].Rows)
                 {
-                    var newObject = new Selections();
-                    newObject.SelectionId = Convert.ToInt32(dataRow[Selections.SELECTION_ID_COLUMN]);
+                    newObject = Selections.ExtractObject(dataRow);
+/*                  newObject.SelectionId = Convert.ToInt32(dataRow[Selections.SELECTION_ID_COLUMN]);
                     newObject.BusinessId = Convert.ToInt32(dataRow[Selections.SELECTION_BUSINESS_ID_COLUMN]);
                     newObject.SelectionName = Convert.ToString(dataRow[Selections.SELECTION_NAME_COLUMN]);
                     newObject.MinimumSelection = Convert.ToInt32(dataRow[Selections.SELECTION_MINIMUM_COLUMN]);
@@ -50,7 +51,7 @@ namespace FlyEatsApp.Providers
                     newObject.CreateDate = dataRow[Selections.SELECTION_CREATE_DATE_COLUMN] == DBNull.Value ? null : (DateTime?)Convert.ToDateTime(dataRow[Selections.SELECTION_CREATE_DATE_COLUMN]);
                     newObject.ModifyDate = dataRow[Selections.SELECTION_UPDATE_DATE_COLUMN] == DBNull.Value ? null : (DateTime?)Convert.ToDateTime(dataRow[Selections.SELECTION_UPDATE_DATE_COLUMN]);
                     newObject.IsDeleted = Convert.ToBoolean(dataRow[Selections.SELECTION_DELETE_COLUMN]);
-                    newObject.Active = Convert.ToBoolean(dataRow[Selections.SELECTION_ACTIVE_COLUMN]);
+                    newObject.Active = Convert.ToBoolean(dataRow[Selections.SELECTION_ACTIVE_COLUMN]);*/
                     result = selectionChoicesProvider.GetAllSelectionChoices((int) newObject.SelectionId);
                     if (result != null)
                     {

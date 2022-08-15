@@ -40,7 +40,7 @@ namespace FlyEatsApp.Providers
 
                 foreach (DataRow dataRow in dataSet.Tables[0].Rows)
                 {
-                    var newObject = new SelectionChoices();
+/*                    var newObject = new SelectionChoices();
                     newObject.ChoicesId = Convert.ToInt32(dataRow[SelectionChoices.CHOICE_ID_COLUMN]);
                     newObject.SelectionId = Convert.ToInt32(dataRow[SelectionChoices.CHOICE_SELECTION_ID_COLUMN]);
                     newObject.BusinessId = Convert.ToInt32(dataRow[SelectionChoices.CHOICE_BUSINESS_ID_COLUMN]);
@@ -49,8 +49,8 @@ namespace FlyEatsApp.Providers
                     newObject.ChoiceSortedBy = Convert.ToInt32(dataRow[SelectionChoices.CHOICE_SORT_BY_COLUMN]);
                     newObject.CreateDate = dataRow[SelectionChoices.CHOICE_CREATE_DATE_COLUMN] == DBNull.Value ? null : (DateTime?)Convert.ToDateTime(dataRow[SelectionChoices.CHOICE_CREATE_DATE_COLUMN]);
                     newObject.ModifyDate = dataRow[SelectionChoices.CHOICE_UPDATE_DATE_COLUMN] == DBNull.Value ? null : (DateTime?)Convert.ToDateTime(dataRow[SelectionChoices.CHOICE_UPDATE_DATE_COLUMN]);
-                    newObject.IsDeleted = Convert.ToBoolean(dataRow[SelectionChoices.CHOICE_DELETE_COLUMN]);
-                    AllSelectionChoices.Add(newObject);
+                    newObject.IsDeleted = Convert.ToBoolean(dataRow[SelectionChoices.CHOICE_DELETE_COLUMN]);*/
+                    AllSelectionChoices.Add(SelectionChoices.ExtractObject(dataRow));
                 }
             }
             catch (Exception ex)

@@ -37,9 +37,9 @@ namespace FlyEatsApp.Providers
                 if (dataSet.Tables.Count < 1 || dataSet.Tables[0].Rows.Count < 1)
                     return new List<BusinessHours>();
 
+                var newObject = new BusinessHours();
                 foreach (DataRow dataRow in dataSet.Tables[0].Rows)
                 {
-                    var newObject = new BusinessHours();
                     newObject = BusinessHours.ExtractObject(dataRow);
                     result = businessTimesProvider.GetBusinessHoursById((int) newObject.BusinessDaysId);
                     if (result != null)

@@ -40,19 +40,7 @@ namespace FlyEatsApp.Providers
 
                 foreach (DataRow dataRow in dataSet.Tables[0].Rows)
                 {
-                    var newObject = new ProductVariants();
-                    newObject.VariantId = Convert.ToInt32(dataRow[ProductVariants.PRODUCT_VARIANT_ID_COLUMN]);
-                    newObject.ProductId = Convert.ToInt32(dataRow[ProductVariants.PRODUCT_ID_COLUMN]);
-                    newObject.BusinessId = Convert.ToInt32(dataRow[ProductVariants.PRODUCT_VARIANT_BUSINESS_ID_COLUMN]);
-                    newObject.VariationName = Convert.ToString(dataRow[ProductVariants.PRODUCT_VARIANT_NAME_COLUMN]);
-                    newObject.VariationPrice = Convert.ToDouble(dataRow[ProductVariants.PRODUCT_VARIANT_PRICE_COLUMN]);
-                    newObject.CreateDate = dataRow[ProductVariants.PRODUCT_VARIANT_CREATE_DATE_COLUMN] == DBNull.Value ? null : (DateTime?)Convert.ToDateTime(dataRow[ProductVariants.PRODUCT_VARIANT_CREATE_DATE_COLUMN]);
-                    newObject.ModifyDate = dataRow[ProductVariants.PRODUCT_VARIANT_UPDATE_DATE_COLUMN] == DBNull.Value ? null : (DateTime?)Convert.ToDateTime(dataRow[ProductVariants.PRODUCT_VARIANT_UPDATE_DATE_COLUMN]);
-                    newObject.IsDeleted = Convert.ToBoolean(dataRow[ProductVariants.PRODUCT_VARIANT_DELETE_COLUMN]);
-                    newObject.Active = Convert.ToBoolean(dataRow[ProductVariants.PRODUCT_VARIANT_ACTIVE_COLUMN]);
-
-
-                    AllProductVariants.Add(newObject);
+                    AllProductVariants.Add(ProductVariants.ExtractObject(dataRow));
                 }
             }
             catch (Exception ex)

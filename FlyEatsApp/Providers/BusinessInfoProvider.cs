@@ -38,12 +38,7 @@ namespace FlyEatsApp.Providers
 
                 foreach (DataRow dataRow in dataSet.Tables[0].Rows)
                 {
-                    var businessInfo = new BusinessInfo();
-                    //                    businessInfo.BusinessId = Convert.ToInt64(dataRow[BusinessInfo.BUSINESS_ID_COLUMN]);
-                    businessInfo.BusinessName = dataRow[BusinessInfo.BUSINESS_NAME_COLUMN].ToString().Replace(" ", "");
-                    businessInfo.BusinessAddress = dataRow[BusinessInfo.BUSINESS_ADDRESS_COLUMN].ToString();
-                    businessInfo.BusinessContact = dataRow[BusinessInfo.BUSINESS_CONTACT_COLUMN].ToString();
-                    businessUnits.Add(businessInfo);
+                    businessUnits.Add(BusinessInfo.ExtractObject(dataRow));
                 }
             }
             catch (Exception ex)
@@ -168,11 +163,10 @@ namespace FlyEatsApp.Providers
                 var dataSet = dataAccessProvider.ExecuteStoredProcedure(storedProcedureName, parameters);
 
                 if (dataSet.Tables.Count < 1 || dataSet.Tables[0].Rows.Count < 1 || dataSet.Tables[0].Rows.Count < 1)
-                    return null;
+                    return new List<BusinessInfo>();
                 foreach (DataRow dataRow in dataSet.Tables[0].Rows)
                 {
-                    var busessInfo = BusinessInfo.ExtractObject(dataRow);
-                    GetBusinessUnits.Add(busessInfo);
+                    GetBusinessUnits.Add(BusinessInfo.ExtractObject(dataRow));
                 }
             }
             catch (Exception ex)

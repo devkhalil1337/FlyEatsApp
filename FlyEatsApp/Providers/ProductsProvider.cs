@@ -24,7 +24,7 @@ namespace FlyEatsApp.Providers
         public IList<Products> GetAllProducts(int businessId)
         {
             List<Products> AllProducts = new List<Products>();
-
+            Products products = new Products();
             IDatabaseAccessProvider dataAccessProvider = new SqlDataAccess(_ConnectionString);
             var storedProcedureName = "SP_GetAllProductsByBusinessId";
             Dictionary<string, object> parameters = new Dictionary<string, object> {
@@ -41,28 +41,7 @@ namespace FlyEatsApp.Providers
                 ProductSelectionProvider productSelection = new ProductSelectionProvider();
                 foreach (DataRow dataRow in dataSet.Tables[0].Rows)
                 {
-                    var newObject = new Products();
-                    newObject.ProductId = Convert.ToInt32(dataRow[Products.PRODUCT_ID_COLUMN]);
-                    newObject.CategoryId = Convert.ToInt32(dataRow[Products.PRODUCT_CATEGORY_ID_COLUMN]);
-                    newObject.BusinessId = Convert.ToInt32(dataRow[Products.PRODUCT_BUSINESS_ID_COLUMN]);
-                    newObject.CategoryName = Convert.ToString(dataRow[Products.CATEGORY_NAME_COLUMN]);
-                    newObject.ProductImage = Convert.ToString(dataRow[Products.PRODUCT_IMAGE_COLUMN]);
-                    newObject.ProductName = Convert.ToString(dataRow[Products.PRODUCT_NAME_COLUMN]);
-                    newObject.ProductDescription = Convert.ToString(dataRow[Products.PRODUCT_DESCRITPTION_COLUMN]);
-                    newObject.ProductTablePrice = Convert.ToDouble(dataRow[Products.PRODUCT_TABLE_PRCIE_COLUMN]);
-                    newObject.ProductTableVat = Convert.ToDouble(dataRow[Products.PRODUCT_TABLE_VAT_COLUMN]);
-                    newObject.ProductPickupPrice = Convert.ToDouble(dataRow[Products.PRODUCT_PICKUP_PRCIE_COLUMN]);
-                    newObject.ProductPickupVat = Convert.ToDouble(dataRow[Products.PRODUCT_PICKUP_VAT_COLUMN]);
-                    newObject.ProductDeliveryPrice = Convert.ToDouble(dataRow[Products.PRODUCT_DELIVERY_PRCIE_COLUMN]);
-                    newObject.ProductDeliveryVat = Convert.ToDouble(dataRow[Products.PRODUCT_DELIVERY_VAT_COLUMN]);
-                    newObject.ProductSortBy = Convert.ToInt32(dataRow[Products.PRODUCT_SORT_BY_COLUMN]);
-                    newObject.ProductQuantity = Convert.ToInt32(dataRow[Products.PRODUCT_QUANTITY_COLUMN]);
-                    newObject.HasVariations = Convert.ToBoolean(dataRow[Products.PRODUCT_HAS_VARIATION_COLUMN]);
-                    newObject.Featured = Convert.ToBoolean(dataRow[Products.PRODUCT_FEATURED_COLUMN]);
-                    newObject.CreateDate = dataRow[Products.PRODUCT_CREATE_DATE_COLUMN] == DBNull.Value ? null : (DateTime?)Convert.ToDateTime(dataRow[Products.PRODUCT_CREATE_DATE_COLUMN]);
-                    newObject.ModifyDate = dataRow[Products.PRODUCT_UPDATE_DATE_COLUMN] == DBNull.Value ? null : (DateTime?)Convert.ToDateTime(dataRow[Products.PRODUCT_UPDATE_DATE_COLUMN]);
-                    newObject.IsDeleted = Convert.ToBoolean(dataRow[Products.PRODUCT_DELETE_COLUMN]);
-                    newObject.Active = Convert.ToBoolean(dataRow[Products.PRODUCT_ACTIVE_COLUMN]);
+                    var newObject = Products.ExtractObject(dataRow);
                     newObject.selectionId = productSelection.GetAllProductSelection((int)newObject.ProductId);
                     newObject.productVariants = productVariantsProvider.GetAllProductVariants((int)newObject.ProductId);
                     AllProducts.Add(newObject);

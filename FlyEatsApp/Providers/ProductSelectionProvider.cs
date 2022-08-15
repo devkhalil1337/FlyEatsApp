@@ -41,15 +41,15 @@ namespace FlyEatsApp.Providers
                 int index = 0;
                 foreach (DataRow dataRow in dataSet.Tables[0].Rows)
                 {
-                    var newObject = new ProductSelection();
+/*                    var newObject = new ProductSelection();
                     newObject.ProductSelectionId = Convert.ToInt32(dataRow[ProductSelection.PRODUCT_SELECTION_ID_COLUMN]);
                     newObject.ProductId = Convert.ToInt32(dataRow[ProductSelection.PRODUCT_ID_COLUMN]);
                     newObject.SelectionId = Convert.ToInt32(dataRow[ProductSelection.SELECTION_ID_COLUMN]);
                     newObject.BusinessId = Convert.ToInt32(dataRow[ProductSelection.PRODUCT_SELECTION_BUSINESS_ID_COLUMN]);
                     newObject.CreateDate = dataRow[ProductSelection.PRODUCT_SELECTION_CREATE_DATE_COLUMN] == DBNull.Value ? null : (DateTime?)Convert.ToDateTime(dataRow[ProductSelection.PRODUCT_SELECTION_CREATE_DATE_COLUMN]);
                     newObject.ModifyDate = dataRow[ProductSelection.PRODUCT_SELECTION_UPDATE_DATE_COLUMN] == DBNull.Value ? null : (DateTime?)Convert.ToDateTime(dataRow[ProductSelection.PRODUCT_SELECTION_UPDATE_DATE_COLUMN]);
-                    AllProductSelection.Add(newObject);
-                    selectionsId[index] = (int) newObject.SelectionId;
+                    AllProductSelection.Add(newObject);*/
+                    selectionsId[index] = Convert.ToInt32(dataRow[ProductSelection.SELECTION_ID_COLUMN]);
                     index++;
                 }
                 return selectionsId;
