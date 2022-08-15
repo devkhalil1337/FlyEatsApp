@@ -69,6 +69,9 @@ namespace FlyEatsApp.Providers
                 { "DeliveryTime", settings.DeliveryTime },
                 { "AveragePrepareTime", settings.AveragePrepareTime },
                 { "IsGuestLoginActive", settings.IsGuestLoginActive },
+                { "IsDeliveryOrderActive", settings.IsDeliveryOrderActive },
+                { "IsCollectionOrderActive", settings.IsCollectionOrderActive },
+                { "IsTableOrderActive", settings.IsTableOrderActive },
                 { "CreationDate", statusChangedDateTime },
                 { "UpdateDate", statusChangedDateTime },
             };
@@ -115,6 +118,9 @@ namespace FlyEatsApp.Providers
                 { "DeliveryTime", settings.DeliveryTime },
                 { "AveragePrepareTime", settings.AveragePrepareTime },
                 { "IsGuestLoginActive", settings.IsGuestLoginActive },
+                { "IsDeliveryOrderActive", settings.IsDeliveryOrderActive },
+                { "IsCollectionOrderActive", settings.IsCollectionOrderActive },
+                { "IsTableOrderActive", settings.IsTableOrderActive },
                 { "CreationDate", statusChangedDateTime },
                 { "UpdateDate", statusChangedDateTime },
             };

@@ -19,6 +19,9 @@ namespace FlyEatsApp.Models
         public const string SETTINGS_AVERAGE_PREPARE_TIME_COLUMN = "AveragePrepareTime";
         public const string SETTINGS_DELIVERY_TIME_COLUMN = "DeliveryTime";
         public const string SETTINGS_IS_GUEST_LOGIN_COLUMN = "IsGuestLoginActive";
+        public const string SETTINGS_IS_DELIVERY_ORDER_ACTIVE_COLUMN = "IsDeliveryOrderActive";
+        public const string SETTINGS_IS_COLLECTION_ORDER_ACTIVE_COLUMN = "IsCollectionOrderActive";
+        public const string SETTINGS_IS_TABLE_ORDER_ACTIVE_COLUMN = "IsTableOrderActive";
         public const string SETTINGS_CREATE_DATE_COLUMN = "CreationDate";
         public const string SETTINGS_UPDATE_DATE_COLUMN = "UpdateDate";
 
@@ -31,6 +34,9 @@ namespace FlyEatsApp.Models
         public decimal? AveragePrepareTime { get; set; }
         public decimal? DeliveryTime { get; set; }
         public bool? IsGuestLoginActive { get; set; }
+        public bool? IsDeliveryOrderActive { get; set; }
+        public bool? IsCollectionOrderActive { get; set; }
+        public bool? IsTableOrderActive { get; set; }
 
 
         public static Settings ExtractObject(DataRow dataRow)
@@ -48,6 +54,9 @@ namespace FlyEatsApp.Models
             newObject.CreateDate = dataRow[SETTINGS_CREATE_DATE_COLUMN] == DBNull.Value ? null : (DateTime?)Convert.ToDateTime(dataRow[SETTINGS_CREATE_DATE_COLUMN]);
             newObject.ModifyDate = dataRow[SETTINGS_UPDATE_DATE_COLUMN] == DBNull.Value ? null : (DateTime?)Convert.ToDateTime(dataRow[SETTINGS_UPDATE_DATE_COLUMN]);
             newObject.IsGuestLoginActive = dataRow[SETTINGS_IS_GUEST_LOGIN_COLUMN] == DBNull.Value ? false : Convert.ToBoolean(dataRow[SETTINGS_IS_GUEST_LOGIN_COLUMN]);
+            newObject.IsDeliveryOrderActive = dataRow[SETTINGS_IS_DELIVERY_ORDER_ACTIVE_COLUMN] == DBNull.Value ? false : Convert.ToBoolean(dataRow[SETTINGS_IS_DELIVERY_ORDER_ACTIVE_COLUMN]);
+            newObject.IsCollectionOrderActive = dataRow[SETTINGS_IS_COLLECTION_ORDER_ACTIVE_COLUMN] == DBNull.Value ? false : Convert.ToBoolean(dataRow[SETTINGS_IS_COLLECTION_ORDER_ACTIVE_COLUMN]);
+            newObject.IsTableOrderActive = dataRow[SETTINGS_IS_TABLE_ORDER_ACTIVE_COLUMN] == DBNull.Value ? false : Convert.ToBoolean(dataRow[SETTINGS_IS_TABLE_ORDER_ACTIVE_COLUMN]);
             return newObject;
         }
 
