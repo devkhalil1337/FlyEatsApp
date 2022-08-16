@@ -11,7 +11,7 @@ namespace FlyEatsApp.Controllers
     public class SettingsController : Controller
     {
         [HttpPost]
-        public object AddNewSelections([FromBody] Settings settings)
+        public object AddNewSettings([FromBody] Settings settings)
         {
             SettingsProvider settingsProvider = new SettingsProvider();
             var result = settingsProvider.AddNewSettings(settings);
@@ -19,7 +19,7 @@ namespace FlyEatsApp.Controllers
         }
 
         [HttpPost]
-        public object UpdateSelections([FromBody] Settings settings)
+        public object UpdateSettings([FromBody] Settings settings)
         {
             SettingsProvider settingsProvider = new SettingsProvider();
             var result = settingsProvider.UpdateSettings(settings);
@@ -27,7 +27,7 @@ namespace FlyEatsApp.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<Settings> GetSelectionsById(int BusinessId)
+        public IEnumerable<Settings> GetSettingsById(int BusinessId)
         {
             SettingsProvider settingsProvider = new SettingsProvider();
             var result = settingsProvider.GetSettingsById(BusinessId);
