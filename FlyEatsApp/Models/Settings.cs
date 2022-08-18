@@ -15,6 +15,7 @@ namespace FlyEatsApp.Models
         public const string CATEGORY_VAT_COLUMN = "Vat";
         public const string SETTINGS_VAT_TYPE_COLUMN = "VatType";
         public const string SETTINGS_SERVICE_CHARGES_COLUMN = "ServiceCharges";
+        public const string SETTINGS_DELIVERY_CHARGES_COLUMN = "DeliveryCharges";
         public const string SETTINGS_MINIMUM_ORDER_COLUMN = "MinimumOrder";
         public const string SETTINGS_AVERAGE_PREPARE_TIME_COLUMN = "AveragePrepareTime";
         public const string SETTINGS_DELIVERY_TIME_COLUMN = "DeliveryTime";
@@ -30,6 +31,7 @@ namespace FlyEatsApp.Models
         public decimal? Vat { get; set; }   
         public string? VatType { get; set; }    
         public decimal? ServiceCharges {get; set; }
+        public decimal? DeliveryCharges { get; set; }
         public decimal? MinimumOrder { get; set; }
         public decimal? AveragePrepareTime { get; set; }
         public decimal? DeliveryTime { get; set; }
@@ -48,6 +50,7 @@ namespace FlyEatsApp.Models
             newObject.Vat = dataRow[CATEGORY_VAT_COLUMN] == DBNull.Value ? 0 : Convert.ToDecimal(dataRow[CATEGORY_VAT_COLUMN]);
             newObject.VatType = dataRow[SETTINGS_VAT_TYPE_COLUMN] == DBNull.Value ? "" : Convert.ToString(dataRow[SETTINGS_VAT_TYPE_COLUMN]).Replace(" ", "");
             newObject.ServiceCharges = dataRow[SETTINGS_SERVICE_CHARGES_COLUMN] == DBNull.Value ? 0 : Convert.ToDecimal(dataRow[SETTINGS_SERVICE_CHARGES_COLUMN]);
+            newObject.DeliveryCharges = dataRow[SETTINGS_DELIVERY_CHARGES_COLUMN] == DBNull.Value ? 0 : Convert.ToDecimal(dataRow[SETTINGS_DELIVERY_CHARGES_COLUMN]);
             newObject.MinimumOrder = dataRow[SETTINGS_MINIMUM_ORDER_COLUMN] == DBNull.Value ? 0 : Convert.ToDecimal(dataRow[SETTINGS_MINIMUM_ORDER_COLUMN]);
             newObject.AveragePrepareTime = dataRow[SETTINGS_AVERAGE_PREPARE_TIME_COLUMN] == DBNull.Value ? 0 : Convert.ToDecimal(dataRow[SETTINGS_AVERAGE_PREPARE_TIME_COLUMN]);
             newObject.DeliveryTime = dataRow[SETTINGS_DELIVERY_TIME_COLUMN] == DBNull.Value ? 0 : Convert.ToDecimal(dataRow[SETTINGS_DELIVERY_TIME_COLUMN]);
