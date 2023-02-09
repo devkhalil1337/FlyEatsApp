@@ -1,6 +1,6 @@
 USE [Flyeats]
 GO
-/****** Object:  StoredProcedure [dbo].[SP_AddNewOrder]    Script Date: 2/9/2023 4:36:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[SP_AddNewOrder]    Script Date: 2/9/2023 8:03:56 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -35,7 +35,7 @@ ALTER PROCEDURE [dbo].[SP_AddNewOrder]
 )
 AS  
 BEGIN   
- INSERT INTO [OrderId]
+ INSERT INTO [Order]
            ([BusinessId]
            ,[CustomerId]
            ,[OrderInvoiceNumber]
