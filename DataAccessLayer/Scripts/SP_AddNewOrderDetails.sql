@@ -1,14 +1,14 @@
-      USE [Flyeats]
+USE [Flyeats]
 GO
-/****** Object:  StoredProcedure [dbo].[SP_AddNewOrder]    Script Date: 2/9/2023 9:57:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[SP_AddNewOrderDetails]    Script Date: 2/11/2023 2:57:02 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
 
-Create PROCEDURE [dbo].[SP_AddNewOrderDetails]
+ALTER PROCEDURE [dbo].[SP_AddNewOrderDetails]
 (
-	@OrderId bigint,
+	@OrderId nvarchar(255),
     @BusinessId int,
     @CategoryId int,
     @ProductId int,

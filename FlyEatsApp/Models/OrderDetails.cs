@@ -19,7 +19,7 @@ namespace FlyEatsApp.Models
         public const string PRODUCT_COMMENTS_COLUMN = "ProductComments";
         public const string PRODUCT_HAVE_SELECTION_COLUMN = "ProductHaveSelection";
 
-        public int OrderId { get; set; }
+        public string OrderId { get; set; }
 
         public int CategoryId { get; set; }
 
@@ -40,7 +40,7 @@ namespace FlyEatsApp.Models
         public static OrderDetails ExtractObject(DataRow dataRow)
         {
             var order = new OrderDetails();
-            order.OrderId = (int)Convert.ToInt64(dataRow[ORDER_ID_COLUMN]);
+            order.OrderId = Convert.ToString(dataRow[ORDER_ID_COLUMN]);
             order.BusinessId = Convert.ToInt32(dataRow[BUSINESS_ID_COLUMN]);
             order.CategoryId = Convert.ToInt32(dataRow[CATEGORY_ID_COLUMN]);
             order.ProductId = Convert.ToInt32(dataRow[PRODUCT_ID_COLUMN]);
