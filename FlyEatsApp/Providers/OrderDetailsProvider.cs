@@ -21,73 +21,81 @@ namespace FlyEatsApp.Providers
 
         public IList<OrderDetails> GetOrderById(string OrderId)
         {
-            List<OrderDetails> GetOrder = new List<OrderDetails>();
+            List<OrderDetails> orderDetailsList = new List<OrderDetails>();
+            OrderDetailSelectionRelationProvider orderDetailSelectionRelationProvider = new OrderDetailSelectionRelationProvider();
             IDatabaseAccessProvider dataAccessProvider = new SqlDataAccess(_ConnectionString);
             var storedProcedureName = "SP_GetOrdersDetailsByOrderId";
 
             Dictionary<string, object> parameters = new Dictionary<string, object> {
-                   { "OrderId", OrderId }
-               };
+               { "OrderId", OrderId }
+           };
             try
             {
                 var dataSet = dataAccessProvider.ExecuteStoredProcedure(storedProcedureName, parameters);
 
-                if (dataSet.Tables.Count < 1 || dataSet.Tables[0].Rows.Count < 1 || dataSet.Tables[0].Rows.Count < 1)
+                if (dataSet.Tables.Count < 1 || dataSet.Tables[0].Rows.Count < 1)
                     return new List<OrderDetails>();
                 foreach (DataRow dataRow in dataSet.Tables[0].Rows)
                 {
-                    var order = OrderDetails.ExtractObject(dataRow);
-//                    selectedOrder = order;
-                    GetOrder.Add(order);
+                    OrderDetails orderDetails = OrderDetails.ExtractObject(dataRow);
+                    if (orderDetails.ProductHaveSelection)
+                    {
+                        orderDetails.productVariants = orderDetailSelectionRelationProvider.GetSelectionsById(orderDetails.OrderDetailsId);
+                    }
+                    orderDetailsList.Add(orderDetails);
                 }
             }
             catch (Exception ex)
             {
-
+                // Log the exception
+                Console.WriteLine("An error occurred while trying to retrieve order details: " + ex.Message);
             }
 
-
-            return GetOrder;
-
+            return orderDetailsList;
         }
 
-        public object AddNewOrderDetails(OrderDetails[] order)
+
+        public object AddNewOrderDetails(OrderDetails[] orders)
         {
             var results = new ResponseModel();
+            OrderDetailSelectionRelationProvider orderDetailSelectionRelationProvider = new OrderDetailSelectionRelationProvider();
             IDatabaseAccessProvider dataAccessProvider = new SqlDataAccess(_ConnectionString);
             var storedProcedureName = "SP_AddNewOrderDetails";
-            for(int i = 0; i < order.Length; i++)
+            foreach (var order in orders)
             {
                 Dictionary<string, object> parameters = new Dictionary<string, object> {
-                { "OrderId", order[i].OrderId },
-                { "BusinessId", order[i].BusinessId },
-                { "CategoryId", order[i].CategoryId },
-                { "ProductId", order[i].ProductId },
-                { "VariantId", order[i].VariantId },
-                { "ProductName", order[i].ProductName },
-                { "ProductQuantity", order[i].ProductQuantity },
-                { "ProductPrice", order[i].ProductPrice },
-                { "ProductComments", order[i].ProductComments },
-                { "ProductHaveSelection", order[i].ProductHaveSelection }
-            };
-
-
+                    { "OrderId", order.OrderId },
+                    { "BusinessId", order.BusinessId },
+                    { "CategoryId", order.CategoryId },
+                    { "ProductId", order.ProductId },
+                    { "VariantId", order.VariantId },
+                    { "ProductName", order.ProductName },
+                    { "ProductQuantity", order.ProductQuantity },
+                    { "ProductPrice", order.ProductPrice },
+                    { "ProductComments", order.ProductComments },
+                    { "ProductHaveSelection", order.ProductHaveSelection }
+                };
 
                 try
                 {
-                    var productId = dataAccessProvider.ExecuteStoredProcedureWithReturnObject(storedProcedureName, parameters);
+                   var orderDetailsId = dataAccessProvider.ExecuteStoredProcedureWithReturnObject(storedProcedureName, parameters);
+                    if (order.ProductHaveSelection)
+                    {
+                        int id = (int) Convert.ToInt64(orderDetailsId);
+                        if (order.productVariants.Count > 0)
+                        {
+                            orderDetailSelectionRelationProvider.AddNewSelections(order.productVariants, id);
+                        }
+                    }
                 }
                 catch (Exception ex)
                 {
-
                     return results.onError(ex.Message);
                 }
-                return results.onSuccess();
-
             }
-            return -1;
-
+            return results.onSuccess();
         }
+
 
     }
 }

@@ -8,6 +8,7 @@ namespace FlyEatsApp.Models
 {
     public class OrderDetails : BaseFilter
     {
+        public const string ORDER_DETAILS_ID_COLUMN = "OrderDetailsId";
         public const string ORDER_ID_COLUMN = "OrderId";
         public const string BUSINESS_ID_COLUMN = "BusinessId";
         public const string CATEGORY_ID_COLUMN = "CategoryId";
@@ -19,6 +20,7 @@ namespace FlyEatsApp.Models
         public const string PRODUCT_COMMENTS_COLUMN = "ProductComments";
         public const string PRODUCT_HAVE_SELECTION_COLUMN = "ProductHaveSelection";
 
+        public int OrderDetailsId { get; set; }
         public string OrderId { get; set; }
 
         public int CategoryId { get; set; }
@@ -37,9 +39,12 @@ namespace FlyEatsApp.Models
 
         public bool ProductHaveSelection { get; set; }
 
+        public List<OrderDetailSelectionRelation>? productVariants { get;set;}
+
         public static OrderDetails ExtractObject(DataRow dataRow)
         {
             var order = new OrderDetails();
+            order.OrderDetailsId = Convert.ToInt32(dataRow[ORDER_DETAILS_ID_COLUMN]);
             order.OrderId = Convert.ToString(dataRow[ORDER_ID_COLUMN]);
             order.BusinessId = Convert.ToInt32(dataRow[BUSINESS_ID_COLUMN]);
             order.CategoryId = Convert.ToInt32(dataRow[CATEGORY_ID_COLUMN]);
