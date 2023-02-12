@@ -225,5 +225,39 @@ namespace FlyEatsApp.Providers
 
             return false;
         }
+
+
+        //For Client Side
+
+        public IList<Order> GetOrdersByCustomerId(int customerId)
+        {
+            List<Order> orders = new List<Order>();
+            IDatabaseAccessProvider dataAccessProvider = new SqlDataAccess(_ConnectionString);
+            var storedProcedureName = "SP_GetOrdersByCustomerId";
+            Dictionary<string, object> parameters = new Dictionary<string, object> {
+                { "CustomerId", customerId },
+
+            };
+            try
+            {
+                var dataSet = dataAccessProvider.ExecuteStoredProcedure(storedProcedureName, parameters);
+
+                if (dataSet.Tables.Count < 1 || dataSet.Tables[0].Rows.Count < 1)
+                    return new List<Order>();
+
+                foreach (DataRow dataRow in dataSet.Tables[0].Rows)
+                {
+                    orders.Add(Order.ExtractObject(dataRow));
+                }
+            }
+            catch (Exception ex)
+            {
+                return new List<Order>();
+            }
+
+            return orders;
+        }
+
+
     }
 }

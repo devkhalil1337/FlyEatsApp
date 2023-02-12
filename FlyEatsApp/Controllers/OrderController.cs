@@ -35,5 +35,20 @@ namespace FlyEatsApp.Controllers
         }
 
 
+        [HttpGet]
+        public IActionResult GetOrdersByCustomerId(int customerId)
+        {
+            OrderProvider ordersProvider = new OrderProvider();
+            var orders = ordersProvider.GetOrdersByCustomerId(customerId);
+
+            if (orders == null)
+            {
+                return NotFound(new List<Order>());
+            }
+
+            return Ok(orders);
+        }
+
+
     }
 }
