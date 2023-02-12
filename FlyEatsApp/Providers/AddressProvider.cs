@@ -115,6 +115,35 @@ namespace FlyEatsApp.Providers
             return false;
         }
 
+        public AddressBook GetAddressById(int addressId)
+        {
+            AddressBook selectedAddress = new AddressBook();
+            IDatabaseAccessProvider dataAccessProvider = new SqlDataAccess(_ConnectionString);
+            var storedProcedureName = "SP_GetAddressByAddressId";
+
+            Dictionary<string, object> parameters = new Dictionary<string, object> {
+           { "AddressId", addressId }
+       };
+            try
+            {
+                var dataSet = dataAccessProvider.ExecuteStoredProcedure(storedProcedureName, parameters);
+
+                if (dataSet.Tables.Count < 1 || dataSet.Tables[0].Rows.Count < 1)
+                    return new AddressBook();
+                foreach (DataRow dataRow in dataSet.Tables[0].Rows)
+                {
+                    selectedAddress = AddressBook.Extract(dataRow);
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+            return selectedAddress;
+        }
+
+
         public void DeleteAddress(int addressId)
         {
             IDatabaseAccessProvider dataAccessProvider = new SqlDataAccess(_ConnectionString);

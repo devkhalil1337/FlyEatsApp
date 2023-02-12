@@ -37,7 +37,7 @@ namespace FlyEatsApp.Models
         public string PhoneNumber { get; set; }
         public string AddressType { get; set; }
         public bool? Active { get; set; }
-        public DateTime Timestamp { get; set; }
+        public DateTime? Timestamp { get; set; }
 
         public static AddressBook Extract(DataRow row)
         {

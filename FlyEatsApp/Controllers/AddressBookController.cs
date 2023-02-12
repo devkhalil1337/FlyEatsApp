@@ -35,6 +35,18 @@ namespace FlyEatsApp.Controllers
             return results;
         }
 
+        [HttpGet("{id}")]
+        public IActionResult GetAddressById(int id)
+        {
+            AddressProvider addressProvider = new AddressProvider();
+            var result = addressProvider.GetAddressById(id);
+            if(result == null || result.Active == null)
+            {
+                return NotFound(false);
+            } 
+            return Ok(result);
+        }
+
         [HttpDelete("{id}")]
         public void DeleteAddress(int id)
         {
