@@ -1,0 +1,16 @@
+CREATE TABLE Addresses (
+  AddressId INT IDENTITY(1,1) PRIMARY KEY,
+  UserId INT NOT NULL,
+  AddressLine1 VARCHAR(255) NOT NULL,
+  AddressLine2 VARCHAR(255) NULL,
+  City VARCHAR(255) NOT NULL,
+  StateProvince VARCHAR(255) NOT NULL,
+  ZipPostalCode VARCHAR(255) NOT NULL,
+  Country VARCHAR(255) NOT NULL,
+  Latitude DECIMAL(9,6) NULL,
+  Longitude DECIMAL(9,6) NULL,
+  PhoneNumber VARCHAR(255) NULL,
+  AddressType VARCHAR(255) NULL,
+  Active BIT NOT NULL DEFAULT 1,
+  Timestamp DATETIME DEFAULT GETDATE()
+);
