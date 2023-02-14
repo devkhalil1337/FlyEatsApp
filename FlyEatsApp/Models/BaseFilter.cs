@@ -10,14 +10,14 @@
         {
             get
             {
-                return CreateDate.HasValue ? CreateDate.Value.ToString("yyyy-MM-dd hh:mm:ss") : null;
+                return CreateDate.HasValue ? CreateDate.Value.ToString("yyyy-MM-dd HH:mm:ss") : null;
             }
 
             set
             {
                 if (value != null)
                 {
-                    CreateDate = DateTime.ParseExact(value, "yyyy-MM-dd hh:mm:ss", System.Globalization.CultureInfo.InvariantCulture);
+                    CreateDate = DateTime.ParseExact(value, "yyyy-MM-dd HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture);
                 }
             }
         }
@@ -25,13 +25,13 @@
         public DateTime? ModifyDate { get; set; }
         public string? UpdateDate
         {
-            get { return ModifyDate.HasValue ? ModifyDate.Value.ToString("yyyy-MM-dd hh:mm:ss") : null; }
+            get { return ModifyDate.HasValue ? ModifyDate.Value.ToString("yyyy-MM-dd HH:mm:ss") : null; }
 
             set
             {
                 if (value != null)
                 {
-                    ModifyDate = DateTime.ParseExact(value, "yyyy-MM-dd hh:mm:ss", System.Globalization.CultureInfo.InvariantCulture);
+                    ModifyDate = DateTime.ParseExact(value, "yyyy-MM-dd HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture);
                 }
             }
         }

@@ -83,6 +83,7 @@ namespace FlyEatsApp.Models
             newObject.CustomerDeliveryId = Convert.ToInt32(dataRow[CUSTOMER_DELIVERY_ID_COLUMN]);
             newObject.OrderCompletedBy = Convert.ToString(dataRow[ORDER_COMPLETED_BY_COLUMN]);
             newObject.IsDeleted = Convert.ToBoolean(dataRow[IS_DELETED_COLUMN]);
+            newObject.CreateDate = dataRow[CREATION_DATE_COLUMN] == DBNull.Value ? null : (DateTime?)Convert.ToDateTime(dataRow[CREATION_DATE_COLUMN]);
             return newObject;
 
         }

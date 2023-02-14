@@ -78,7 +78,7 @@ namespace FlyEatsApp.Providers
                 { "OrderDeliveryTime", order.OrderDeliveryTime },
                 { "CustomerDeliveryId", order.CustomerDeliveryId },
                 { "OrderCompletedBy", order.OrderCompletedBy },
-                { "CreationDate", statusChangedDateTime },
+                { "CreationDate", order.CreationDate },
                 { "UpdateDate", statusChangedDateTime },
                 { "IsDeleted", order.IsDeleted },
             };
