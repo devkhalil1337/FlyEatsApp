@@ -103,6 +103,16 @@ namespace FlyEatsApp.Providers
         {
             IDatabaseAccessProvider dataAccessProvider = new SqlDataAccess(_ConnectionString);
             var storedProcedureName = "SP_UpdateCustomer";
+            string saltString = Convert.ToBase64String(user.Salt);
+            string passwordHashString = Convert.ToBase64String(user.PasswordHash);
+
+            byte[] salt = GenerateSalt();
+            if(user.Password != null)
+            {
+               saltString = Convert.ToBase64String(salt);
+               byte[] passwordHash = HashPasswordDBPassword(user.Password, salt);
+               passwordHashString = Convert.ToBase64String(passwordHash);
+            }
 
             var parameters = new Dictionary<string,
               object> {
@@ -132,20 +142,12 @@ namespace FlyEatsApp.Providers
           },
           {
             "@PasswordHash",
-            user.PasswordHash
+            passwordHashString
           },
           {
             "@Salt",
-            user.Salt
-          },
-          {
-            "@CreatedAt",
-            user.CreatedAt
-          },
-          {
-            "@UpdatedAt",
-            user.UpdatedAt
-          },
+            saltString
+          }
         };
 
             try
