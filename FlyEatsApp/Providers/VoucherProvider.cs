@@ -45,6 +45,29 @@ namespace FlyEatsApp.Providers
             return selectedVoucher;
         }
 
+        public object CheckVoucherRedemptionEligibility(int voucherId, int userId)
+        {
+            Voucher selectedVoucher = new Voucher();
+            var storedProcedureName = "SP_CheckVoucherRedemptionEligibility";
+            IDatabaseAccessProvider dataAccessProvider = new SqlDataAccess(_ConnectionString);
+            Dictionary<string, object> parameters = new Dictionary<string, object> {
+            { "VoucherId", voucherId },
+            { "UserId", userId }
+        };
+
+            try
+            {
+                var dataSet = dataAccessProvider.ExecuteScalarStoredProcedure(storedProcedureName, parameters);
+                return  (int)Convert.ToInt64(dataSet);
+            }
+            catch (Exception ex)
+            {
+                // Handle the exception
+            }
+
+            return 0;
+        }
+
         public List<Voucher> GetAllVouchersByBusinessId(int businessId)
         {
             List<Voucher> vouchers = new List<Voucher>();

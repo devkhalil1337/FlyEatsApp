@@ -19,12 +19,22 @@ namespace FlyEatsApp.Controllers
             return result;
         }
 
+        
         // Get a voucher by its ID
         [HttpGet]
         public object GetVoucherById(int voucherId)
         {
             VoucherProvider voucherProvider = new VoucherProvider();
             var voucher = voucherProvider.GetVoucherById(voucherId);
+            return voucher;
+        }
+
+        // Get a voucher by its ID
+        [HttpGet]
+        public object CheckVoucherRedemptionEligibility(int voucherId,int userId)
+        {
+            VoucherProvider voucherProvider = new VoucherProvider();
+            var voucher = voucherProvider.CheckVoucherRedemptionEligibility(voucherId, userId);
             return voucher;
         }
 

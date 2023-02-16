@@ -17,6 +17,8 @@ namespace DataAccessLayer
         object ExecuteStoredProcedureWithReturnObject(string procName, Dictionary<string, object> parameters);
         bool ExecuteNonQueryStoredProcedure(string procName, Dictionary<string, object> parameters);
 
+        int ExecuteScalarStoredProcedure(string procName, Dictionary<string, object> parameters);
+
         object ExecuteStoredProcedureWithReturnMessage(string procName, Dictionary<string, object> parameters);
     }
 }

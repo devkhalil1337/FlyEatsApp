@@ -146,6 +146,51 @@ namespace DataAccessLayer
             return result;
         }
 
+        public int ExecuteScalarStoredProcedure(string procName, Dictionary<string, object> parameters)
+        {
+            int result = 0;
+
+            try
+            {
+                if (this._SqlConnection == null)
+                {
+                    // Initialize the SqlConnection object
+                    this._SqlConnection = new SqlConnection(this._connectionString);
+                }
+
+                this._SqlConnection.Open();
+                var command = new SqlCommand(procName, this._SqlConnection) { CommandType = CommandType.StoredProcedure };
+
+                if (parameters != null)
+                {
+                    foreach (KeyValuePair<string, object> pair in parameters)
+                    {
+                        var parameter = new SqlParameter(pair.Key, pair.Value);
+                        SetSqlType(ref parameter, pair.Value);
+                        command.Parameters.Add(parameter);
+                    }
+                }
+
+                var objResult = command.ExecuteScalar();
+                result = objResult != null ? Convert.ToInt32(objResult) : 0;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+                Debug.WriteLine(ex.StackTrace);
+                result = 0;
+            }
+            finally
+            {
+                this._SqlConnection.Close();
+            }
+
+            return result;
+        }
+
+
+
+
         public object ExecuteStoredProcedureWithReturnMessage(string procName, Dictionary<string, object> parameters)
         {
             var result = new ResponseModel();
