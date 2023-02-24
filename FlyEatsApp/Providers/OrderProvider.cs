@@ -105,68 +105,27 @@ namespace FlyEatsApp.Providers
             return -1;
 
         }
-        public object UpdateProduct(Products product)
+        public Boolean UpdateOrderStatus(string orderNumber,string orderStatus)
         {
             ProductSelectionProvider productSelection = new ProductSelectionProvider();
             IDatabaseAccessProvider dataAccessProvider = new SqlDataAccess(_ConnectionString);
-            var storedProcedureName = "SP_UpdateProduct";
+            var storedProcedureName = "SP_UpdateOrderStatusByInvoiceNumber";
 
             var productUpdateChangedDateTime = DateTime.UtcNow;
 
             Dictionary<string, object> parameters = new Dictionary<string, object> {
-                { "ProductId", product.ProductId},
-                { "CategoryId", product.CategoryId},
-                { "BusinessId", product.BusinessId},
-                { "ProductImage", product.ProductImage},
-                { "ProductName", product.ProductName},
-                { "ProductDescription", product.ProductDescription},
-                { "ProductTablePrice", product.ProductTablePrice},
-                { "ProductTableVat", product.ProductTableVat},
-                { "ProductPickupPrice", product.ProductPickupPrice},
-                { "ProductPickupVat", product.ProductPickupVat},
-                { "ProductDeliveryPrice", product.ProductDeliveryPrice},
-                { "ProductDeliveryVat", product.ProductDeliveryVat},
-                { "ProductSortBy", product.ProductSortBy},
-                { "ProductQuantity", product.ProductQuantity},
-                { "HasVariations", product.HasVariations},
-                { "Featured", product.Featured},
-                { "UpdateDate", productUpdateChangedDateTime},
-                { "IsDeleted", product.IsDeleted},
-                { "Active", product.Active},
+                { "orderInvoiceNumber", orderNumber},
+                { "newOrderStatus", orderStatus}
             };
 
             try
             {
-                var results = (ResponseModel)dataAccessProvider.ExecuteStoredProcedureWithReturnMessage(storedProcedureName, parameters);
-                int _productId = (int)product.ProductId, _businessId = (int)product.BusinessId;
-                if (results.success)
-                {
-                    ProductVariantsProvider productVariantsProvider = new ProductVariantsProvider();
-                    if (product.productVariants != null && product.productVariants.Count > 0)
-                    {
-                        productVariantsProvider.AddNewProductVariants(product.productVariants, _productId, _businessId);
-                    }
-                    else
-                    {
-                        productVariantsProvider.DeleteProductVariantById(_productId);
-                    }
-                    if (product.selectionId != null && product.selectionId.Length > 0)
-                    {
-                        // Clear selections ids from reference table before adding/updating new entries
-                        productSelection.DeleteProductSelectionBy(_productId);
-                        productSelection.AddNewProductSelection(product.selectionId, _productId, _businessId);
-                    }
-                    else
-                    {
-                        // Clear All selections ids from reference table
-                        productSelection.DeleteProductSelectionBy(_productId);
-                    }
-                }
-                return results;
+                var results = dataAccessProvider.ExecuteScalarStoredProcedure(storedProcedureName, parameters);
+                return true;
             }
             catch (Exception ex)
             {
-
+                return false;
             }
 
 

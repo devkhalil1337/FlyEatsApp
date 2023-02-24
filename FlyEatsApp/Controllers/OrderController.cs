@@ -49,6 +49,18 @@ namespace FlyEatsApp.Controllers
             return Ok(orders);
         }
 
+        [HttpPut]
+        public object updateOrderStatus(string orderNumber, string orderStatus)
+        {
+            OrderProvider orderProvider = new OrderProvider();
+            Boolean isOrderUpdated = orderProvider.UpdateOrderStatus(orderNumber, orderStatus);
+            if (isOrderUpdated)
+             return  Ok(true);
+            return Ok(false);
+
+        }
+
+
 
     }
 }
