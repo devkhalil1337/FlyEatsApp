@@ -45,14 +45,16 @@ namespace FlyEatsApp.Providers
             return selectedVoucher;
         }
 
-        public object CheckVoucherRedemptionEligibility(int voucherId, int userId)
+        public int CheckVoucherRedemptionEligibility(string voucherCode, int userId,decimal billAmount)
         {
             Voucher selectedVoucher = new Voucher();
             var storedProcedureName = "SP_CheckVoucherRedemptionEligibility";
             IDatabaseAccessProvider dataAccessProvider = new SqlDataAccess(_ConnectionString);
             Dictionary<string, object> parameters = new Dictionary<string, object> {
-            { "VoucherId", voucherId },
-            { "UserId", userId }
+            { "VoucherCode", voucherCode },
+            { "UserId", userId },
+            { "Amount", billAmount }
+                
         };
 
             try
@@ -174,6 +176,32 @@ namespace FlyEatsApp.Providers
                 // handle exception
                 return false;
             }
+        }
+
+
+
+        public Voucher GetVoucherIdByCode(string voucherCode)
+        {
+            IDatabaseAccessProvider dataAccessProvider = new SqlDataAccess(_ConnectionString);
+            Voucher voucher = null;
+            var storedProcedureName = "SP_GetVoucherByCode";
+            Dictionary<string, object> parameters = new Dictionary<string, object> {
+            { "VoucherCode", voucherCode }
+        };
+            try
+            {
+                var dataSet = dataAccessProvider.ExecuteStoredProcedure(storedProcedureName, parameters);
+
+                if (dataSet.Tables.Count < 1 || dataSet.Tables[0].Rows.Count < 1)
+                    return new Voucher();
+
+                voucher = Voucher.ExtractObject(dataSet.Tables[0].Rows[0]);
+            }
+            catch (Exception ex)
+            {
+                // handle exception
+            }
+            return voucher;
         }
     }
 }

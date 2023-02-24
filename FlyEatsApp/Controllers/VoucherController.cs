@@ -31,11 +31,22 @@ namespace FlyEatsApp.Controllers
 
         // Get a voucher by its ID
         [HttpGet]
-        public object CheckVoucherRedemptionEligibility(int voucherId,int userId)
+        public object CheckVoucherRedemptionEligibility(string voucherCode, int userId,decimal billAmount)
         {
             VoucherProvider voucherProvider = new VoucherProvider();
-            var voucher = voucherProvider.CheckVoucherRedemptionEligibility(voucherId, userId);
-            return voucher;
+            int voucherId = voucherProvider.CheckVoucherRedemptionEligibility(voucherCode, userId,billAmount);
+            if (voucherId == 2)
+            {
+                return voucherProvider.GetVoucherIdByCode(voucherCode);
+            }else if(voucherId == 1)
+            {
+                NotFound("Amount is less than expected amount");
+            }
+            else
+            {
+                NotFound("You are not eligible to use this voucher");
+            }
+            return NotFound("Invalid Voucher");
         }
 
         // Get a voucher by its ID
@@ -63,6 +74,15 @@ namespace FlyEatsApp.Controllers
             VoucherProvider voucherProvider = new VoucherProvider();
             var result = voucherProvider.DeleteVoucher(voucherId);
             return result;
+        }
+
+        // Delete a voucher by its ID
+        [HttpGet]
+        public void GetVoucherIdByCode(string voucherId)
+        {
+            VoucherProvider voucherProvider = new VoucherProvider();
+            voucherProvider.GetVoucherIdByCode(voucherId);
+           
         }
     }
 }
