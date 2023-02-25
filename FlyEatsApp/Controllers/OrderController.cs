@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using FlyEatsApp.Models;
 using FlyEatsApp.Providers;
 using System.Net.Http.Headers;
-
+using Stripe;
 namespace FlyEatsApp.Controllers
 {
     [Route("api/[controller]/[action]")]
@@ -25,6 +25,16 @@ namespace FlyEatsApp.Controllers
             var result = orderProvider.GetOrderById(orderId);
             return result;
         }
+
+        [HttpPost]
+        public List<string> GetOrderStatusByIds(string[] orderId)
+        {
+            OrderProvider orderProvider = new OrderProvider();
+            var result = orderProvider.GetOrderStatusById(orderId);
+            return result;
+        }
+
+
 
         [HttpPost]
         public object AddNewOrder([FromBody] Order order)
@@ -58,6 +68,23 @@ namespace FlyEatsApp.Controllers
              return  Ok(true);
             return Ok(false);
 
+        }
+
+        [HttpPost]
+        public IActionResult CreatePaymentIntent(decimal amount)
+        {
+            StripeConfiguration.ApiKey = "sk_test_H97mbpzzO8WxQaLwHjGy9IrE";
+
+            var options = new PaymentIntentCreateOptions
+            {
+                Amount = (long)(amount * 100), // Stripe uses smallest currency unit, e.g. cents for USD
+                Currency = "usd",
+            };
+
+            var service = new PaymentIntentService();
+            var paymentIntent = service.Create(options);
+
+            return Json(new { client_secret = paymentIntent.ClientSecret });
         }
 
 

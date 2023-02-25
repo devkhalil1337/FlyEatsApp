@@ -56,32 +56,34 @@ namespace FlyEatsApp.Providers
 
             var statusChangedDateTime = DateTime.UtcNow;
 
-            Dictionary<string, object> parameters = new Dictionary<string, object> { 
+            Dictionary<string, object> parameters = new Dictionary<string, object> {
                 { "BusinessId", order.BusinessId },
                 { "CustomerId", order.CustomerId },
                 { "OrderInvoiceNumber", order.OrderInvoiceNumber },
                 { "OrderType", order.OrderType },
                 { "OrderTableId", order.OrderTableId },
                 { "OrderStatus", order.OrderStatus },
-                { "OrderServiceCharges", order.OrderServiceCharges },
-                { "OrderDiscount", order.OrderDiscount },
-                { "OrderVoucherId", order.OrderVoucherId },
-                { "OrderVoucherDiscountAmount", order.OrderVoucherDiscountAmount },
-                { "OrderTotalAmount", order.OrderTotalAmount },
-                { "OrderVatAmount", order.OrderVatAmount },
-                { "OrderVatPercentage", order.OrderVatPercentage },
+                { "ServiceChargeAmount", order.ServiceChargeAmount },
+                { "DiscountAmount", order.DiscountAmount },
+                { "VoucherId", order.VoucherId },
+                { "VoucherDiscountAmount", order.VoucherDiscountAmount },
+                { "TotalAmount", order.TotalAmount },
+                { "VatAmount", order.VatAmount },
+                { "VatPercentage", order.VatPercentage },
                 { "VatType", order.VatType },
-                { "OrderPaymentStatus", order.OrderPaymentStatus },
-                { "OrderPaymentMethod", order.OrderPaymentMethod },
-                { "AverageOrderPreprationTime", order.AverageOrderPreprationTime },
-                { "OrderComments", order.OrderComments },
-                { "OrderDeliveryTime", order.OrderDeliveryTime },
+                { "PaymentStatus", order.PaymentStatus },
+                { "PaymentMethod", order.PaymentMethod },
+                { "AveragePreparationTime", order.AveragePreparationTime },
+                { "Comments", order.Comments },
+                { "DeliveryTime", order.DeliveryTime },
                 { "CustomerDeliveryId", order.CustomerDeliveryId },
-                { "OrderCompletedBy", order.OrderCompletedBy },
-                { "CreationDate", order.CreationDate },
-                { "UpdateDate", statusChangedDateTime },
+                { "CompletedBy", order.CompletedBy },
+                { "DeliveryCharges", order.DeliveryCharges },
+                { "CardPaymentId", order.CardPaymentId },
+                { "CreatedDate", order.CreatedDate },
+                { "ModifiedDate", order.CreatedDate },
                 { "IsDeleted", order.IsDeleted },
-            };
+             };
 
 
             try
@@ -216,6 +218,45 @@ namespace FlyEatsApp.Providers
 
             return orders;
         }
+
+
+        public List<string> GetOrderStatusById(string[] OrderIds)
+        {
+            List<string> orderStatusList = new List<string>();
+            IDatabaseAccessProvider dataAccessProvider = new SqlDataAccess(_ConnectionString);
+            var storedProcedureName = "SP_GetOrderById";
+
+            foreach (var OrderId in OrderIds)
+            {
+                Dictionary<string, object> parameters = new Dictionary<string, object> {
+               { "OrderInvoiceNumber", OrderId }
+           };
+
+                try
+                {
+                    var dataSet = dataAccessProvider.ExecuteStoredProcedure(storedProcedureName, parameters);
+
+                    if (dataSet.Tables.Count < 1 || dataSet.Tables[0].Rows.Count < 1)
+                    {
+                        orderStatusList.Add("Order not found");
+                        continue;
+                    }
+
+                    foreach (DataRow dataRow in dataSet.Tables[0].Rows)
+                    {
+                        var order = Order.ExtractObject(dataRow);
+                        orderStatusList.Add(order.OrderStatus);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    orderStatusList.Add("Error getting order status: " + ex.Message);
+                }
+            }
+
+            return orderStatusList;
+        }
+
 
 
     }
