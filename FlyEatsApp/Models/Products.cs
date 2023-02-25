@@ -75,10 +75,13 @@ namespace FlyEatsApp.Models
             newObject.ProductImage = Convert.ToString(dataRow[PRODUCT_IMAGE_COLUMN]);
             newObject.ProductSortOrder = Convert.ToInt32(dataRow[PRODUCT_SORT_ORDER_COLUMN]);
             newObject.ProductQuantity = Convert.ToInt32(dataRow[PRODUCT_QUANTITY_COLUMN]);
+            newObject.IsTableProduct = Convert.ToBoolean(dataRow[IS_TABLE_PRODUCT_COLUMN]);
             newObject.TablePrice = Convert.ToDecimal(dataRow[TABLE_PRICE_COLUMN]);
             newObject.TableVat = Convert.ToDecimal(dataRow[TABLE_VAT_COLUMN]);
+            newObject.IsPickupProduct = Convert.ToBoolean(dataRow[IS_PICKUP_PRODUCT_COLUMN]);
             newObject.PickupPrice = Convert.ToDecimal(dataRow[PICKUP_PRICE_COLUMN]);
             newObject.PickupVat = Convert.ToDecimal(dataRow[PICKUP_VAT_COLUMN]);
+            newObject.IsDeliveryProduct = Convert.ToBoolean(dataRow[IS_DELIVERY_PRODUCT_COLUMN]);
             newObject.DeliveryPrice = Convert.ToDecimal(dataRow[DELIVERY_PRICE_COLUMN]);
             newObject.DeliveryVat = Convert.ToDecimal(dataRow[DELIVERY_VAT_COLUMN]);
             newObject.HasVariations = Convert.ToBoolean(dataRow[HAS_VARIATIONS_COLUMN]);

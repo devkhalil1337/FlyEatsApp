@@ -141,7 +141,7 @@ namespace FlyEatsApp.Providers
                 { "ProductImage", product.ProductImage },
                 { "ProductSortOrder", product.ProductSortOrder },
                 { "ProductQuantity", product.ProductQuantity },
-                { "IsTableProduct", false },
+                { "IsTableProduct", product.IsTableProduct },
                 { "TablePrice", product.TablePrice },
                 { "TableVat", product.TableVat },
                 { "IsPickupProduct", product.IsPickupProduct },
