@@ -58,40 +58,43 @@ namespace FlyEatsApp.Providers
         {
             var results = new ResponseModel();
             IDatabaseAccessProvider dataAccessProvider = new SqlDataAccess(_ConnectionString);
-            var storedProcedureName = "SP_AddNewProduct";
+            var storedProcedureName = "SP_AddProduct";
 
             var statusChangedDateTime = DateTime.UtcNow;
 
             Dictionary<string, object> parameters = new Dictionary<string, object> {
-                { "CategoryId", product.CategoryId},
-                { "BusinessId", product.BusinessId},
-                { "ProductImage", product.ProductImage},
-                { "ProductName", product.ProductName},
-                { "ProductDescription", product.ProductDescription},
-                { "ProductTablePrice", product.ProductTablePrice},
-                { "ProductTableVat", product.ProductTableVat},
-                { "ProductPickupPrice", product.ProductPickupPrice},
-                { "ProductPickupVat", product.ProductPickupVat},
-                { "ProductDeliveryPrice", product.ProductDeliveryPrice},
-                { "ProductDeliveryVat", product.ProductDeliveryVat},
-                { "ProductSortBy", product.ProductSortBy},
-                { "ProductQuantity", product.ProductQuantity},
-                { "HasVariations", product.HasVariations},
-                { "Featured", product.Featured},
-                { "CreationDate", statusChangedDateTime},
-                { "UpdateDate", statusChangedDateTime},
-                { "IsDeleted", product.IsDeleted},
-                { "Active", product.Active},
-            };
+                    { "BusinessId", product.BusinessId },
+                    { "CategoryId", product.CategoryId },
+                    { "ProductName", product.ProductName },
+                    { "ProductDescription", product.ProductDescription },
+                    { "ProductImage", product.ProductImage },
+                    { "ProductSortOrder", product.ProductSortOrder },
+                    { "ProductQuantity", product.ProductQuantity },
+                    { "IsTableProduct", false },
+                    { "TablePrice", product.TablePrice },
+                    { "TableVat", product.TableVat },
+                    { "IsPickupProduct", product.IsPickupProduct },
+                    { "PickupPrice", product.PickupPrice },
+                    { "PickupVat", product.PickupVat },
+                    { "IsDeliveryProduct", product.IsDeliveryProduct },
+                    { "DeliveryPrice", product.DeliveryPrice },
+                    { "DeliveryVat", product.DeliveryVat },
+                    { "HasVariations", product.HasVariations },
+                    { "Featured", product.Featured },
+                    { "CreationDate", statusChangedDateTime },
+                    { "ModifiedDate", statusChangedDateTime },
+                    { "IsDeleted", product.IsDeleted },
+                    { "Active", product.Active }
+                };
 
             try
             {
                 var productId = dataAccessProvider.ExecuteStoredProcedureWithReturnObject(storedProcedureName, parameters);
 
-               int _productId =  (int)(productId == null ? -1 : Convert.ToInt64(productId));
-               int _businessId = (int) product.BusinessId;
+                int _productId = (int)(productId == null ? -1 : Convert.ToInt64(productId));
+                int _businessId = (int)product.BusinessId;
                 //Product Selections
-                if(_productId > -1 && product.selectionId != null && product.selectionId.Length > 0)
+                if (_productId > -1 && product.selectionId != null && product.selectionId.Length > 0)
                 {
                     ProductSelectionProvider productSelectionProvider = new ProductSelectionProvider();
                     productSelectionProvider.AddNewProductSelection(product.selectionId, _productId, _businessId);
@@ -133,29 +136,32 @@ namespace FlyEatsApp.Providers
                 { "ProductId", product.ProductId},
                 { "CategoryId", product.CategoryId},
                 { "BusinessId", product.BusinessId},
-                { "ProductImage", product.ProductImage},
-                { "ProductName", product.ProductName},
-                { "ProductDescription", product.ProductDescription},
-                { "ProductTablePrice", product.ProductTablePrice},
-                { "ProductTableVat", product.ProductTableVat},
-                { "ProductPickupPrice", product.ProductPickupPrice},
-                { "ProductPickupVat", product.ProductPickupVat},
-                { "ProductDeliveryPrice", product.ProductDeliveryPrice},
-                { "ProductDeliveryVat", product.ProductDeliveryVat},
-                { "ProductSortBy", product.ProductSortBy},
-                { "ProductQuantity", product.ProductQuantity},
-                { "HasVariations", product.HasVariations},
-                { "Featured", product.Featured},
-                { "UpdateDate", productUpdateChangedDateTime},
-                { "IsDeleted", product.IsDeleted},
-                { "Active", product.Active},
+                { "ProductName", product.ProductName },
+                { "ProductDescription", product.ProductDescription },
+                { "ProductImage", product.ProductImage },
+                { "ProductSortOrder", product.ProductSortOrder },
+                { "ProductQuantity", product.ProductQuantity },
+                { "IsTableProduct", false },
+                { "TablePrice", product.TablePrice },
+                { "TableVat", product.TableVat },
+                { "IsPickupProduct", product.IsPickupProduct },
+                { "PickupPrice", product.PickupPrice },
+                { "PickupVat", product.PickupVat },
+                { "IsDeliveryProduct", product.IsDeliveryProduct },
+                { "DeliveryPrice", product.DeliveryPrice },
+                { "DeliveryVat", product.DeliveryVat },
+                { "HasVariations", product.HasVariations },
+                { "Featured", product.Featured },
+                { "ModifiedDate", productUpdateChangedDateTime },
+                { "IsDeleted", product.IsDeleted },
+                { "Active", product.Active }
             };
 
             try
             {
-                var results = (ResponseModel)  dataAccessProvider.ExecuteStoredProcedureWithReturnMessage(storedProcedureName, parameters);
+                var results = dataAccessProvider.ExecuteScalarStoredProcedure(storedProcedureName, parameters);
                 int _productId = (int)product.ProductId, _businessId = (int)product.BusinessId;
-                if (results.success)
+                if (results != null)
                 {
                     ProductVariantsProvider productVariantsProvider = new ProductVariantsProvider();
                     if (product.productVariants != null && product.productVariants.Count > 0)
@@ -169,7 +175,7 @@ namespace FlyEatsApp.Providers
                     if (product.selectionId != null && product.selectionId.Length > 0)
                     {
                         // Clear selections ids from reference table before adding/updating new entries
-                        productSelection.DeleteProductSelectionBy(_productId); 
+                        productSelection.DeleteProductSelectionBy(_productId);
                         productSelection.AddNewProductSelection(product.selectionId, _productId, _businessId);
                     }
                     else
