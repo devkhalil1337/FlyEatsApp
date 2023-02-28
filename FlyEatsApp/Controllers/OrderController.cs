@@ -12,6 +12,9 @@ namespace FlyEatsApp.Controllers
     [ApiController]
     public class OrderController : Controller
     {
+
+        BusinessUnitsFunctions businessUnitsFunctions = new BusinessUnitsFunctions();
+
         [HttpGet]
         public IEnumerable<Order> GetAllOrders()
         {
@@ -44,6 +47,7 @@ namespace FlyEatsApp.Controllers
         public object AddNewOrder([FromBody] Order order)
         {
             OrderProvider orderProvider = new OrderProvider();
+            order.BusinessId = businessUnitsFunctions.GetBusinessIdFromHeaders(Request);
             var result = orderProvider.AddNewOrder(order);
             return result;
         }

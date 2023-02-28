@@ -11,11 +11,12 @@ namespace FlyEatsApp.Controllers
     [ApiController]
     public class ProductsController : ControllerBase
     {
-
+        BusinessUnitsFunctions businessUnitsFunctions = new BusinessUnitsFunctions();
         [HttpPost]
         public object AddNewProduct([FromBody] Products product)
         {
             ProductsProvider productsProvider = new ProductsProvider();
+            product.BusinessId = businessUnitsFunctions.GetBusinessIdFromHeaders(Request);
             var results = productsProvider.AddNewProduct(product);
             return results;
         }
@@ -24,6 +25,7 @@ namespace FlyEatsApp.Controllers
         public object UpdateProduct([FromBody] Products product)
         {
             ProductsProvider productsProvider = new ProductsProvider();
+            product.BusinessId = businessUnitsFunctions.GetBusinessIdFromHeaders(Request);
             var result = productsProvider.UpdateProduct(product);
             return result;
         }

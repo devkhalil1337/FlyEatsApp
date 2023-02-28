@@ -55,7 +55,7 @@ namespace FlyEatsApp.Providers
         }
 
 
-        public object AddNewOrderDetails(OrderDetails[] orders)
+        public object AddNewOrderDetails(OrderDetails[] orders,int businessId)
         {
             var results = new ResponseModel();
             OrderDetailSelectionRelationProvider orderDetailSelectionRelationProvider = new OrderDetailSelectionRelationProvider();
@@ -65,7 +65,7 @@ namespace FlyEatsApp.Providers
             {
                 Dictionary<string, object> parameters = new Dictionary<string, object> {
                     { "OrderId", order.OrderId },
-                    { "BusinessId", order.BusinessId },
+                    { "BusinessId", businessId },
                     { "CategoryId", order.CategoryId },
                     { "ProductId", order.ProductId },
                     { "VariantId", order.VariantId },

@@ -11,12 +11,13 @@ namespace FlyEatsApp.Controllers
     public class CategoriesController : ControllerBase
     {
 
+        BusinessUnitsFunctions businessUnitsFunctions = new BusinessUnitsFunctions();
 
-     
         [HttpPost]
         public object AddNewCategory([FromBody] Categories categories)
         {
             CategoriesProvider categoriesProvider = new CategoriesProvider();
+            categories.BusinessId = businessUnitsFunctions.GetBusinessIdFromHeaders(Request);
             var result = categoriesProvider.AddNewCategory(categories);
             return result;
         }
@@ -25,6 +26,7 @@ namespace FlyEatsApp.Controllers
         public object UpdateCategory([FromBody] Categories categories)
         {
             CategoriesProvider categoriesProvider = new CategoriesProvider();
+            categories.BusinessId = businessUnitsFunctions.GetBusinessIdFromHeaders(Request);
             var result = categoriesProvider.UpdateCategory(categories);
             return result;
         }

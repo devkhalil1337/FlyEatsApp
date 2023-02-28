@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using FlyEatsApp.Models;
 using FlyEatsApp.Providers;
 using System.Net.Http.Headers;
+using FlyEatsApp.Functions;
 
 namespace FlyEatsApp.Controllers
 {
@@ -10,6 +11,8 @@ namespace FlyEatsApp.Controllers
     [ApiController]
     public class OrderDetailsController : Controller
     {
+        BusinessUnitsFunctions businessUnitsFunctions = new BusinessUnitsFunctions();
+
         [HttpGet]
         public IEnumerable<OrderDetails> GetProductsById(string OrderId)
         {
@@ -22,7 +25,8 @@ namespace FlyEatsApp.Controllers
         public object AddNewOrderDetails([FromBody] OrderDetails[] order)
         {
             OrderDetailsProvider orderProvider = new OrderDetailsProvider();
-            var result = orderProvider.AddNewOrderDetails(order);
+            int businessId = businessUnitsFunctions.GetBusinessIdFromHeaders(Request);
+            var result = orderProvider.AddNewOrderDetails(order, businessId);
             return result;
         }
     }
