@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using FlyEatsApp.Models;
 using FlyEatsApp.Providers;
 using System.Net.Http.Headers;
+using FlyEatsApp.Functions;
 
 namespace FlyEatsApp.Controllers
 {
@@ -50,9 +51,11 @@ namespace FlyEatsApp.Controllers
         }
 
         // Get a voucher by its ID
-        [HttpGet("{businessId}")]
-        public object GetAllVouchersByBusinessId(int businessId)
+        [HttpGet]
+        public object GetAllVouchersByBusinessId()
         {
+            BusinessUnitsFunctions businessUnitsFunctions = new BusinessUnitsFunctions();
+            int businessId = businessUnitsFunctions.GetBusinessIdFromHeaders(Request);
             VoucherProvider voucherProvider = new VoucherProvider();
             var voucher = voucherProvider.GetAllVouchersByBusinessId(businessId);
             return voucher;

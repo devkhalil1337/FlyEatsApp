@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using FlyEatsApp.Models;
 using FlyEatsApp.Providers;
 using System.Net.Http.Headers;
+using FlyEatsApp.Functions;
 
 namespace FlyEatsApp.Controllers
 {
@@ -27,10 +28,12 @@ namespace FlyEatsApp.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<Settings> GetSettingsById(int BusinessId)
+        public IEnumerable<Settings> GetSettingsById()
         {
+            BusinessUnitsFunctions businessUnitsFunctions = new BusinessUnitsFunctions();
+            int businessId = businessUnitsFunctions.GetBusinessIdFromHeaders(Request);
             SettingsProvider settingsProvider = new SettingsProvider();
-            var result = settingsProvider.GetSettingsById(BusinessId);
+            var result = settingsProvider.GetSettingsById(businessId);
             return result;
         }
 

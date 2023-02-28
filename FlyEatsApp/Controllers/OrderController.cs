@@ -4,6 +4,8 @@ using FlyEatsApp.Models;
 using FlyEatsApp.Providers;
 using System.Net.Http.Headers;
 using Stripe;
+using FlyEatsApp.Functions;
+
 namespace FlyEatsApp.Controllers
 {
     [Route("api/[controller]/[action]")]
@@ -11,8 +13,10 @@ namespace FlyEatsApp.Controllers
     public class OrderController : Controller
     {
         [HttpGet]
-        public IEnumerable<Order> GetAllProducts(int businessId)
+        public IEnumerable<Order> GetAllOrders()
         {
+            BusinessUnitsFunctions businessUnitsFunctions = new BusinessUnitsFunctions();
+            int businessId = businessUnitsFunctions.GetBusinessIdFromHeaders(Request);
             OrderProvider orderProvider = new OrderProvider();
             var result = orderProvider.GetAllOrders(businessId);
             return result;
