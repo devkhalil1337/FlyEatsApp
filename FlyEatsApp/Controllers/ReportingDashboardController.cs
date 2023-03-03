@@ -20,5 +20,15 @@ namespace FlyEatsApp.Controllers
             var result = reportingDashboardProvider.GetNumberOfOrders(businessId,orderStatus, Datefrom, Dateto);
             return result;
         }
+
+        [HttpGet]
+        public List<object> GetGrossSalesByDay(string Datefrom, string Dateto)
+        {
+            BusinessUnitsFunctions businessUnitsFunctions = new BusinessUnitsFunctions();
+            int businessId = businessUnitsFunctions.GetBusinessIdFromHeaders(Request);
+            ReportingDashboardProvider reportingDashboardProvider = new ReportingDashboardProvider();
+            var result = reportingDashboardProvider.GetGrossSalesByDay(businessId, Datefrom, Dateto);
+            return result;
+        }
     }
 }
