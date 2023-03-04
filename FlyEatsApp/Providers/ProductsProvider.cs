@@ -44,6 +44,10 @@ namespace FlyEatsApp.Providers
                     var newObject = Products.ExtractObject(dataRow);
                     newObject.selectionId = productSelection.GetAllProductSelection((int)newObject.ProductId);
                     newObject.productVariants = productVariantsProvider.GetAllProductVariants((int)newObject.ProductId);
+                    if(newObject.productVariants.Count > 0)
+                    {
+                        newObject.productPrice = newObject.productVariants[0].VariationPrice;
+                    }
                     AllProducts.Add(newObject);
                 }
             }
@@ -61,7 +65,7 @@ namespace FlyEatsApp.Providers
             var storedProcedureName = "SP_AddProduct";
 
             var statusChangedDateTime = DateTime.UtcNow;
-
+            Boolean hasVariations = product.productVariants.Count > 0;
             Dictionary<string, object> parameters = new Dictionary<string, object> {
                     { "BusinessId", product.BusinessId },
                     { "CategoryId", product.CategoryId },
@@ -79,7 +83,7 @@ namespace FlyEatsApp.Providers
                     { "IsDeliveryProduct", product.IsDeliveryProduct },
                     { "DeliveryPrice", product.DeliveryPrice },
                     { "DeliveryVat", product.DeliveryVat },
-                    { "HasVariations", product.HasVariations },
+                    { "HasVariations", hasVariations },
                     { "Featured", product.Featured },
                     { "CreationDate", statusChangedDateTime },
                     { "ModifiedDate", statusChangedDateTime },
@@ -131,7 +135,7 @@ namespace FlyEatsApp.Providers
             var storedProcedureName = "SP_UpdateProduct";
 
             var productUpdateChangedDateTime = DateTime.UtcNow;
-
+            Boolean hasVariations = product.productVariants.Count > 0;
             Dictionary<string, object> parameters = new Dictionary<string, object> {
                 { "ProductId", product.ProductId},
                 { "CategoryId", product.CategoryId},
@@ -150,7 +154,7 @@ namespace FlyEatsApp.Providers
                 { "IsDeliveryProduct", product.IsDeliveryProduct },
                 { "DeliveryPrice", product.DeliveryPrice },
                 { "DeliveryVat", product.DeliveryVat },
-                { "HasVariations", product.HasVariations },
+                { "HasVariations", hasVariations },
                 { "Featured", product.Featured },
                 { "ModifiedDate", productUpdateChangedDateTime },
                 { "IsDeleted", product.IsDeleted },

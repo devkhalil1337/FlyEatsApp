@@ -21,7 +21,7 @@ namespace FlyEatsApp.Models
         public int? VariantId { get; set; }
         public int? ProductId { get; set; }
         public string? VariationName { get; set; }
-        public double? VariationPrice { get; set; }
+        public decimal? VariationPrice { get; set; }
 
         public static ProductVariants ExtractObject(DataRow dataRow)
         {
@@ -30,7 +30,7 @@ namespace FlyEatsApp.Models
             newObject.ProductId = Convert.ToInt32(dataRow[PRODUCT_ID_COLUMN]);
             newObject.BusinessId = Convert.ToInt32(dataRow[PRODUCT_VARIANT_BUSINESS_ID_COLUMN]);
             newObject.VariationName = Convert.ToString(dataRow[PRODUCT_VARIANT_NAME_COLUMN]);
-            newObject.VariationPrice = Convert.ToDouble(dataRow[PRODUCT_VARIANT_PRICE_COLUMN]);
+            newObject.VariationPrice = Convert.ToDecimal(dataRow[PRODUCT_VARIANT_PRICE_COLUMN]);
             newObject.CreateDate = dataRow[PRODUCT_VARIANT_CREATE_DATE_COLUMN] == DBNull.Value ? null : (DateTime?)Convert.ToDateTime(dataRow[PRODUCT_VARIANT_CREATE_DATE_COLUMN]);
             newObject.ModifyDate = dataRow[PRODUCT_VARIANT_UPDATE_DATE_COLUMN] == DBNull.Value ? null : (DateTime?)Convert.ToDateTime(dataRow[PRODUCT_VARIANT_UPDATE_DATE_COLUMN]);
             newObject.IsDeleted = Convert.ToBoolean(dataRow[PRODUCT_VARIANT_DELETE_COLUMN]);
