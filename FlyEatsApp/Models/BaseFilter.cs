@@ -6,7 +6,7 @@
 
 
         public DateTime? CreateDate { get; set; }
-        public string? CreationDate
+        private string? CreationDate
         {
             get
             {
@@ -23,7 +23,7 @@
         }
 
         public DateTime? ModifyDate { get; set; }
-        public string? UpdateDate
+        private string? UpdateDate
         {
             get { return ModifyDate.HasValue ? ModifyDate.Value.ToString("yyyy-MM-dd HH:mm:ss") : null; }
 
