@@ -48,7 +48,11 @@ namespace FlyEatsApp.Providers
                     {
                         newObject.productPrice = newObject.productVariants[0].VariationPrice;
                     }
-                    AllProducts.Add(newObject);
+
+                    if (newObject.Active == true)
+                    {
+                        AllProducts.Add(newObject);
+                    }
                 }
             }
             catch (Exception ex)
