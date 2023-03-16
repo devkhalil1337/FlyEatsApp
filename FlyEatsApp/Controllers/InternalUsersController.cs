@@ -2,8 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using FlyEatsApp.Models;
 using FlyEatsApp.Providers;
-using System.Net.Http.Headers;
-using FlyEatsApp.Functions;
 using static FlyEatsApp.Models.CredentialsResult;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -11,10 +9,9 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 namespace FlyEatsApp.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     public class InternalUsersController : Controller
     {
-
         [HttpPost]
         public IActionResult CheckUserCredentials([FromBody] LoginModel loginModel)
         {
@@ -50,7 +47,7 @@ namespace FlyEatsApp.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create([FromBody] InternalUser user)
+        public IActionResult AddNewCreate([FromBody] InternalUser user)
         {
             CredentialsResult credentialsResult = new CredentialsResult();
 
@@ -64,7 +61,7 @@ namespace FlyEatsApp.Controllers
             if (userId > 0)
             {
                 credentialsResult.Result = CredentialsStatus.Success;
-                //                    var user = credentialsProvider.GetUser(user.UserName);
+                //           var user = credentialsProvider.GetUser(user.UserName);
             }
             else
             {
@@ -73,5 +70,9 @@ namespace FlyEatsApp.Controllers
 
             return Ok(new CredentialsResult { Result = credentialsResult.Result });
         }
+
+      
+
+      
     }
 }
