@@ -30,14 +30,14 @@ namespace FlyEatsApp.Providers
             _ConnectionString = builder.Build().GetSection("ConnectionStrings").GetSection("DefaultConnection").Value;
         }
 
-        public long CanUserLogin(string email, string password)
+        public long CanUserLogin(string userName, string password)
         {
             IDatabaseAccessProvider dataAccessProvider = new SqlDataAccess(_ConnectionString);
-            var storedProcedureName = "SP_CanUserSignIn";
+            var storedProcedureName = "sp_GetInternalUserByCredentials";
 
             Dictionary<string, object> parameters = new Dictionary<string, object> {
-                { "email", email },
-                { "password", password }
+                { "Username", userName },
+                { "Password", password }
             };
 
             try
@@ -80,23 +80,31 @@ namespace FlyEatsApp.Providers
             return false;
         }
 
-        public long CreateNewUser(AppUser user)
+        public long CreateNewUser(InternalUser user)
         {
             IDatabaseAccessProvider dataAccessProvider = new SqlDataAccess(_ConnectionString);
-            var storedProcedureName = "SP_SignUpNewUser";
+            var storedProcedureName = "sp_AddInternalUser";
 
             var joinDate = DateTime.UtcNow;
 
             Dictionary<string, object> parameters = new Dictionary<string, object> {
-                { "businessId", user.BusinessId },
-                { "email", user.Email },
-                { "password", user.Password },
-                { "accountType", user.accountType },
-            };
+                { "BusinessId", user.BusinessId },
+                { "FullName", user.FullName },
+                { "Username", user.Username },
+                { "Email", user.Email },
+                { "Password", user.Password },
+                { "MobileNumber", user.MobileNumber },
+                { "AccountType", user.AccountType },
+                { "Role", user.Role },
+                { "CreationDate", joinDate },
+                { "UpdateDate", joinDate },
+                { "IsDeleted", user.IsDeleted },
+                { "Active", user.Active }
+                };
 
             try
             {
-                var userId = dataAccessProvider.ExecuteStoredProcedureWithReturnObject(storedProcedureName, parameters);
+                var userId = dataAccessProvider.ExecuteScalarStoredProcedure(storedProcedureName, parameters);
 
                 return userId == null ? -1 : Convert.ToInt64(userId);
 
@@ -116,13 +124,13 @@ namespace FlyEatsApp.Providers
             return -1;
         }
 
-        public AppUser GetUser(string email)
+        public InternalUser GetUser(string username)
         {
             IDatabaseAccessProvider dataAccessProvider = new SqlDataAccess(_ConnectionString);
-            var storedProcedureName = "SP_GetUserByEmail";
+            var storedProcedureName = "SP_GetUserByUserName";
 
             Dictionary<string, object> parameters = new Dictionary<string, object> {
-                { "email", email }
+                { "Username", username }
             };
 
             try
@@ -134,7 +142,7 @@ namespace FlyEatsApp.Providers
 
                 DataRow dataRow = dataSet.Tables[0].Rows[0];
 
-                var appUser = AppUser.ExtractObject(dataRow);
+                var appUser = InternalUser.ExtractFromDataRow(dataRow);
                 return appUser;
             }
             catch (Exception ex)
@@ -142,7 +150,7 @@ namespace FlyEatsApp.Providers
                 LogEntry logEntry = new LogEntry()
                 {
                     Severity = System.Diagnostics.TraceEventType.Error,
-                    Title = string.Format("Get User with email: {0}", email),
+                    Title = string.Format("Get User with email: {0}", username),
                     Message = ex.Message + Environment.NewLine + ex.StackTrace
                 };
                 Logger.Write(logEntry);
