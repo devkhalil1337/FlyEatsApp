@@ -12,22 +12,22 @@ namespace FlyEatsApp.Controllers
     public class ReportingDashboardController : Controller
     {
         [HttpPost]
-        public object[] GetNumberOfOrders([FromBody] string[] orderStatus, string Datefrom, string Dateto)
+        public object[] GetNumberOfOrders([FromBody] ReportingDashboardFilter reportingDashboardFilter)
         {
             BusinessUnitsFunctions businessUnitsFunctions = new BusinessUnitsFunctions();
             int businessId = businessUnitsFunctions.GetBusinessIdFromHeaders(Request);
             ReportingDashboardProvider reportingDashboardProvider = new ReportingDashboardProvider();
-            var result = reportingDashboardProvider.GetNumberOfOrders(businessId,orderStatus, Datefrom, Dateto);
+            var result = reportingDashboardProvider.GetNumberOfOrders(businessId, reportingDashboardFilter.orderStatus, reportingDashboardFilter.startDate, reportingDashboardFilter.endDate);
             return result;
         }
 
-        [HttpGet]
-        public List<object> GetGrossSalesByDay(string Datefrom, string Dateto)
+        [HttpPost]
+        public List<object> GetGrossSalesByDay([FromBody] ReportingDashboardFilter reportingDashboardFilter)
         {
             BusinessUnitsFunctions businessUnitsFunctions = new BusinessUnitsFunctions();
             int businessId = businessUnitsFunctions.GetBusinessIdFromHeaders(Request);
             ReportingDashboardProvider reportingDashboardProvider = new ReportingDashboardProvider();
-            var result = reportingDashboardProvider.GetGrossSalesByDay(businessId, Datefrom, Dateto);
+            var result = reportingDashboardProvider.GetGrossSalesByDay(businessId, reportingDashboardFilter.startDate, reportingDashboardFilter.endDate);
             return result;
         }
     }
