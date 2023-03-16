@@ -7,6 +7,8 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using FlyEatsApp.Functions;
+
 namespace FlyEatsApp.Controllers
 {
     [Route("api/[controller]/[action]")]
@@ -71,8 +73,20 @@ namespace FlyEatsApp.Controllers
             return Ok(new CredentialsResult { Result = credentialsResult.Result });
         }
 
-      
+        [HttpGet]
+        public object GetAllInternalUserByBusinessId()
+        {
+            CredentialsProvider credentialsProvider = new CredentialsProvider();
+            BusinessUnitsFunctions businessUnitsFunctions = new BusinessUnitsFunctions();
+            int businessId = businessUnitsFunctions.GetBusinessIdFromHeaders(Request);
+            if(businessId == -1)
+            {
+                return Unauthorized(500);
+            }
+           return credentialsProvider.GetAllInternalUserByBusinessId(businessId);
+        }
 
-      
+
+
     }
 }

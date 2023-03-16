@@ -160,13 +160,13 @@ namespace FlyEatsApp.Providers
             return null;
         }
 
-        public AppUser GetUser(long userId)
+        public List<InternalUser> GetAllInternalUserByBusinessId(int businessId)
         {
             IDatabaseAccessProvider dataAccessProvider = new SqlDataAccess(_ConnectionString);
-            var storedProcedureName = "sp_GetUserById";
-
+            var storedProcedureName = "SP_GetAllInternalUserByBusinessId";
+            List<InternalUser> internalUsers = new List<InternalUser>();
             Dictionary<string, object> parameters = new Dictionary<string, object> {
-                { "userId", userId }
+                { "BusinessId", businessId }
             };
 
             try
@@ -174,180 +174,24 @@ namespace FlyEatsApp.Providers
                 var dataSet = dataAccessProvider.ExecuteStoredProcedure(storedProcedureName, parameters);
 
                 if (dataSet.Tables.Count < 1 || dataSet.Tables[0].Rows.Count < 1)
-                    return null;
+                    return new List<InternalUser>();
 
-                DataRow dataRow = dataSet.Tables[0].Rows[0];
+                foreach (DataRow dataRow in dataSet.Tables[0].Rows)
+                {
+                    internalUsers.Add(InternalUser.ExtractFromDataRow(dataRow));
+                }
 
-                var appUser = AppUser.ExtractObject(dataRow);
-                return appUser;
-            }
-            catch (Exception ex)
-            {
-            }
-
-
-            return null;
-        }
-
-        public AppUser GetDriver(string driverCode)
-        {
-            IDatabaseAccessProvider dataAccessProvider = new SqlDataAccess(_ConnectionString);
-            var storedProcedureName = "sp_GetUserByDriverCode";
-
-            Dictionary<string, object> parameters = new Dictionary<string, object> {
-                { "driverCode", driverCode }
-            };
-
-            try
-            {
-                var dataSet = dataAccessProvider.ExecuteStoredProcedure(storedProcedureName, parameters);
-
-                if (dataSet.Tables.Count < 1 || dataSet.Tables[0].Rows.Count < 1)
-                    return null;
-
-                DataRow dataRow = dataSet.Tables[0].Rows[0];
-
-                var appUser = AppUser.ExtractObject(dataRow);
-                return appUser;
+                return internalUsers;
             }
             catch (Exception ex)
             {
                
             }
 
-
-            return null;
+            return new List<InternalUser>();
         }
 
-        public string RemoveDashesFromCode(string codeWithDashes)
-        {
-            var result = new StringBuilder();
-
-            foreach (char c in codeWithDashes)
-            {
-                if (c != '-')
-                {
-                    result.Append(c);
-                }
-            }
-
-            return result.ToString();
-        }
-
-        public string GenerateNewDriverCode()
-        {
-            //Generate new code
-            string newCode = GetRandomCode(16);
-            //Generate new code
-            newCode = GetRandomCode(16);
-            //Check if code is unique
-            /* while (!IsDriverCodeUnique(newCode))
-             {
-                 //Generate new code
-                 newCode = GetRandomCode(16);
-             }*/
-
-            return newCode;
-
-        }
-
-        public string GenerateNewAgencyCode()
-        {
-            //Generate new code
-            string newCode = GetRandomCode(16);
-
-            //Check if code is unique
-            while (!IsAgencyCodeUnique(newCode))
-            {
-                //Generate new code
-                newCode = GetRandomCode(16);
-            }
-
-            return newCode;
-
-        }
-
-        private string GetRandomCode(int length)
-        {
-            StringBuilder randomValue = new StringBuilder(GenerateRandomCode());
-
-            while (randomValue.Length < length)
-            {
-                randomValue.Append(GenerateRandomCode());
-            }
-
-            string result = randomValue.ToString().Substring(0, length);
-
-            return result;
-
-        }
-
-        private string GenerateRandomCode()
-        {
-            return Path.GetRandomFileName().Replace(".", "");
-        }
-
-        public bool IsDriverCodeUnique(string driverCode)
-        {
-            IDatabaseAccessProvider dataAccessProvider = new SqlDataAccess(_ConnectionString);
-            var storedProcedureName = "sp_DoesDriverCodeExist";
-
-            Dictionary<string, object> parameters = new Dictionary<string, object> {
-                { "driverCode", driverCode }
-            };
-
-            try
-            {
-                var refId = dataAccessProvider.ExecuteStoredProcedureWithReturnObject(storedProcedureName, parameters);
-
-                return refId == null;
-
-            }
-            catch (Exception ex)
-            {
-                LogEntry logEntry = new LogEntry()
-                {
-                    Severity = System.Diagnostics.TraceEventType.Error,
-                    Title = "Checking if new Driver Code is unique",
-                    Message = ex.Message + Environment.NewLine + ex.StackTrace
-                };
-                Logger.Write(logEntry);
-            }
-
-
-            return false;
-        }
-
-        public bool IsAgencyCodeUnique(string code)
-        {
-            IDatabaseAccessProvider dataAccessProvider = new SqlDataAccess(_ConnectionString);
-            var storedProcedureName = "sp_DoesAgencyCodeExist";
-
-            Dictionary<string, object> parameters = new Dictionary<string, object> {
-                { "code", code }
-            };
-
-            try
-            {
-                var refId = dataAccessProvider.ExecuteStoredProcedureWithReturnObject(storedProcedureName, parameters);
-
-                return refId == null;
-
-            }
-            catch (Exception ex)
-            {
-                LogEntry logEntry = new LogEntry()
-                {
-                    Severity = System.Diagnostics.TraceEventType.Error,
-                    Title = "Checking if new Agency Code is unique",
-                    Message = ex.Message + Environment.NewLine + ex.StackTrace
-                };
-                Logger.Write(logEntry);
-            }
-
-
-            return false;
-        }
+       
 
        /* public bool RequestPasswordResetCode(string email)
         {
