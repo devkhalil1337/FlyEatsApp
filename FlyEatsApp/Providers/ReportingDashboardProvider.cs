@@ -19,39 +19,43 @@ namespace FlyEatsApp.Providers
             _ConnectionString = builder.Build().GetSection("ConnectionStrings").GetSection("DefaultConnection").Value;
         }
 
-        public int GetNumberOfOrders(int businessId,string orderStatus, string Datefrom,string Dateto)
+        public object[] GetNumberOfOrders(int businessId, string[] orderStatuses, string dateFrom, string dateTo)
         {
             IDatabaseAccessProvider dataAccessProvider = new SqlDataAccess(_ConnectionString);
-            int numberofOrders = 0;
             var storedProcedureName = "SP_GetOrdersByTypeAndDateRange";
 
             Dictionary<string, object> parameters = new Dictionary<string, object> {
-                   { "BusinessId", businessId },
-                   { "FromDate", Datefrom },
-                   { "ToDate", Dateto },
-                   { "OrderStatus", orderStatus }
-               };
-            try
-            {
-                var dataSet = dataAccessProvider.ExecuteStoredProcedure(storedProcedureName, parameters);
+                { "BusinessId", businessId },
+                { "FromDate", dateFrom },
+                { "ToDate", dateTo }
+            };
 
-                if (dataSet.Tables.Count < 1 || dataSet.Tables[0].Rows.Count < 1 || dataSet.Tables[0].Rows.Count < 1)
-                    return 0;
-                foreach (DataRow dataRow in dataSet.Tables[0].Rows)
+            var orderStatusCounts = new List<object>();
+
+            foreach (string orderStatus in orderStatuses)
+            {
+                parameters["OrderStatus"] = orderStatus;
+                try
                 {
-                    numberofOrders = ReportingDashboard.ExtractNumberOfOrders(dataRow);
+                    var dataSet = dataAccessProvider.ExecuteStoredProcedure(storedProcedureName, parameters);
+                    if (dataSet.Tables.Count < 1 || dataSet.Tables[0].Rows.Count < 1)
+                        continue;
+                    int numberOfOrders = 0;
+                    foreach (DataRow dataRow in dataSet.Tables[0].Rows)
+                    {
+                        numberOfOrders += ReportingDashboard.ExtractNumberOfOrders(dataRow);
+                    }
+                    orderStatusCounts.Add(new { orderStatus = orderStatus, numberOfOrders = numberOfOrders });
                 }
-                return numberofOrders;
+                catch (Exception ex)
+                {
+                    continue;
+                }
             }
-            catch (Exception ex)
-            {
-                return 0;
-            }
 
-
-            return 0;
-
+            return orderStatusCounts.ToArray();
         }
+
 
         public List<dynamic> GetGrossSalesByDay(int businessId, string dateFrom, string dateTo)
         {

@@ -11,8 +11,8 @@ namespace FlyEatsApp.Controllers
     [ApiController]
     public class ReportingDashboardController : Controller
     {
-        [HttpGet]
-        public int GetNumberOfOrders(string orderStatus, string Datefrom, string Dateto)
+        [HttpPost]
+        public object[] GetNumberOfOrders([FromBody] string[] orderStatus, string Datefrom, string Dateto)
         {
             BusinessUnitsFunctions businessUnitsFunctions = new BusinessUnitsFunctions();
             int businessId = businessUnitsFunctions.GetBusinessIdFromHeaders(Request);
