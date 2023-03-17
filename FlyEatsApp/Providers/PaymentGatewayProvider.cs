@@ -105,7 +105,6 @@ namespace FlyEatsApp.Providers
             var storedProcedureName = "sp_UpdatePaymentGatewayConfig";
             Dictionary<string, object> parameters = new Dictionary<string, object> {
                 { "Id", paymentGateway.Id },
-                { "BusinessId", paymentGateway.BusinessId },
                 { "GatewayName", paymentGateway.GatewayName },
                 { "ApiKey", paymentGateway.ApiKey },
                 { "ApiSecret", paymentGateway.ApiSecret },
