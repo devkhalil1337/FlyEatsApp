@@ -43,4 +43,10 @@ namespace FlyEatsApp.Models
             return paymentGateway;
         }
     }
+
+    public class PaymentCharge
+    {
+        public decimal amount { get; set; }
+       
+    }
 }

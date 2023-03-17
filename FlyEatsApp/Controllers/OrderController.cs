@@ -73,27 +73,11 @@ namespace FlyEatsApp.Controllers
             OrderProvider orderProvider = new OrderProvider();
             Boolean isOrderUpdated = orderProvider.UpdateOrderStatus(orderNumber, orderStatus);
             if (isOrderUpdated)
-             return  Ok(true);
+                return Ok(true);
             return Ok(false);
 
         }
 
-        [HttpPost]
-        public IActionResult CreatePaymentIntent(decimal amount)
-        {
-            StripeConfiguration.ApiKey = "sk_test_H97mbpzzO8WxQaLwHjGy9IrE";
-
-            var options = new PaymentIntentCreateOptions
-            {
-                Amount = (long)(amount * 100), // Stripe uses smallest currency unit, e.g. cents for USD
-                Currency = "usd",
-            };
-
-            var service = new PaymentIntentService();
-            var paymentIntent = service.Create(options);
-
-            return Json(new { client_secret = paymentIntent.ClientSecret });
-        }
 
 
 

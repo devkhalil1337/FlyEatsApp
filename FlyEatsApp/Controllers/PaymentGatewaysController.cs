@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using FlyEatsApp.Models;
 using FlyEatsApp.Providers;
 using FlyEatsApp.Functions;
-
+using Stripe;
 namespace FlyEatsApp.Controllers
 {
     [Route("api/[controller]/[action]")]
@@ -56,6 +56,37 @@ namespace FlyEatsApp.Controllers
             bool success = provider.UpdatePaymentGateway(paymentGateway);
             return success;
         }
+
+
+        [HttpPost]
+        public IActionResult CreatePaymentIntent([FromBody] PaymentCharge paymentCharge)
+        {
+            PaymentGateway stripeGateway = GetPaymentGatewaysByBusinessId().FirstOrDefault(pg => pg.GatewayName == "stripe");
+            if (stripeGateway == null)
+            {
+                return BadRequest(new { success = false, message = "No Payment configurations found" });
+            }
+            StripeConfiguration.ApiKey = stripeGateway.ApiSecret;
+
+            var options = new PaymentIntentCreateOptions
+            {
+                Amount = (long)(paymentCharge.amount * 100), // Stripe uses smallest currency unit, e.g. cents for USD
+                Currency = "usd",
+            };
+
+            var service = new PaymentIntentService();
+            try
+            {
+                var paymentIntent = service.Create(options);
+                return Json(new { client_secret = paymentIntent.ClientSecret, success = true });
+            }
+            catch (StripeException e)
+            {
+                // Handle Stripe API exception
+                return BadRequest(new { success = false, message = e.Message });
+            }
+        }
+
 
 
 
