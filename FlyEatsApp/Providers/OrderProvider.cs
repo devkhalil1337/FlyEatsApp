@@ -6,6 +6,7 @@ using System.Configuration;
 using System.Data;
 using DataAccessLayer;
 using Microsoft.Extensions.Logging.Abstractions;
+using FlyEatsApp.Payloads;
 
 namespace FlyEatsApp.Providers
 {
@@ -20,14 +21,17 @@ namespace FlyEatsApp.Providers
             _ConnectionString = builder.Build().GetSection("ConnectionStrings").GetSection("DefaultConnection").Value;
         }
 
-        public IList<Order> GetAllOrders(int businessId)
+        public IList<Order> GetAllOrders(OrderPayload orderPayload)
         {
             List<Order> AllOrders = new List<Order>();
             Order order = new Order();
             IDatabaseAccessProvider dataAccessProvider = new SqlDataAccess(_ConnectionString);
             var storedProcedureName = "SP_GetAllOrdersByBusinessId";
             Dictionary<string, object> parameters = new Dictionary<string, object> {
-                { "BusinessId", businessId },
+                { "BusinessId", orderPayload.BusinessId },
+                { "StartDate", orderPayload.startDate },
+                { "EndDate", orderPayload.endDate },
+                { "OrderStatus", orderPayload.OrderStatus },
 
             };
             try

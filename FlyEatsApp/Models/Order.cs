@@ -45,6 +45,8 @@ namespace FlyEatsApp.Models
         public string OrderType { get; set; }
         public int OrderTableId { get; set; }
         public string OrderStatus { get; set; }
+        public string? StartDate { get; set; }
+        public string? EndDate { get; set; }
         public decimal ServiceChargeAmount { get; set; }
         public decimal DiscountAmount { get; set; }
         public int VoucherId { get; set; }

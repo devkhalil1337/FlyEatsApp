@@ -1,18 +1,27 @@
 USE [Flyeats]
 GO
-/****** Object:  StoredProcedure [dbo].[SP_GetAllProductsByBusinessId]    Script Date: 2/9/2023 4:34:37 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
 
-Create PROCEDURE [dbo].[SP_GetAllOrdersByBusinessId]
+ALTER PROCEDURE [dbo].[SP_GetAllOrdersByBusinessId]
 (
-	@BusinessId int
+    @BusinessId int,
+    @StartDate datetime,
+    @EndDate datetime,
+    @OrderStatus varchar(50) = NULL
 )
-AS  
-BEGIN  
+AS
+BEGIN
 
-  select * from [Order] where BusinessId=@BusinessId and IsDeleted=0;
+    if (@OrderStatus IS NULL OR @OrderStatus = '')
+    begin
+        select * from [dbo].[Orders] where BusinessId=@BusinessId and CreatedDate >= @StartDate and CreatedDate <= DATEADD(day, 1, @EndDate);
+    end
+    else
+    begin
+        select * from [dbo].[Orders] where BusinessId=@BusinessId and CreatedDate >= @StartDate and CreatedDate <= DATEADD(day, 1, @EndDate) and OrderStatus=@OrderStatus;
+    end
 
-END  
+END

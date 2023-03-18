@@ -5,6 +5,7 @@ using FlyEatsApp.Providers;
 using System.Net.Http.Headers;
 using Stripe;
 using FlyEatsApp.Functions;
+using FlyEatsApp.Payloads;
 
 namespace FlyEatsApp.Controllers
 {
@@ -15,13 +16,14 @@ namespace FlyEatsApp.Controllers
 
         BusinessUnitsFunctions businessUnitsFunctions = new BusinessUnitsFunctions();
 
-        [HttpGet]
-        public IEnumerable<Order> GetAllOrders()
+        [HttpPost]
+        public IEnumerable<Order> GetAllOrders(OrderPayload orderPayload)
         {
+            OrderProvider orderProvider = new OrderProvider();
             BusinessUnitsFunctions businessUnitsFunctions = new BusinessUnitsFunctions();
             int businessId = businessUnitsFunctions.GetBusinessIdFromHeaders(Request);
-            OrderProvider orderProvider = new OrderProvider();
-            var result = orderProvider.GetAllOrders(businessId);
+            orderPayload.BusinessId = businessId;
+            var result = orderProvider.GetAllOrders(orderPayload);
             return result;
         }
 
