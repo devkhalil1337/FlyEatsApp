@@ -46,7 +46,7 @@ namespace FlyEatsApp.Controllers
             }
             else
             {
-                return BadRequest(false);
+                return Ok(new { success = false, message = "" });
             }
         }
 
@@ -57,9 +57,9 @@ namespace FlyEatsApp.Controllers
             var results = userProvider.AuthenticateUser(user.Email, user.Password);
             if (results == null)
             {
-                return BadRequest(false);
+                return Ok(new { success = false, message = "Sorry, we couldn't verify your credentials. Please check your username and password and try again. If you need help, click on 'Forgot Password' or 'Sign Up' to create a new account." });
             }
-            return results;
+            return Ok(results);
         }
 
 
@@ -72,7 +72,7 @@ namespace FlyEatsApp.Controllers
             var result = userProvider.DeleteUser(id);
             if (result != null)
             {
-                return Ok(true);
+                return Ok(new { success = true, message = "" });
             }
             else
             {
