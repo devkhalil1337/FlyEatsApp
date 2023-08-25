@@ -32,6 +32,7 @@ namespace FlyEatsApp.Models
         public const string MODIFIED_DATE_COLUMN = "ModifiedDate";
         public const string IS_DELETED_COLUMN = "IsDeleted";
         public const string ACTIVE_COLUMN = "Active";
+        public const string IS_POPULAR_COLUMN = "IsPopular";
 
         public int? ProductId { get; set; }
         public int BusinessId { get; set; }
@@ -55,6 +56,7 @@ namespace FlyEatsApp.Models
         public bool HasVariations { get; set; }
         public bool Featured { get; set; }
         public int? Quantity { get; set; }
+        public bool IsPopular { get; set; }
 
         public decimal? productPrice { get; set; }
         public List<ProductVariants>? productVariants { get; set; }
@@ -88,6 +90,7 @@ namespace FlyEatsApp.Models
             newObject.ModifyDate = dataRow[MODIFIED_DATE_COLUMN] == DBNull.Value ? null : (DateTime?)Convert.ToDateTime(dataRow[MODIFIED_DATE_COLUMN]);
             newObject.IsDeleted = Convert.ToBoolean(dataRow[IS_DELETED_COLUMN]);
             newObject.Active = Convert.ToBoolean(dataRow[ACTIVE_COLUMN]);
+            newObject.IsPopular = Convert.ToBoolean(dataRow[ACTIVE_COLUMN]);
             newObject.Quantity = 1;
             return newObject;
         }
