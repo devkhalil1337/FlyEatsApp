@@ -7,8 +7,6 @@ using System.Net.Http.Headers;
 
 namespace FlyEatsApp.Controllers
 {
-    using System;
-
     [Route("api/[controller]/[action]")]
     [ApiController]
     public class UserController : ControllerBase

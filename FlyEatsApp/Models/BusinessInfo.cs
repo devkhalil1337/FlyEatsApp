@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Globalization;
 using System.Linq;
 using System.Web;
 
@@ -46,37 +47,52 @@ namespace FlyEatsApp.Models
         public string? BusinessCurrency { get; set; }
         public string? BusinessWebsiteUrl { get; set; }
         public bool? BusinessTempClose { get; set; }
-       
         public DateTime? TempCloseDate { get; set; }
-        public string? ClosetillDate
+        public string ClosetillDate
         {
             get
             {
-                return TempCloseDate.HasValue ? TempCloseDate.Value.ToString("yyyy-MM-dd hh:mm:ss") : null;
+                return TempCloseDate.HasValue ? TempCloseDate.Value.ToString("yyyy-MM-ddTHH:mm:ss") : null;
             }
 
             set
             {
-                if (value != null)
+                if (!string.IsNullOrWhiteSpace(value) && DateTime.TryParseExact(value, "yyyy-MM-ddTHH:mm:ss", CultureInfo.InvariantCulture, DateTimeStyles.None, out var parsedDate))
                 {
-                    TempCloseDate = DateTime.ParseExact(value, "yyyy-MM-dd hh:mm:ss", System.Globalization.CultureInfo.InvariantCulture);
+                    TempCloseDate = parsedDate;
+                }
+                else
+                {
+                    // Handle invalid date format or empty strings
+                    TempCloseDate = null;
                 }
             }
         }
 
         public DateTime? ExpiryDate { get; set; }
-        public string? BusinessExpiryDate
+        public string BusinessExpiryDate
         {
-            get { return ExpiryDate.HasValue ? ExpiryDate.Value.ToString("yyyy-MM-dd hh:mm:ss") : null;}
+            get
+            {
+                return ExpiryDate.HasValue ? ExpiryDate.Value.ToString("yyyy-MM-ddTHH:mm:ss") : null;
+            }
 
             set
             {
-                if (value != null)
+                if (!string.IsNullOrWhiteSpace(value) && DateTime.TryParseExact(value, "yyyy-MM-ddTHH:mm:ss", CultureInfo.InvariantCulture, DateTimeStyles.None, out var parsedDate))
                 {
-                    ExpiryDate = DateTime.ParseExact(value, "yyyy-MM-dd hh:mm:ss", System.Globalization.CultureInfo.InvariantCulture);
+                    ExpiryDate = parsedDate;
+                }
+                else
+                {
+                    // Handle invalid date format or empty strings
+                    ExpiryDate = null;
                 }
             }
         }
+
+
+     
 
 
         public bool? Deleted { get; set; }
