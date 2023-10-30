@@ -32,7 +32,7 @@ namespace FlyEatsApp.Models
             newObject.MinimumSelection = Convert.ToInt32(dataRow[SELECTION_MINIMUM_COLUMN]);
             newObject.MaximumSelection = Convert.ToInt32(dataRow[SELECTION_MAXIMUM_COLUMN]);
             newObject.CreateDate = dataRow[SELECTION_CREATE_DATE_COLUMN] == DBNull.Value ? null : (DateTime?)Convert.ToDateTime(dataRow[SELECTION_CREATE_DATE_COLUMN]);
-            newObject.ModifyDate = dataRow[SELECTION_UPDATE_DATE_COLUMN] == DBNull.Value ? null : (DateTime?)Convert.ToDateTime(dataRow[SELECTION_UPDATE_DATE_COLUMN]);
+            newObject.UpdateDate = dataRow[SELECTION_UPDATE_DATE_COLUMN] == DBNull.Value ? null : (DateTime?)Convert.ToDateTime(dataRow[SELECTION_UPDATE_DATE_COLUMN]);
             newObject.IsDeleted = Convert.ToBoolean(dataRow[SELECTION_DELETE_COLUMN]);
             newObject.Active = Convert.ToBoolean(dataRow[SELECTION_ACTIVE_COLUMN]);
 

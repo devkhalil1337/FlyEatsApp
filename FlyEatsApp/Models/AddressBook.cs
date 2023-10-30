@@ -24,18 +24,18 @@ namespace FlyEatsApp.Models
         private const string ACTIVE_COLUMN = "Active";
         private const string TIMESTAMP_COLUMN = "Timestamp";
 
-        public int AddressId { get; set; }
-        public int UserId { get; set; }
-        public string AddressLine1 { get; set; }
-        public string AddressLine2 { get; set; }
-        public string City { get; set; }
-        public string StateProvince { get; set; }
-        public string ZipPostalCode { get; set; }
-        public string Country { get; set; }
+        public int? AddressId { get; set; }
+        public int? UserId { get; set; }
+        public string? AddressLine1 { get; set; }
+        public string? AddressLine2 { get; set; }
+        public string? City { get; set; }
+        public string? StateProvince { get; set; }
+        public string? ZipPostalCode { get; set; }
+        public string? Country { get; set; }
         public decimal? Latitude { get; set; }
         public decimal? Longitude { get; set; }
-        public string PhoneNumber { get; set; }
-        public string AddressType { get; set; }
+        public string? PhoneNumber { get; set; }
+        public string? AddressType { get; set; }
         public bool? Active { get; set; }
         public DateTime? Timestamp { get; set; }
 

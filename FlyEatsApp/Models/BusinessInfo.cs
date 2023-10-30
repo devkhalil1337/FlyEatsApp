@@ -120,7 +120,7 @@ namespace FlyEatsApp.Models
             newObject.TempCloseDate = dataRow[BUSINESS_TILL_DATE_COLUMN] == DBNull.Value ? null : (DateTime?)Convert.ToDateTime(dataRow[BUSINESS_TILL_DATE_COLUMN]);
             newObject.ExpiryDate = dataRow[BUSINESS_EXPIRY_DATE_COLUMN] == DBNull.Value ? null : (DateTime?)Convert.ToDateTime(dataRow[BUSINESS_TILL_DATE_COLUMN]);
             newObject.CreateDate = dataRow[BUSINESS_CREATION_DATE_COLUMN] == DBNull.Value ? null : (DateTime?)Convert.ToDateTime(dataRow[BUSINESS_TILL_DATE_COLUMN]);
-            newObject.ModifyDate = dataRow[BUSINESS_UPDATE_DATE_COLUMN] == DBNull.Value ? null : (DateTime?)Convert.ToDateTime(dataRow[BUSINESS_TILL_DATE_COLUMN]);
+            newObject.UpdateDate = dataRow[BUSINESS_UPDATE_DATE_COLUMN] == DBNull.Value ? null : (DateTime?)Convert.ToDateTime(dataRow[BUSINESS_TILL_DATE_COLUMN]);
             newObject.Deleted = Convert.ToBoolean(dataRow[BUSINESS_DELETED_COLUMN]);
             newObject.Active = Convert.ToBoolean(dataRow[BUSINESS_ACTIVE_COLUMN]);
             

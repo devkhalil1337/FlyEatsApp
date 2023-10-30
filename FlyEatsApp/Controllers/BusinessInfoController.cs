@@ -37,7 +37,15 @@ namespace FlyEatsApp.Controllers
            return result;
        }
 
-       [HttpDelete]
+        [HttpGet]
+        public IEnumerable<BusinessInfo> GetAllBusinesses()
+        {
+            BusinessInfoProvider businessInfoProvider = new BusinessInfoProvider();
+            var result = businessInfoProvider.GetAllBusinesUnits();
+            return result;
+        }
+
+        [HttpDelete]
        public Boolean DeleteBusinessUnit(long BusinessId)
        {
            BusinessInfoProvider businessInfoProvider = new BusinessInfoProvider();

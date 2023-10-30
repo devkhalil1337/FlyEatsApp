@@ -27,7 +27,7 @@ namespace FlyEatsApp.Models
             newObject.BusinessId = Convert.ToInt32(dataRow[BUSINESS_ID_COLUMN]);
             newObject.WeekDayName = Convert.ToString(dataRow[BUSINESS_WEEK_DAY_NAME_COLUMN]).Replace(" ", string.Empty);
             newObject.CreateDate = dataRow[BUSINESS_CREATION_DATE_COLUMN] == DBNull.Value ? null : (DateTime?)Convert.ToDateTime(dataRow[BUSINESS_CREATION_DATE_COLUMN]);
-            newObject.ModifyDate = dataRow[BUSINESS_UPDATE_DATE_COLUMN] == DBNull.Value ? null : (DateTime?)Convert.ToDateTime(dataRow[BUSINESS_UPDATE_DATE_COLUMN]);
+            newObject.UpdateDate = dataRow[BUSINESS_UPDATE_DATE_COLUMN] == DBNull.Value ? null : (DateTime?)Convert.ToDateTime(dataRow[BUSINESS_UPDATE_DATE_COLUMN]);
             newObject.Active = Convert.ToBoolean(dataRow[BUSINESS_ACTIVE_COLUMN]);
 
             return newObject;

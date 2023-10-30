@@ -90,9 +90,10 @@ namespace FlyEatsApp.Providers
                     { "HasVariations", hasVariations },
                     { "Featured", product.Featured },
                     { "CreationDate", statusChangedDateTime },
-                    { "ModifiedDate", statusChangedDateTime },
+                    { "UpdateDate", statusChangedDateTime },
                     { "IsDeleted", product.IsDeleted },
-                    { "Active", product.Active }
+                    { "Active", product.Active },
+                    {"IsPopular",product.IsPopular }
                 };
 
             try
@@ -160,7 +161,7 @@ namespace FlyEatsApp.Providers
                 { "DeliveryVat", product.DeliveryVat },
                 { "HasVariations", hasVariations },
                 { "Featured", product.Featured },
-                { "ModifiedDate", productUpdateChangedDateTime },
+                { "UpdateDate", productUpdateChangedDateTime },
                 { "IsDeleted", product.IsDeleted },
                 { "Active", product.Active }
             };

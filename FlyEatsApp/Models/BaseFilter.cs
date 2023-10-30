@@ -1,4 +1,6 @@
-﻿namespace FlyEatsApp.Models
+﻿using System.Globalization;
+
+namespace FlyEatsApp.Models
 {
     public class BaseFilter
     {
@@ -22,16 +24,25 @@
             }
         }
 
-        public DateTime? ModifyDate { get; set; }
-        private string? UpdateDate
+ 
+        public DateTime? UpdateDate { get; set; }
+        public string? ModifyDate
         {
-            get { return ModifyDate.HasValue ? ModifyDate.Value.ToString("yyyy-MM-dd HH:mm:ss") : null; }
+            get
+            {
+                return UpdateDate.HasValue ? UpdateDate.Value.ToString("yyyy-MM-ddTHH:mm:ss") : null;
+            }
 
             set
             {
-                if (value != null)
+                if (!string.IsNullOrWhiteSpace(value) && DateTime.TryParseExact(value, "yyyy-MM-ddTHH:mm:ss", CultureInfo.InvariantCulture, DateTimeStyles.None, out var parsedDate))
                 {
-                    ModifyDate = DateTime.ParseExact(value, "yyyy-MM-dd HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture);
+                    UpdateDate = parsedDate;
+                }
+                else
+                {
+                    // Handle invalid date format or empty strings
+                    UpdateDate = null;
                 }
             }
         }

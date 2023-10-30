@@ -32,7 +32,7 @@ namespace FlyEatsApp.Models
             newObject.VariationName = Convert.ToString(dataRow[PRODUCT_VARIANT_NAME_COLUMN]);
             newObject.VariationPrice = Convert.ToDecimal(dataRow[PRODUCT_VARIANT_PRICE_COLUMN]);
             newObject.CreateDate = dataRow[PRODUCT_VARIANT_CREATE_DATE_COLUMN] == DBNull.Value ? null : (DateTime?)Convert.ToDateTime(dataRow[PRODUCT_VARIANT_CREATE_DATE_COLUMN]);
-            newObject.ModifyDate = dataRow[PRODUCT_VARIANT_UPDATE_DATE_COLUMN] == DBNull.Value ? null : (DateTime?)Convert.ToDateTime(dataRow[PRODUCT_VARIANT_UPDATE_DATE_COLUMN]);
+            newObject.UpdateDate = dataRow[PRODUCT_VARIANT_UPDATE_DATE_COLUMN] == DBNull.Value ? null : (DateTime?)Convert.ToDateTime(dataRow[PRODUCT_VARIANT_UPDATE_DATE_COLUMN]);
             newObject.IsDeleted = Convert.ToBoolean(dataRow[PRODUCT_VARIANT_DELETE_COLUMN]);
             newObject.Active = Convert.ToBoolean(dataRow[PRODUCT_VARIANT_ACTIVE_COLUMN]);
             

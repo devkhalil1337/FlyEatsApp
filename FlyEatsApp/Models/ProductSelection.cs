@@ -28,7 +28,7 @@ namespace FlyEatsApp.Models
             newObject.SelectionId = Convert.ToInt32(dataRow[SELECTION_ID_COLUMN]);
             newObject.BusinessId = Convert.ToInt32(dataRow[PRODUCT_SELECTION_BUSINESS_ID_COLUMN]);
             newObject.CreateDate = dataRow[PRODUCT_SELECTION_CREATE_DATE_COLUMN] == DBNull.Value ? null : (DateTime?)Convert.ToDateTime(dataRow[PRODUCT_SELECTION_CREATE_DATE_COLUMN]);
-            newObject.ModifyDate = dataRow[PRODUCT_SELECTION_UPDATE_DATE_COLUMN] == DBNull.Value ? null : (DateTime?)Convert.ToDateTime(dataRow[PRODUCT_SELECTION_UPDATE_DATE_COLUMN]);
+            newObject.UpdateDate = dataRow[PRODUCT_SELECTION_UPDATE_DATE_COLUMN] == DBNull.Value ? null : (DateTime?)Convert.ToDateTime(dataRow[PRODUCT_SELECTION_UPDATE_DATE_COLUMN]);
            
             return newObject;
         }

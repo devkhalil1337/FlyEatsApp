@@ -55,7 +55,7 @@ namespace FlyEatsApp.Models
             newObject.AveragePrepareTime = dataRow[SETTINGS_AVERAGE_PREPARE_TIME_COLUMN] == DBNull.Value ? 0 : Convert.ToDecimal(dataRow[SETTINGS_AVERAGE_PREPARE_TIME_COLUMN]);
             newObject.DeliveryTime = dataRow[SETTINGS_DELIVERY_TIME_COLUMN] == DBNull.Value ? 0 : Convert.ToDecimal(dataRow[SETTINGS_DELIVERY_TIME_COLUMN]);
             newObject.CreateDate = dataRow[SETTINGS_CREATE_DATE_COLUMN] == DBNull.Value ? null : (DateTime?)Convert.ToDateTime(dataRow[SETTINGS_CREATE_DATE_COLUMN]);
-            newObject.ModifyDate = dataRow[SETTINGS_UPDATE_DATE_COLUMN] == DBNull.Value ? null : (DateTime?)Convert.ToDateTime(dataRow[SETTINGS_UPDATE_DATE_COLUMN]);
+            newObject.UpdateDate = dataRow[SETTINGS_UPDATE_DATE_COLUMN] == DBNull.Value ? null : (DateTime?)Convert.ToDateTime(dataRow[SETTINGS_UPDATE_DATE_COLUMN]);
             newObject.IsGuestLoginActive = dataRow[SETTINGS_IS_GUEST_LOGIN_COLUMN] == DBNull.Value ? false : Convert.ToBoolean(dataRow[SETTINGS_IS_GUEST_LOGIN_COLUMN]);
             newObject.IsDeliveryOrderActive = dataRow[SETTINGS_IS_DELIVERY_ORDER_ACTIVE_COLUMN] == DBNull.Value ? false : Convert.ToBoolean(dataRow[SETTINGS_IS_DELIVERY_ORDER_ACTIVE_COLUMN]);
             newObject.IsCollectionOrderActive = dataRow[SETTINGS_IS_COLLECTION_ORDER_ACTIVE_COLUMN] == DBNull.Value ? false : Convert.ToBoolean(dataRow[SETTINGS_IS_COLLECTION_ORDER_ACTIVE_COLUMN]);

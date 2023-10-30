@@ -136,7 +136,7 @@ namespace FlyEatsApp.Providers
 
             try
             {
-                var result = dataAccessProvider.ExecuteStoredProcedureWithReturnMessage(storedProcedureName, parameters);
+                var result = dataAccessProvider.ExecuteNonQueryStoredProcedure(storedProcedureName, parameters);
                 return result;
             }
             catch (Exception ex)

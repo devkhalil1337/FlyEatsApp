@@ -34,7 +34,7 @@ namespace FlyEatsApp.Models
             newObject.ChoicePrice = Convert.ToInt32(dataRow[CHOICE_PRICE_COLUMN]);
             newObject.ChoiceSortedBy = Convert.ToInt32(dataRow[CHOICE_SORT_BY_COLUMN]);
             newObject.CreateDate = dataRow[CHOICE_CREATE_DATE_COLUMN] == DBNull.Value ? null : (DateTime?)Convert.ToDateTime(dataRow[CHOICE_CREATE_DATE_COLUMN]);
-            newObject.ModifyDate = dataRow[CHOICE_UPDATE_DATE_COLUMN] == DBNull.Value ? null : (DateTime?)Convert.ToDateTime(dataRow[CHOICE_UPDATE_DATE_COLUMN]);
+            newObject.UpdateDate = dataRow[CHOICE_UPDATE_DATE_COLUMN] == DBNull.Value ? null : (DateTime?)Convert.ToDateTime(dataRow[CHOICE_UPDATE_DATE_COLUMN]);
             newObject.IsDeleted = Convert.ToBoolean(dataRow[CHOICE_DELETE_COLUMN]);
             return newObject;
         }

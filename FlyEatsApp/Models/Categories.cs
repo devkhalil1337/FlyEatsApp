@@ -35,7 +35,7 @@ namespace FlyEatsApp.Models
             newObject.CategoryDetails = Convert.ToString(dataRow[CATEGORY_DETAIL_COLUMN]);
             newObject.CategorySortBy = Convert.ToInt32(dataRow[CATEGORY_SORT_BY_COLUMN]);
             newObject.CreateDate = dataRow[CATEGORY_CREATE_DATE_COLUMN] == DBNull.Value ? null : (DateTime?)Convert.ToDateTime(dataRow[CATEGORY_CREATE_DATE_COLUMN]);
-            newObject.ModifyDate = dataRow[CATEGORY_UPDATE_DATE_COLUMN] == DBNull.Value ? null : (DateTime?)Convert.ToDateTime(dataRow[CATEGORY_UPDATE_DATE_COLUMN]);
+            newObject.UpdateDate = dataRow[CATEGORY_UPDATE_DATE_COLUMN] == DBNull.Value ? null : (DateTime?)Convert.ToDateTime(dataRow[CATEGORY_UPDATE_DATE_COLUMN]);
             newObject.IsDeleted = Convert.ToBoolean(dataRow[CATEGORY_DELETE_COLUMN]);
             newObject.Active = Convert.ToBoolean(dataRow[CATEGORY_ACTIVE_COLUMN]);
 

@@ -29,7 +29,7 @@ namespace FlyEatsApp.Models
         public const string HAS_VARIATIONS_COLUMN = "HasVariations";
         public const string FEATURED_COLUMN = "Featured";
         public const string CREATION_DATE_COLUMN = "CreationDate";
-        public const string MODIFIED_DATE_COLUMN = "ModifiedDate";
+        public const string UPDATE_DATE_COLUMN = "UpdateDate";
         public const string IS_DELETED_COLUMN = "IsDeleted";
         public const string ACTIVE_COLUMN = "Active";
         public const string IS_POPULAR_COLUMN = "IsPopular";
@@ -87,7 +87,7 @@ namespace FlyEatsApp.Models
             newObject.HasVariations = Convert.ToBoolean(dataRow[HAS_VARIATIONS_COLUMN]);
             newObject.Featured = Convert.ToBoolean(dataRow[FEATURED_COLUMN]);
             newObject.CreateDate = dataRow[CREATION_DATE_COLUMN] == DBNull.Value ? null : (DateTime?)Convert.ToDateTime(dataRow[CREATION_DATE_COLUMN]);
-            newObject.ModifyDate = dataRow[MODIFIED_DATE_COLUMN] == DBNull.Value ? null : (DateTime?)Convert.ToDateTime(dataRow[MODIFIED_DATE_COLUMN]);
+            newObject.UpdateDate = dataRow[UPDATE_DATE_COLUMN] == DBNull.Value ? null : (DateTime?)Convert.ToDateTime(dataRow[UPDATE_DATE_COLUMN]);
             newObject.IsDeleted = Convert.ToBoolean(dataRow[IS_DELETED_COLUMN]);
             newObject.Active = Convert.ToBoolean(dataRow[ACTIVE_COLUMN]);
             newObject.IsPopular = Convert.ToBoolean(dataRow[ACTIVE_COLUMN]);
