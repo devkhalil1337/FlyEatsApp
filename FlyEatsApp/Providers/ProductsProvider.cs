@@ -12,9 +12,7 @@ namespace FlyEatsApp.Providers
     public class ProductsProvider
     {
 
-
         string _ConnectionString;
-
         public ProductsProvider()
         {
             var builder = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json", optional: true);
@@ -24,7 +22,6 @@ namespace FlyEatsApp.Providers
         public IList<Products> GetAllProducts(int businessId)
         {
             List<Products> AllProducts = new List<Products>();
-            Products products = new Products();
             IDatabaseAccessProvider dataAccessProvider = new SqlDataAccess(_ConnectionString);
             var storedProcedureName = "SP_GetAllProductsByBusinessId";
             Dictionary<string, object> parameters = new Dictionary<string, object> {
@@ -65,7 +62,7 @@ namespace FlyEatsApp.Providers
         }
         public object AddNewProduct(Products product)
         {
-            var results = new ResponseModel();
+            ResponseModel results = new ResponseModel();
             IDatabaseAccessProvider dataAccessProvider = new SqlDataAccess(_ConnectionString);
             var storedProcedureName = "SP_AddProduct";
 

@@ -50,7 +50,7 @@ namespace FlyEatsApp.Providers
         }
         public object AddNewCategory(Categories categories)
         {
-
+            ResponseModel results = new ResponseModel();
             IDatabaseAccessProvider dataAccessProvider = new SqlDataAccess(_ConnectionString);
             var storedProcedureName = "SP_AddNewCategory";
 
@@ -72,11 +72,14 @@ namespace FlyEatsApp.Providers
 
             try
             {
-                var results = dataAccessProvider.ExecuteStoredProcedureWithReturnMessage(storedProcedureName, parameters);
-                return results;
+                dataAccessProvider.ExecuteStoredProcedureWithReturnMessage(storedProcedureName, parameters);
+                results.success = true;
+                results.message = "";
             }
             catch (Exception ex)
             {
+                results.success = false;
+                results.message = ex.Message;
                 /* LogEntry logEntry = new LogEntry()
                  {
                      Severity = System.Diagnostics.TraceEventType.Error,
@@ -87,11 +90,12 @@ namespace FlyEatsApp.Providers
             }
 
 
-            return -1;
+            return results;
 
         }
         public object UpdateCategory(Categories categories)
         {
+            ResponseModel results = new ResponseModel();
             IDatabaseAccessProvider dataAccessProvider = new SqlDataAccess(_ConnectionString);
             var storedProcedureName = "SP_UpdateCategory";
 
@@ -111,16 +115,17 @@ namespace FlyEatsApp.Providers
 
             try
             {
-                var result = dataAccessProvider.ExecuteStoredProcedureWithReturnMessage(storedProcedureName, parameters);
-                return result;
+                dataAccessProvider.ExecuteStoredProcedureWithReturnMessage(storedProcedureName, parameters);
+                results.success = true;
+                results.message = "";
             }
             catch (Exception ex)
             {
+                results.success = false;
+                results.message = ex.Message;
 
             }
-
-
-            return false;
+            return results;
         }
         public IList<Categories> GetCategoryById(int categoryId)
         {
@@ -138,7 +143,7 @@ namespace FlyEatsApp.Providers
                 var dataSet = dataAccessProvider.ExecuteStoredProcedure(storedProcedureName, parameters);
 
                 if (dataSet.Tables.Count < 1 || dataSet.Tables[0].Rows.Count < 1 || dataSet.Tables[0].Rows.Count < 1)
-                    return null;
+                    return new List<Categories>();
                 foreach (DataRow dataRow in dataSet.Tables[0].Rows)
                 {
                     var category = Categories.ExtractObject(dataRow);
@@ -147,7 +152,7 @@ namespace FlyEatsApp.Providers
             }
             catch (Exception ex)
             {
-
+                return new List<Categories>();
             }
 
 
@@ -156,6 +161,7 @@ namespace FlyEatsApp.Providers
         }
         public object DeleteCategoryBy(long categoryId)
         {
+            ResponseModel response = new ResponseModel();
             IDatabaseAccessProvider dataAccessProvider = new SqlDataAccess(_ConnectionString);
             var storedProcedureName = "SP_DeleteCategoryById";
 
@@ -165,15 +171,17 @@ namespace FlyEatsApp.Providers
 
             try
             {
-                var result = dataAccessProvider.ExecuteStoredProcedureWithReturnMessage(storedProcedureName, parameters);
-                return result;
+                dataAccessProvider.ExecuteStoredProcedureWithReturnMessage(storedProcedureName, parameters);
+                response.success = true;
+                response.message = "";
             }
             catch (Exception ex)
             {
+                response.success = false;
+                response.message = ex.Message;
 
             }
-
-            return false;
+            return response;
         }
     }
 }
