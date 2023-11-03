@@ -47,8 +47,8 @@ namespace FlyEatsApp.Models
         public string? BusinessCurrency { get; set; }
         public string? BusinessWebsiteUrl { get; set; }
         public bool? BusinessTempClose { get; set; }
-        public DateTime? TempCloseDate { get; set; }
-        public string ClosetillDate
+        private DateTime? TempCloseDate { get; set; }
+        public string? ClosetillDate
         {
             get
             {
@@ -69,8 +69,8 @@ namespace FlyEatsApp.Models
             }
         }
 
-        public DateTime? ExpiryDate { get; set; }
-        public string BusinessExpiryDate
+        private DateTime? ExpiryDate { get; set; }
+        public string? BusinessExpiryDate
         {
             get
             {

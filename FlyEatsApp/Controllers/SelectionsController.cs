@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using FlyEatsApp.Models;
 using FlyEatsApp.Providers;
+using FlyEatsApp.Functions;
 
 namespace FlyEatsApp.Controllers
 {
@@ -9,6 +10,7 @@ namespace FlyEatsApp.Controllers
     [ApiController]
     public class SelectionsController : ControllerBase
     {
+        BusinessUnitsFunctions businessUnitsFunctions = new BusinessUnitsFunctions();
 
         [HttpPost]
         public object AddNewSelections([FromBody] Selections selections)
@@ -43,9 +45,10 @@ namespace FlyEatsApp.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<Selections> GetAllSelections(int businessId)
+        public IEnumerable<Selections> GetAllSelections()
         {
            SelectionsProvider selectionsProvider = new SelectionsProvider();
+            int businessId = businessUnitsFunctions.GetBusinessIdFromHeaders(Request);
             var result = selectionsProvider.GetAllSelections(businessId);
             return result;
         }
