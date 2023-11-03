@@ -49,18 +49,19 @@ namespace FlyEatsApp.Providers
                         newObject.productPrice = newObject.productVariants[0].VariationPrice;
                     }
 
-                    if (newObject.Active == true)
+                    /*if (newObject.Active == true)
                     {
                         AllProducts.Add(newObject);
-                    }
+                    }*/
+                    AllProducts.Add(newObject);
                 }
             }
             catch (Exception ex)
             {
+                return new List<Products>();
             }
-
             return AllProducts;
-            ;
+            
         }
         public object AddNewProduct(Products product)
         {
@@ -98,7 +99,7 @@ namespace FlyEatsApp.Providers
 
             try
             {
-                var productId = dataAccessProvider.ExecuteStoredProcedureWithReturnObject(storedProcedureName, parameters);
+                int productId = dataAccessProvider.ExecuteScalarStoredProcedure(storedProcedureName, parameters);
 
                 int _productId = (int)(productId == null ? -1 : Convert.ToInt64(productId));
                 int _businessId = (int)product.BusinessId;
@@ -115,13 +116,13 @@ namespace FlyEatsApp.Providers
                     ProductVariantsProvider productVariantsProvider = new ProductVariantsProvider();
                     productVariantsProvider.AddNewProductVariants(product.productVariants, _productId, _businessId);
                 }
-
-                return results.onSuccess();
+                results.success = true;
+                results.message = "";
             }
             catch (Exception ex)
             {
-
-                return results.onError(ex.Message);
+                results.success = false;
+                results.message = ex.Message;
                 /* LogEntry logEntry = new LogEntry()
                  {
                      Severity = System.Diagnostics.TraceEventType.Error,
@@ -130,11 +131,12 @@ namespace FlyEatsApp.Providers
                  };
                  Logger.Write(logEntry);*/
             }
-            return -1;
+            return results;
 
         }
         public object UpdateProduct(Products product)
         {
+            var results = new ResponseModel();
             ProductSelectionProvider productSelection = new ProductSelectionProvider();
             IDatabaseAccessProvider dataAccessProvider = new SqlDataAccess(_ConnectionString);
             var storedProcedureName = "SP_UpdateProduct";
@@ -168,9 +170,9 @@ namespace FlyEatsApp.Providers
 
             try
             {
-                var results = dataAccessProvider.ExecuteScalarStoredProcedure(storedProcedureName, parameters);
+                int isUpdated = dataAccessProvider.ExecuteScalarStoredProcedure(storedProcedureName, parameters);
                 int _productId = (int)product.ProductId, _businessId = (int)product.BusinessId;
-                if (results != null)
+                if (isUpdated > 0)
                 {
                     ProductVariantsProvider productVariantsProvider = new ProductVariantsProvider();
                     if (product.productVariants != null && product.productVariants.Count > 0)
@@ -193,15 +195,17 @@ namespace FlyEatsApp.Providers
                         productSelection.DeleteProductSelectionBy(_productId);
                     }
                 }
-                return results;
+                results.success = true;
+                results.message = "";
             }
             catch (Exception ex)
             {
-
+                results.success = false;
+                results.message = ex.Message;
             }
 
 
-            return false;
+            return results;
         }
         public IList<Products> GetProductsById(int productId)
         {
@@ -230,7 +234,7 @@ namespace FlyEatsApp.Providers
             }
             catch (Exception ex)
             {
-
+                return new List<Products>();
             }
 
 
@@ -240,6 +244,7 @@ namespace FlyEatsApp.Providers
 
         public object DeleteProductById(int productId)
         {
+            ResponseModel response = new ResponseModel();
             IDatabaseAccessProvider dataAccessProvider = new SqlDataAccess(_ConnectionString);
             var storedProcedureName = "SP_DeleteProductById";
 
@@ -249,14 +254,17 @@ namespace FlyEatsApp.Providers
             try
             {
                 var results = dataAccessProvider.ExecuteStoredProcedureWithReturnMessage(storedProcedureName, parameters);
-                return results;
+                response.success = true;
+                response.message = "";
             }
             catch (Exception ex)
             {
+                response.success = false;
+                response.message = ex.Message;
 
             }
 
-            return false;
+            return response;
         }
     }
 }

@@ -211,7 +211,9 @@ namespace DataAccessLayer
                 }
 
                 int rowsAffected = command.ExecuteNonQuery();
+               
                 result.success = rowsAffected > 0;
+                result.message = "";
             }
             catch (Exception ex)
             {
