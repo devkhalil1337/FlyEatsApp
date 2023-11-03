@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using FlyEatsApp.Models;
 using FlyEatsApp.Providers;
 using System.Net.Http.Headers;
+using FlyEatsApp.Functions;
 
 namespace FlyEatsApp.Controllers
 {
@@ -11,6 +12,8 @@ namespace FlyEatsApp.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
+
+        BusinessUnitsFunctions businessUnitsFunctions = new BusinessUnitsFunctions();
 
         [HttpGet("{id}")]
         public IActionResult GetUserById(int id)
@@ -52,7 +55,8 @@ namespace FlyEatsApp.Controllers
         public object LoginUser([FromBody] User user)
         {
             UserProvider userProvider = new UserProvider();
-            var results = userProvider.AuthenticateUser(user.Email, user.Password);
+            int businessId = businessUnitsFunctions.GetBusinessIdFromHeaders(Request);
+            var results = userProvider.AuthenticateUser(user.Email, user.Password,businessId);
             if (results == null)
             {
                 return Ok(new { success = false, message = "Sorry, we couldn't verify your credentials. Please check your username and password and try again. If you need help, click on 'Forgot Password' or 'Sign Up' to create a new account." });

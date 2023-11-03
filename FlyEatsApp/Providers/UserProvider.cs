@@ -184,7 +184,7 @@ namespace FlyEatsApp.Providers
             }
         }
 
-        public User AuthenticateUser(string email, string password)
+        public User AuthenticateUser(string email, string password,int businessId)
         {
             IDatabaseAccessProvider dataAccessProvider = new SqlDataAccess(_ConnectionString);
             var storedProcedureName = "SP_GetCustomerByEmail";
@@ -205,6 +205,10 @@ namespace FlyEatsApp.Providers
 
                 var dataRow = dataSet.Tables[0].Rows[0];
                 var user = User.extractObj(dataRow);
+                if(user.BusinessId != businessId)
+                {
+                    return null;
+                }
                 user.PasswordHash = Convert.FromBase64String((string)dataRow["PasswordHash"]);
                 user.Salt = Convert.FromBase64String((string)dataRow["Salt"]);
                 if (VerifyPassword(password, user.Salt, user.PasswordHash))
