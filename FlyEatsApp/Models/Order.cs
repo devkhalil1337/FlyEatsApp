@@ -65,7 +65,7 @@ namespace FlyEatsApp.Models
         public decimal DeliveryCharges { get; set; }
         public string CardPaymentId { get; set; }
         public string? CreatedDate { get; set; }
-        public DateTime? ModifiedDate { get; set; }
+        public string? ModifiedDate { get; set; }
         public bool IsDeleted { get; set; }
 
 
@@ -97,7 +97,7 @@ namespace FlyEatsApp.Models
             newObject.DeliveryCharges = Convert.ToDecimal(dataRow[DELIVERY_CHARGES_COLUMN]);
             newObject.CardPaymentId = Convert.ToString(dataRow[CARD_PAYMENT_ID_COLUMN]);
             newObject.CreatedDate = Convert.ToString(dataRow[CREATED_DATE_COLUMN]);
-            newObject.ModifiedDate = Convert.IsDBNull(dataRow[MODIFIED_DATE_COLUMN]) ? null : (DateTime?)dataRow[MODIFIED_DATE_COLUMN];
+            newObject.ModifiedDate = Convert.ToString(dataRow[MODIFIED_DATE_COLUMN]);
             newObject.IsDeleted = Convert.ToBoolean(dataRow[IS_DELETED_COLUMN]);
             return newObject;
         }

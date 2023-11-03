@@ -47,6 +47,7 @@ namespace FlyEatsApp.Providers
             }
             catch (Exception ex)
             {
+                return new List<Order>();
             }
 
             return AllOrders;
@@ -92,9 +93,7 @@ namespace FlyEatsApp.Providers
 
             try
             {
-                var productId = dataAccessProvider.ExecuteStoredProcedureWithReturnObject(storedProcedureName, parameters);
-                int _productId = (int)(productId == null ? -1 : Convert.ToInt64(productId));
-                return results.onSuccess();
+                results = dataAccessProvider.ExecuteStoredProcedureWithReturnObject(storedProcedureName, parameters);
             }
             catch (Exception ex)
             {
@@ -108,12 +107,12 @@ namespace FlyEatsApp.Providers
                  };
                  Logger.Write(logEntry);*/
             }
-            return -1;
+            return results;
 
         }
-        public Boolean UpdateOrderStatus(string orderNumber,string orderStatus)
+        public ResponseModel UpdateOrderStatus(string orderNumber,string orderStatus)
         {
-            ProductSelectionProvider productSelection = new ProductSelectionProvider();
+            var results = new ResponseModel();
             IDatabaseAccessProvider dataAccessProvider = new SqlDataAccess(_ConnectionString);
             var storedProcedureName = "SP_UpdateOrderStatusByInvoiceNumber";
 
@@ -126,16 +125,16 @@ namespace FlyEatsApp.Providers
 
             try
             {
-                var results = dataAccessProvider.ExecuteScalarStoredProcedure(storedProcedureName, parameters);
-                return true;
+                results = dataAccessProvider.ExecuteStoredProcedureWithReturnObject(storedProcedureName, parameters);
+                return results;
             }
             catch (Exception ex)
             {
-                return false;
+                results.onError(ex.Message);
             }
 
 
-            return false;
+            return results;
         }
         public Order GetOrderById(string OrderId)
         {
