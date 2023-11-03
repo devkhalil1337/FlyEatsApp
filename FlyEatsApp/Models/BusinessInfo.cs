@@ -91,10 +91,6 @@ namespace FlyEatsApp.Models
             }
         }
 
-
-     
-
-
         public bool? Deleted { get; set; }
         
 
@@ -104,7 +100,7 @@ namespace FlyEatsApp.Models
             newObject.BusinessId = Convert.ToInt32(dataRow[BUSINESS_ID_COLUMN]);
             newObject.Localization = Convert.ToString(dataRow[BUSINESS_LOCALIZATION_COLUMN]);
             newObject.BusinessLogo = Convert.ToString(dataRow[BUSINESS_LOGO_COLUMN]);
-            newObject.BusinessName = Convert.ToString(dataRow[BUSINESS_NAME_COLUMN]).Replace(" ", "");
+            newObject.BusinessName = Convert.ToString(dataRow[BUSINESS_NAME_COLUMN]);
             newObject.BusinessContact = Convert.ToString(dataRow[BUSINESS_CONTACT_COLUMN]);
             newObject.BusinessEmail = Convert.ToString(dataRow[BUSINESS_EMAIL_COLUMN]);
             newObject.BusinessAddress = Convert.ToString(dataRow[BUSINESS_ADDRESS_COLUMN]);
@@ -118,9 +114,9 @@ namespace FlyEatsApp.Models
             newObject.BusinessWebsiteUrl = Convert.ToString(dataRow[BUSINESS_WEBSITE_URL_COLUMN]);
             newObject.BusinessTempClose = Convert.ToBoolean(dataRow[BUSINESS_TIME_CLOSE_COLUMN]);
             newObject.TempCloseDate = dataRow[BUSINESS_TILL_DATE_COLUMN] == DBNull.Value ? null : (DateTime?)Convert.ToDateTime(dataRow[BUSINESS_TILL_DATE_COLUMN]);
-            newObject.ExpiryDate = dataRow[BUSINESS_EXPIRY_DATE_COLUMN] == DBNull.Value ? null : (DateTime?)Convert.ToDateTime(dataRow[BUSINESS_TILL_DATE_COLUMN]);
-            newObject.CreateDate = dataRow[BUSINESS_CREATION_DATE_COLUMN] == DBNull.Value ? null : (DateTime?)Convert.ToDateTime(dataRow[BUSINESS_TILL_DATE_COLUMN]);
-            newObject.UpdateDate = dataRow[BUSINESS_UPDATE_DATE_COLUMN] == DBNull.Value ? null : (DateTime?)Convert.ToDateTime(dataRow[BUSINESS_TILL_DATE_COLUMN]);
+            newObject.ExpiryDate = dataRow[BUSINESS_EXPIRY_DATE_COLUMN] == DBNull.Value ? null : (DateTime?)Convert.ToDateTime(dataRow[BUSINESS_EXPIRY_DATE_COLUMN]);
+            newObject.CreateDate = dataRow[BUSINESS_CREATION_DATE_COLUMN] == DBNull.Value ? null : (DateTime?)Convert.ToDateTime(dataRow[BUSINESS_CREATION_DATE_COLUMN]);
+            newObject.UpdateDate = dataRow[BUSINESS_UPDATE_DATE_COLUMN] == DBNull.Value ? null : (DateTime?)Convert.ToDateTime(dataRow[BUSINESS_UPDATE_DATE_COLUMN]);
             newObject.Deleted = Convert.ToBoolean(dataRow[BUSINESS_DELETED_COLUMN]);
             newObject.Active = Convert.ToBoolean(dataRow[BUSINESS_ACTIVE_COLUMN]);
             

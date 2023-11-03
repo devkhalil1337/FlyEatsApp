@@ -85,9 +85,9 @@ namespace DataAccessLayer
             return dataSet;
         }
 
-        public object ExecuteStoredProcedureWithReturnObject(string procName, Dictionary<string, object> parameters)
+        public ResponseModel ExecuteStoredProcedureWithReturnObject(string procName, Dictionary<string, object> parameters)
         {
-            object result = null;
+            var result = new ResponseModel();
 
             try
             {
@@ -102,7 +102,21 @@ namespace DataAccessLayer
                     command.Parameters.Add(parameter);
                 }
 
-                result = command.ExecuteScalar();
+                var rowsAffected = command.ExecuteScalar();
+                int Id = rowsAffected != null ? Convert.ToInt32(rowsAffected) : 0;
+                if(Id != null)
+                {
+                    result.setId(Id);
+                }
+                result.success = true;
+                result.message = "";
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+                Debug.WriteLine(ex.StackTrace);
+                result.success = false;
+                result.message = ex.Message;
             }
             finally
             {

@@ -12,11 +12,15 @@ namespace FlyEatsApp.Controllers
     {
 
         [HttpPost]
-        public long AddNewBusinessUnit(BusinessInfo businessInfo)
+        public object AddNewBusinessUnit(BusinessInfo businessInfo)
         {
             BusinessInfoProvider businessInfoProvider = new BusinessInfoProvider();
             var result = businessInfoProvider.AddNewBusinessUnit(businessInfo);
-            return result;
+            if (!result.success)
+            {
+                return BadRequest(result);
+            }
+            return Ok(result);
         }
 
        [HttpPost]
@@ -24,7 +28,11 @@ namespace FlyEatsApp.Controllers
         {
             BusinessInfoProvider businessInfoProvider = new BusinessInfoProvider();
             var result = businessInfoProvider.UpdateBusinessUnit(businessInfo);
-            return result;
+            if (!result.success)
+            {
+                return BadRequest(result);
+            }
+            return Ok(result);
         }
 
         [HttpGet]
@@ -46,11 +54,15 @@ namespace FlyEatsApp.Controllers
         }
 
         [HttpDelete]
-       public Boolean DeleteBusinessUnit(long BusinessId)
+       public object DeleteBusinessUnit(long BusinessId)
        {
            BusinessInfoProvider businessInfoProvider = new BusinessInfoProvider();
            var result = businessInfoProvider.DeleteBusinessUnit(BusinessId);
-           return result;
-       }
+            if (!result.success)
+            {
+                return BadRequest(result);
+            }
+            return Ok(result);
+        }
     }
 }

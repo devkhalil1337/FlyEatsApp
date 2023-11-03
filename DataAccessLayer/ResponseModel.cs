@@ -10,12 +10,24 @@ namespace DataAccessLayer
     {
         public string message { get; set; }
         public bool success { get; set; }
+        private int? Id { get; set; }
 
 
         public ResponseModel()
         {
 
         }
+
+
+        public void setId(int Id)
+        {
+            this.Id = Id;
+        }
+        public int GetId()
+        {
+            return (int)this.Id;
+        }
+
 
         public object onSuccess()
         {

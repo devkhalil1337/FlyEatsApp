@@ -14,7 +14,7 @@ namespace DataAccessLayer
         DataTable Query(string queryString);
         void UpdateTable(DataTable table);
         DataSet ExecuteStoredProcedure(string procName, Dictionary<string, object> parameters);
-        object ExecuteStoredProcedureWithReturnObject(string procName, Dictionary<string, object> parameters);
+        ResponseModel ExecuteStoredProcedureWithReturnObject(string procName, Dictionary<string, object> parameters);
         bool ExecuteNonQueryStoredProcedure(string procName, Dictionary<string, object> parameters);
 
         int ExecuteScalarStoredProcedure(string procName, Dictionary<string, object> parameters);

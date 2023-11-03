@@ -250,7 +250,7 @@ namespace FlyEatsApp.Providers
 
             try
             {
-                var results = dataAccessProvider.ExecuteStoredProcedureWithReturnMessage(storedProcedureName, parameters);
+                dataAccessProvider.ExecuteStoredProcedureWithReturnMessage(storedProcedureName, parameters);
                 response.success = true;
                 response.message = "";
             }

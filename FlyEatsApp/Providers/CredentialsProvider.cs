@@ -32,6 +32,7 @@ namespace FlyEatsApp.Providers
 
         public long CanUserLogin(string userName, string password)
         {
+            ResponseModel response = new ResponseModel();
             IDatabaseAccessProvider dataAccessProvider = new SqlDataAccess(_ConnectionString);
             var storedProcedureName = "sp_GetInternalUserByCredentials";
 
@@ -42,14 +43,15 @@ namespace FlyEatsApp.Providers
 
             try
             {
-                var userId = dataAccessProvider.ExecuteStoredProcedureWithReturnObject(storedProcedureName, parameters);
+                response = dataAccessProvider.ExecuteStoredProcedureWithReturnObject(storedProcedureName, parameters);
 
-                return userId == null ? -1 : Convert.ToInt64(userId);
+                return response.GetId();
 
             }
             catch (Exception ex)
             {
-               
+                response.success = false;
+                response.message = ex.Message;
             }
 
             return -1;

@@ -50,9 +50,9 @@ namespace FlyEatsApp.Providers
 
 
 
-        public long AddNewBusinessUnit (BusinessInfo businessInfo)
+        public ResponseModel AddNewBusinessUnit (BusinessInfo businessInfo)
         {
-            
+            ResponseModel response = new ResponseModel();
             IDatabaseAccessProvider dataAccessProvider = new SqlDataAccess(_ConnectionString);
             var storedProcedureName = "SP_AddNewBusiness";
 
@@ -86,25 +86,27 @@ namespace FlyEatsApp.Providers
 
             try
             {
-                var id = dataAccessProvider.ExecuteStoredProcedureWithReturnMessage(storedProcedureName, parameters);
-                return id == null ? -1 : Convert.ToInt64(id);
+                response = dataAccessProvider.ExecuteStoredProcedureWithReturnObject(storedProcedureName, parameters);
             }
             catch (Exception ex)
             {
-               /* LogEntry logEntry = new LogEntry()
-                {
-                    Severity = System.Diagnostics.TraceEventType.Error,
-                    Title = string.Format("Creating New business Info for a customer ", businessInfo.BusinessName),
-                    Message = ex.Message + Environment.NewLine + ex.StackTrace
-                };
-                Logger.Write(logEntry);*/
+                response.success = false;
+                response.message = ex.Message;
+                /* LogEntry logEntry = new LogEntry()
+                 {
+                     Severity = System.Diagnostics.TraceEventType.Error,
+                     Title = string.Format("Creating New business Info for a customer ", businessInfo.BusinessName),
+                     Message = ex.Message + Environment.NewLine + ex.StackTrace
+                 };
+                 Logger.Write(logEntry);*/
             }
 
 
-            return -1;
+            return response;
         }
-        public object UpdateBusinessUnit(BusinessInfo businessInfo)
+        public ResponseModel UpdateBusinessUnit(BusinessInfo businessInfo)
         {
+            ResponseModel response = new ResponseModel();
             IDatabaseAccessProvider dataAccessProvider = new SqlDataAccess(_ConnectionString);
             var storedProcedureName = "SP_UpdateBusinesInfo";
 
@@ -136,16 +138,16 @@ namespace FlyEatsApp.Providers
 
             try
             {
-                var result = dataAccessProvider.ExecuteNonQueryStoredProcedure(storedProcedureName, parameters);
-                return result;
+                response = dataAccessProvider.ExecuteStoredProcedureWithReturnObject(storedProcedureName, parameters);
             }
             catch (Exception ex)
             {
-               
+                response.success = false;
+                response.message = ex.Message;
             }
 
 
-            return false;
+            return response;
         }
         public IList<BusinessInfo> GetBusinessUnitById(int BusinessId)
         {
@@ -171,16 +173,17 @@ namespace FlyEatsApp.Providers
             }
             catch (Exception ex)
             {
-               
+                return new List<BusinessInfo>();
             }
             
             
             return GetBusinessUnits;
 
         } 
-        public bool DeleteBusinessUnit(long BusinessId)
+        public ResponseModel DeleteBusinessUnit(long BusinessId)
            {
-               IDatabaseAccessProvider dataAccessProvider = new SqlDataAccess(_ConnectionString);
+            ResponseModel response = new ResponseModel();
+            IDatabaseAccessProvider dataAccessProvider = new SqlDataAccess(_ConnectionString);
                var storedProcedureName = "SP_DeleteBusinessInfo";
 
                Dictionary<string, object> parameters = new Dictionary<string, object> {
@@ -189,15 +192,19 @@ namespace FlyEatsApp.Providers
 
                try
                {
-                   var result = dataAccessProvider.ExecuteNonQueryStoredProcedure(storedProcedureName, parameters);
-                   return result;
-               }
+                   dataAccessProvider.ExecuteNonQueryStoredProcedure(storedProcedureName, parameters);
+                   response.success = true;
+                  response.message = "";
+              }
                catch (Exception ex)
-               {
+               { 
+                
+                response.success = false;
+                response.message = ex.Message;
                   
                }
 
-               return false;
+               return response;
            }
     }
 }
