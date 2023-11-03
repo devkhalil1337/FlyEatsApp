@@ -101,5 +101,59 @@ namespace FlyEatsApp.Providers
             }
             return errorMessage.Length > 0 ? result.onError(errorMessage) : result.onSuccess();
         }
+
+        public void AddDefaultBusinessDays(int businessId)
+        {
+            List<string> defaultWeekdays = new List<string> {
+                "Monday",
+                 "Tuesday",
+                 "Wednesday",
+                 "Thursday",
+                 "Friday",
+                 "Saturday",
+                 "Sunday"
+               };
+
+            List<BusinessTimes> defaultBusinessTimes = new List<BusinessTimes>
+            {
+                new BusinessTimes
+                {
+                    startDate = "08:00",
+                    endDate = "17:00"
+                },
+            };
+
+            var result = new ResponseModel();
+            IDatabaseAccessProvider dataAccessProvider = new SqlDataAccess(_ConnectionString);
+            BusinessTimesProvider businessTimesProvider = new BusinessTimesProvider();
+            var storedProcedureName = "SP_AddBusinessDays";
+            var statusChangedDateTime = DateTime.UtcNow;
+            for (int i = 0; i < defaultWeekdays.Count; i++)
+            {
+                Dictionary<string, object> parameters = new Dictionary<string, object> {
+                    {
+                        "BusinessId",
+                        businessId
+                    }, {
+                        "WeekDayName",
+                        defaultWeekdays[i]
+                    }, {
+                        "Active",
+                        true
+                    },
+                };
+
+                try {
+                    result = dataAccessProvider.ExecuteStoredProcedureWithReturnObject(storedProcedureName, parameters);
+                    //businessTimesProvider.AddBusinessHours(defaultBusinessTimes, result.GetId());
+                }
+                catch (Exception ex)
+                {
+                    
+
+                }
+            }
+
+        }
     }
 }

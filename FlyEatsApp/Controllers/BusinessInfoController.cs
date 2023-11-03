@@ -14,8 +14,10 @@ namespace FlyEatsApp.Controllers
         [HttpPost]
         public object AddNewBusinessUnit(BusinessInfo businessInfo)
         {
+  //          BusinessHoursProvider businessHoursProvider = new BusinessHoursProvider();
             BusinessInfoProvider businessInfoProvider = new BusinessInfoProvider();
             var result = businessInfoProvider.AddNewBusinessUnit(businessInfo);
+//            businessHoursProvider.AddDefaultBusinessDays((int)businessInfo.BusinessId);
             if (!result.success)
             {
                 return BadRequest(result);
