@@ -8,6 +8,7 @@ using System.Security.Claims;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using FlyEatsApp.Functions;
+using DataAccessLayer;
 
 namespace FlyEatsApp.Controllers
 {
@@ -24,9 +25,9 @@ namespace FlyEatsApp.Controllers
             string encryptedPassword = CipherProvider.EncryptPassword(loginModel.Password);
 
 
-            var userId = credentialsProvider.CanUserLogin(loginModel.UserName, encryptedPassword);
+            var results = credentialsProvider.CanUserLogin(loginModel.UserName, encryptedPassword);
 
-            if (userId > 0)
+            if (results.success)
             {
                 credentialsResult.Result = CredentialsStatus.Success;
 
@@ -51,6 +52,7 @@ namespace FlyEatsApp.Controllers
         [HttpPost]
         public IActionResult AddNewCreate([FromBody] InternalUser user)
         {
+            var results = new ResponseModel();
             CredentialsResult credentialsResult = new CredentialsResult();
 
             CredentialsProvider credentialsProvider = new CredentialsProvider();
@@ -58,19 +60,17 @@ namespace FlyEatsApp.Controllers
 
 
             user.Password = CipherProvider.EncryptPassword(user.Password);
-
-            var userId = credentialsProvider.CreateNewUser(user);
-            if (userId > 0)
+            if(user.Id != null)
             {
-                credentialsResult.Result = CredentialsStatus.Success;
-                //           var user = credentialsProvider.GetUser(user.UserName);
+                results = credentialsProvider.UpdateInternalUser(user);
             }
             else
             {
-                credentialsResult.Result = CredentialsStatus.Failed;
+                results = credentialsProvider.CreateNewUser(user);
             }
+            
 
-            return Ok(new CredentialsResult { Result = credentialsResult.Result });
+            return Ok(results);
         }
 
         [HttpGet]
@@ -86,6 +86,13 @@ namespace FlyEatsApp.Controllers
            return credentialsProvider.GetAllInternalUserByBusinessId(businessId);
         }
 
+        [HttpDelete("{id}")]
+        public object DeleteInternalUser(int id)
+        {
+            CredentialsProvider credentialsProvider = new CredentialsProvider();
+            var result = credentialsProvider.DeleteInternalUser(id);
+            return result;
+        }
 
 
     }

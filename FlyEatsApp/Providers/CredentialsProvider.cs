@@ -30,7 +30,7 @@ namespace FlyEatsApp.Providers
             _ConnectionString = builder.Build().GetSection("ConnectionStrings").GetSection("DefaultConnection").Value;
         }
 
-        public long CanUserLogin(string userName, string password)
+        public ResponseModel CanUserLogin(string userName, string password)
         {
             ResponseModel response = new ResponseModel();
             IDatabaseAccessProvider dataAccessProvider = new SqlDataAccess(_ConnectionString);
@@ -45,7 +45,7 @@ namespace FlyEatsApp.Providers
             {
                 response = dataAccessProvider.ExecuteStoredProcedureWithReturnObject(storedProcedureName, parameters);
 
-                return response.GetId();
+                return response;
 
             }
             catch (Exception ex)
@@ -54,7 +54,7 @@ namespace FlyEatsApp.Providers
                 response.message = ex.Message;
             }
 
-            return -1;
+            return response;
         }
 
         public bool DoesUserExist(string email)
@@ -82,8 +82,9 @@ namespace FlyEatsApp.Providers
             return false;
         }
 
-        public long CreateNewUser(InternalUser user)
+        public ResponseModel CreateNewUser(InternalUser user)
         {
+            var results = new ResponseModel();
             IDatabaseAccessProvider dataAccessProvider = new SqlDataAccess(_ConnectionString);
             var storedProcedureName = "sp_AddInternalUser";
 
@@ -106,13 +107,15 @@ namespace FlyEatsApp.Providers
 
             try
             {
-                var userId = dataAccessProvider.ExecuteScalarStoredProcedure(storedProcedureName, parameters);
+                results = dataAccessProvider.ExecuteStoredProcedureWithReturnObject(storedProcedureName, parameters);
 
-                return userId == null ? -1 : Convert.ToInt64(userId);
+                return results;
 
             }
             catch (Exception ex)
             {
+                results.message = ex.Message;
+                results.success = false;
                 /*LogEntry logEntry = new LogEntry()
                 {
                     Severity = System.Diagnostics.TraceEventType.Error,
@@ -123,7 +126,90 @@ namespace FlyEatsApp.Providers
             }
 
 
-            return -1;
+            return results;
+        }
+
+        public ResponseModel UpdateInternalUser(InternalUser user)
+        {
+            var results = new ResponseModel();
+            IDatabaseAccessProvider dataAccessProvider = new SqlDataAccess(_ConnectionString);
+            var storedProcedureName = "SP_UpdateInternalUser";
+
+            var joinDate = DateTime.UtcNow;
+
+            Dictionary<string, object> parameters = new Dictionary<string, object> {
+                { "Id", user.Id },
+                { "BusinessId", user.BusinessId },
+                { "FullName", user.FullName },
+                { "Username", user.Username },
+                { "Email", user.Email },
+                { "Password", user.Password },
+                { "MobileNumber", user.MobileNumber },
+                { "AccountType", user.AccountType },
+                { "Role", user.Role },
+                { "CreationDate", joinDate },
+                { "UpdateDate", joinDate },
+                { "IsDeleted", user.IsDeleted },
+                { "Active", user.Active }
+                };
+
+            try
+            {
+                results = dataAccessProvider.ExecuteStoredProcedureWithReturnObject(storedProcedureName, parameters);
+
+                return results;
+
+            }
+            catch (Exception ex)
+            {
+                results.message = ex.Message;
+                results.success = false;
+                /*LogEntry logEntry = new LogEntry()
+                {
+                    Severity = System.Diagnostics.TraceEventType.Error,
+                    Title = "Agency User SignUp",
+                    Message = ex.Message + Environment.NewLine + ex.StackTrace
+                };
+                Logger.Write(logEntry);*/
+            }
+
+
+            return results;
+        }
+
+        public ResponseModel DeleteInternalUser(int id)
+        {
+            var results = new ResponseModel();
+            IDatabaseAccessProvider dataAccessProvider = new SqlDataAccess(_ConnectionString);
+            var storedProcedureName = "SP_DeleteInternalUser";
+
+            var joinDate = DateTime.UtcNow;
+
+            Dictionary<string, object> parameters = new Dictionary<string, object> {
+                { "Id", id }
+                };
+
+            try
+            {
+                results = dataAccessProvider.ExecuteStoredProcedureWithReturnObject(storedProcedureName, parameters);
+                return results;
+
+            }
+            catch (Exception ex)
+            {
+                results.message = ex.Message;
+                results.success = false;
+                /*LogEntry logEntry = new LogEntry()
+                {
+                    Severity = System.Diagnostics.TraceEventType.Error,
+                    Title = "Agency User SignUp",
+                    Message = ex.Message + Environment.NewLine + ex.StackTrace
+                };
+                Logger.Write(logEntry);*/
+            }
+
+
+            return results;
         }
 
         public InternalUser GetUser(string username)
