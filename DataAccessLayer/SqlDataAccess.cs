@@ -125,6 +125,50 @@ namespace DataAccessLayer
             return result;
         }
 
+        public ResponseModel ExecuteUpdateStoredProcedureWithReturnObject(string procName, Dictionary<string, object> parameters)
+        {
+            var result = new ResponseModel();
+
+            try
+            {
+                this._SqlConnection.Open();
+
+                var command = new SqlCommand(procName, this._SqlConnection) { CommandType = CommandType.StoredProcedure };
+
+                foreach (KeyValuePair<string, object> pair in parameters)
+                {
+                    var parameter = new SqlParameter(pair.Key, pair.Value);
+                    SetSqlType(ref parameter, pair.Value);
+                    command.Parameters.Add(parameter);
+                }
+
+                var rowsAffected = command.ExecuteNonQuery(); // Use ExecuteNonQuery to get the number of rows affected
+
+                result.success = rowsAffected > 0; // Check if rows were updated
+
+                if (result.success)
+                {
+                    result.message = $"{rowsAffected} rows updated successfully.";
+                }
+                else
+                {
+                    result.message = "No rows were updated.";
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+                Debug.WriteLine(ex.StackTrace);
+                result.success = false;
+                result.message = ex.Message;
+            }
+            finally
+            {
+                this._SqlConnection.Close();
+            }
+            return result;
+        }
+
         public bool ExecuteNonQueryStoredProcedure(string procName, Dictionary<string, object> parameters)
         {
             bool result;

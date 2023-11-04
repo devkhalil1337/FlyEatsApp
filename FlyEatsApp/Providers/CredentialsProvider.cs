@@ -30,9 +30,9 @@ namespace FlyEatsApp.Providers
             _ConnectionString = builder.Build().GetSection("ConnectionStrings").GetSection("DefaultConnection").Value;
         }
 
-        public ResponseModel CanUserLogin(string userName, string password)
+        public object CanUserLogin(string userName, string password)
         {
-            ResponseModel response = new ResponseModel();
+            
             IDatabaseAccessProvider dataAccessProvider = new SqlDataAccess(_ConnectionString);
             var storedProcedureName = "sp_GetInternalUserByCredentials";
 
@@ -43,18 +43,22 @@ namespace FlyEatsApp.Providers
 
             try
             {
-                response = dataAccessProvider.ExecuteStoredProcedureWithReturnObject(storedProcedureName, parameters);
+                var dataSet = dataAccessProvider.ExecuteStoredProcedure(storedProcedureName, parameters);
 
-                return response;
+                if (dataSet.Tables.Count < 1 || dataSet.Tables[0].Rows.Count < 1)
+                    return null;
+
+                DataRow dataRow = dataSet.Tables[0].Rows[0];
+
+                var appUser = InternalUser.ExtractFromDataRow(dataRow);
+                return appUser;
 
             }
             catch (Exception ex)
             {
-                response.success = false;
-                response.message = ex.Message;
             }
 
-            return response;
+            return null;
         }
 
         public bool DoesUserExist(string email)

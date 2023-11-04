@@ -27,7 +27,7 @@ namespace FlyEatsApp.Controllers
 
             var results = credentialsProvider.CanUserLogin(loginModel.UserName, encryptedPassword);
 
-            if (results.success)
+            if (results != null)
             {
                 credentialsResult.Result = CredentialsStatus.Success;
 

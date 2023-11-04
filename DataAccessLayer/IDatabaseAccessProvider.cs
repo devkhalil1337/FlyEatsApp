@@ -20,5 +20,7 @@ namespace DataAccessLayer
         int ExecuteScalarStoredProcedure(string procName, Dictionary<string, object> parameters);
 
         object ExecuteStoredProcedureWithReturnMessage(string procName, Dictionary<string, object> parameters);
+        ResponseModel ExecuteUpdateStoredProcedureWithReturnObject(string procName, Dictionary<string, object> parameters);
+        
     }
 }
