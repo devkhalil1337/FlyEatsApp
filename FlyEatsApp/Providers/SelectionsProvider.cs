@@ -66,7 +66,7 @@ namespace FlyEatsApp.Providers
 
             return AllSelections;
         }
-        public object AddNewSelections(Selections selections)
+        public ResponseModel AddNewSelections(Selections selections)
         {
             var results = new ResponseModel();
             IDatabaseAccessProvider dataAccessProvider = new SqlDataAccess(_ConnectionString);
@@ -89,21 +89,22 @@ namespace FlyEatsApp.Providers
 
             try
             {
-                var productId = dataAccessProvider.ExecuteStoredProcedureWithReturnObject(storedProcedureName, parameters);
-                int _productId = (int)(productId == null ? -1 : Convert.ToInt64(productId));
+                results = dataAccessProvider.ExecuteStoredProcedureWithReturnObject(storedProcedureName, parameters);
                 int _businessId = (int) selections.BusinessId;
-                if (_productId > -1 && selections.selectionChoices != null && selections.selectionChoices.Count > 0)
+                if (results.GetId() > -1 && selections.selectionChoices != null && selections.selectionChoices.Count > 0)
                 {
                     SelectionChoicesProvider selectionChoicesProvider = new SelectionChoicesProvider();
-                    selectionChoicesProvider.AddNewSelectionChoices(selections.selectionChoices, _productId, _businessId);
+                    selectionChoicesProvider.AddNewSelectionChoices(selections.selectionChoices, results.GetId(), _businessId);
                 }
-
-                return results.onSuccess();
+                results.success = true;
+                results.message = "";
+                return results;
             }
             catch (Exception ex)
             {
-
-                return results.onError(ex.Message);
+                results.success = false;
+                results.message = ex.Message;
+                return results;
                 /* LogEntry logEntry = new LogEntry()
                  {
                      Severity = System.Diagnostics.TraceEventType.Error,
@@ -114,10 +115,10 @@ namespace FlyEatsApp.Providers
             }
 
 
-            return -1;
+            return results;
 
         }
-        public object UpdateSelections(Selections selections)
+        public ResponseModel UpdateSelections(Selections selections)
         {
             var result = new ResponseModel();
             IDatabaseAccessProvider dataAccessProvider = new SqlDataAccess(_ConnectionString);
@@ -139,7 +140,7 @@ namespace FlyEatsApp.Providers
 
             try
             {
-                result = (ResponseModel) dataAccessProvider.ExecuteStoredProcedureWithReturnMessage(storedProcedureName, parameters);
+                result = dataAccessProvider.ExecuteUpdateStoredProcedureWithReturnObject(storedProcedureName, parameters);
                 if (result.success)
                 {
                     int selectionId = (int) selections.SelectionId;
@@ -150,15 +151,26 @@ namespace FlyEatsApp.Providers
                         selectionChoicesProvider.AddNewSelectionChoices(selections.selectionChoices, selectionId, _businessId);
                     }
                 }
-                return result.onSuccess();
+                result.success = true;
+                result.message = "";
+                return result;
             }
             catch (Exception ex)
             {
-                return result.onError(ex.Message);
+                result.success = false;
+                result.message = ex.Message;
+                return result;
+                /* LogEntry logEntry = new LogEntry()
+                 {
+                     Severity = System.Diagnostics.TraceEventType.Error,
+                     Title = string.Format("Creating New business Info for a customer ", categories.BusinessName),
+                     Message = ex.Message + Environment.NewLine + ex.StackTrace
+                 };
+                 Logger.Write(logEntry);*/
             }
 
 
-            return false;
+            return result;
         }
         public IList<Selections> GetSelectionsById(int selectionId)
         {

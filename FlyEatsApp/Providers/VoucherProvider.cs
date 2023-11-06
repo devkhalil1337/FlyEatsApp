@@ -128,9 +128,9 @@ namespace FlyEatsApp.Providers
             }
         }
 
-        public object UpdateVoucher(Voucher voucher)
+        public ResponseModel UpdateVoucher(Voucher voucher)
         {
-            var results = new ResponseModel();
+            ResponseModel results = new ResponseModel();
             var storedProcedureName = "SP_UpdateVoucher";
             IDatabaseAccessProvider dataAccessProvider = new SqlDataAccess(_ConnectionString);
             Dictionary<string, object> parameters = new Dictionary<string, object> {
@@ -148,15 +148,24 @@ namespace FlyEatsApp.Providers
 
             try
             {
-                var rowsAffected = dataAccessProvider.ExecuteStoredProcedureWithReturnObject(storedProcedureName, parameters);
-
-                return results.onSuccess();
+                results = dataAccessProvider.ExecuteStoredProcedureWithReturnObject(storedProcedureName, parameters);
             }
             catch (Exception ex)
             {
-                // Handle the exception
-                return results.onError(ex.Message);
+
+                results.success = false;
+                results.message = ex.Message;
+                /* LogEntry logEntry = new LogEntry()
+                 {
+                     Severity = System.Diagnostics.TraceEventType.Error,
+                     Title = string.Format("Creating New business Info for a customer ", categories.BusinessName),
+                     Message = ex.Message + Environment.NewLine + ex.StackTrace
+                 };
+                 Logger.Write(logEntry);*/
             }
+
+
+            return results;
         }
 
         public bool DeleteVoucher(int voucherId)

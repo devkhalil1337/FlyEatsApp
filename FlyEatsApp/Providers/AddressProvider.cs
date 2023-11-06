@@ -50,8 +50,9 @@ namespace FlyEatsApp.Providers
             return addresses;
         }
 
-        public int AddAddress(AddressBook address)
+        public ResponseModel AddAddress(AddressBook address)
         {
+            ResponseModel response = new ResponseModel();
             IDatabaseAccessProvider dataAccessProvider = new SqlDataAccess(_ConnectionString);
             var storedProcedureName = "SP_AddAddress";
             Dictionary<string, object> parameters = new Dictionary<string, object> {
@@ -71,19 +72,19 @@ namespace FlyEatsApp.Providers
 
             try
             {
-                var result = dataAccessProvider.ExecuteStoredProcedureWithReturnObject(storedProcedureName, parameters);
-                if (result == null)
-                    return 0;
-                return (int)Convert.ToInt64(result);
+                response = dataAccessProvider.ExecuteStoredProcedureWithReturnObject(storedProcedureName, parameters);
             }
             catch (Exception ex)
             {
-                return 0;
+                response.success = false;
+                response.message = ex.Message;
             }
+            return response;
         }
 
-        public bool UpdateAddress(AddressBook address)
+        public ResponseModel UpdateAddress(AddressBook address)
         {
+            ResponseModel response = new ResponseModel();
             IDatabaseAccessProvider dataAccessProvider = new SqlDataAccess(_ConnectionString);
             var storedProcedureName = "SP_UpdateAddress";
             Dictionary<string, object> parameters = new Dictionary<string, object> {
@@ -102,17 +103,17 @@ namespace FlyEatsApp.Providers
             };
             try
             {
-                var dataSet = dataAccessProvider.ExecuteStoredProcedure(storedProcedureName, parameters);
-                if (dataSet.Tables.Count > 0 && dataSet.Tables[0].Rows.Count > 0)
-                {
-                    return true;
-                }
+                response = dataAccessProvider.ExecuteStoredProcedureWithReturnObject(storedProcedureName, parameters);
+
             }
             catch (Exception ex)
             {
-                return false;
+                response.success = false;
+                response.message = ex.Message;
             }
-            return false;
+
+
+            return response;
         }
 
         public AddressBook GetAddressById(int addressId)
@@ -144,23 +145,28 @@ namespace FlyEatsApp.Providers
         }
 
 
-        public void DeleteAddress(int addressId)
+        public ResponseModel DeleteAddress(int addressId)
         {
+            ResponseModel response = new ResponseModel();
             IDatabaseAccessProvider dataAccessProvider = new SqlDataAccess(_ConnectionString);
             var storedProcedureName = "SP_DeleteAddress";
             Dictionary<string, object> parameters = new Dictionary<string, object> {
             { "AddressId", addressId },
             { "Active", false }
         };
-
         try
         {
-           dataAccessProvider.ExecuteStoredProcedureWithReturnMessage(storedProcedureName, parameters);
+            response = dataAccessProvider.ExecuteStoredProcedureWithReturnObject(storedProcedureName, parameters);
         }
         catch (Exception ex)
         {
-            // Log the error
-            }
+
+            response.success = false;
+            response.message = ex.Message;
+
+        }
+
+        return response;
         }
 
 

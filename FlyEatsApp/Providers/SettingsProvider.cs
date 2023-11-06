@@ -49,9 +49,9 @@ namespace FlyEatsApp.Providers
         }
 
 
-        public object AddNewSettings(Settings settings)
+        public ResponseModel AddNewSettings(Settings settings)
         {
-            var results = new ResponseModel();
+            ResponseModel results = new ResponseModel();
             IDatabaseAccessProvider dataAccessProvider = new SqlDataAccess(_ConnectionString);
             var storedProcedureName = "SP_AddNewSettings";
 
@@ -79,13 +79,13 @@ namespace FlyEatsApp.Providers
 
             try
             {
-                var productId = dataAccessProvider.ExecuteStoredProcedureWithReturnObject(storedProcedureName, parameters);
-                return results.onSuccess();
+                results = dataAccessProvider.ExecuteStoredProcedureWithReturnObject(storedProcedureName, parameters);
             }
             catch (Exception ex)
             {
 
-                return results.onError(ex.Message);
+                results.success = false;
+                results.message = ex.Message;
                 /* LogEntry logEntry = new LogEntry()
                  {
                      Severity = System.Diagnostics.TraceEventType.Error,
@@ -96,12 +96,12 @@ namespace FlyEatsApp.Providers
             }
 
 
-            return -1;
+            return results;
 
         }
-        public object UpdateSettings(Settings settings)
+        public ResponseModel UpdateSettings(Settings settings)
         {
-            var results = new ResponseModel();
+            ResponseModel results = new ResponseModel();
             IDatabaseAccessProvider dataAccessProvider = new SqlDataAccess(_ConnectionString);
             var storedProcedureName = "SP_UpdateSettings";
 
@@ -129,13 +129,13 @@ namespace FlyEatsApp.Providers
 
             try
             {
-                var productId = dataAccessProvider.ExecuteStoredProcedureWithReturnObject(storedProcedureName, parameters);
-                return results.onSuccess();
+                results = dataAccessProvider.ExecuteStoredProcedureWithReturnObject(storedProcedureName, parameters);
             }
             catch (Exception ex)
             {
 
-                return results.onError(ex.Message);
+                results.success = false;
+                results.message = ex.Message;
                 /* LogEntry logEntry = new LogEntry()
                  {
                      Severity = System.Diagnostics.TraceEventType.Error,
@@ -146,7 +146,7 @@ namespace FlyEatsApp.Providers
             }
 
 
-            return -1;
+            return results;
 
         }
     }
