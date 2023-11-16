@@ -167,9 +167,9 @@ namespace FlyEatsApp.Providers
 
             try
             {
-                int isUpdated = dataAccessProvider.ExecuteScalarStoredProcedure(storedProcedureName, parameters);
+                bool isUpdated = dataAccessProvider.ExecuteNonQueryStoredProcedure(storedProcedureName, parameters);
                 int _productId = (int)product.ProductId, _businessId = (int)product.BusinessId;
-                if (isUpdated > 0)
+                if (isUpdated)
                 {
                     ProductVariantsProvider productVariantsProvider = new ProductVariantsProvider();
                     if (product.productVariants != null && product.productVariants.Count > 0)

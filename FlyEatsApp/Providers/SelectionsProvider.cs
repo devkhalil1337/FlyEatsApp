@@ -211,7 +211,7 @@ namespace FlyEatsApp.Providers
 
         }
 
-        public IList<Selections> GetMultipleSelectionsById(int[] selectionId)
+        public IList<Selections> GetMultipleSelectionsById(int[] selectionId, int businessId)
         {
             List<Selections> GetSelection = new List<Selections>();
             SelectionChoicesProvider selectionChoicesProvider = new SelectionChoicesProvider();
@@ -223,7 +223,8 @@ namespace FlyEatsApp.Providers
             for(int i = 0; i < selectionId.Length; i++)
             {
                 Dictionary<string, object> parameters = new Dictionary<string, object> {
-                   { "SelectionId", selectionId[i] }
+                   { "SelectionId", selectionId[i] },
+                    {"BusinessId" , businessId}
                };
 
                 try

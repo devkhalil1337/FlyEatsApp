@@ -40,7 +40,8 @@ namespace FlyEatsApp.Controllers
         public IEnumerable<Selections> GetMultipleSelectionsById([FromBody]  int[] selectionId)
         {
             SelectionsProvider selectionsProvider = new SelectionsProvider();
-            var result = selectionsProvider.GetMultipleSelectionsById(selectionId);
+            int businessId = businessUnitsFunctions.GetBusinessIdFromHeaders(Request);
+            var result = selectionsProvider.GetMultipleSelectionsById(selectionId, businessId);
             return result;
         }
 

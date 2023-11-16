@@ -169,6 +169,7 @@ namespace DataAccessLayer
             return result;
         }
 
+
         public bool ExecuteNonQueryStoredProcedure(string procName, Dictionary<string, object> parameters)
         {
             bool result;
@@ -188,8 +189,14 @@ namespace DataAccessLayer
                     }
                 }
 
+                SqlParameter returnParameter = command.Parameters.Add("RetVal", SqlDbType.Int);
+                returnParameter.Direction = ParameterDirection.ReturnValue;
+
                 int rowsAffected = command.ExecuteNonQuery();
-                result = rowsAffected > 0;
+                int returnValue = (int)returnParameter.Value;
+
+                // Check the return value to determine success or failure
+                result = returnValue == 1;
             }
             catch (Exception ex)
             {
@@ -201,8 +208,10 @@ namespace DataAccessLayer
             {
                 this._SqlConnection.Close();
             }
+
             return result;
         }
+
 
         public int ExecuteScalarStoredProcedure(string procName, Dictionary<string, object> parameters)
         {
