@@ -5,6 +5,8 @@ using System.Configuration;
 using System.Data;
 using DataAccessLayer;
 using Microsoft.Extensions.Logging.Abstractions;
+using log4net;
+using log4net.Core;
 
 namespace FlyEatsApp.Providers
 {
@@ -12,6 +14,7 @@ namespace FlyEatsApp.Providers
     {
 
         string _ConnectionString;
+        private static readonly ILog logger = LogManager.GetLogger(typeof(OrderDetailsProvider));
 
         public OrderDetailsProvider()
         {
@@ -47,8 +50,11 @@ namespace FlyEatsApp.Providers
             }
             catch (Exception ex)
             {
+                var logEntry = new LoggingEvent(typeof(OrderDetailsProvider), logger.Logger.Repository, "logger", Level.Error, "An error occurred while trying to retrieve order details: " + ex.Message + Environment.NewLine + ex.StackTrace, null); // Exception
+                logger.Logger.Log(logEntry);
                 // Log the exception
                 Console.WriteLine("An error occurred while trying to retrieve order details: " + ex.Message);
+                return new List<OrderDetails>();
             }
 
             return orderDetailsList;
@@ -90,6 +96,8 @@ namespace FlyEatsApp.Providers
                 }
                 catch (Exception ex)
                 {
+                    var logEntry = new LoggingEvent(typeof(OrderDetailsProvider),logger.Logger.Repository,"logger",Level.Error,"Adding order details : " + ex.Message + Environment.NewLine + ex.StackTrace,null); // Exception
+                    logger.Logger.Log(logEntry);
                     return results.onError(ex.Message);
                 }
             }

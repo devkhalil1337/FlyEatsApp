@@ -6,6 +6,7 @@ using System.Net.Http.Headers;
 using Stripe;
 using FlyEatsApp.Functions;
 using FlyEatsApp.Payloads;
+using log4net;
 
 namespace FlyEatsApp.Controllers
 {
@@ -13,7 +14,6 @@ namespace FlyEatsApp.Controllers
     [ApiController]
     public class OrderController : Controller
     {
-
         BusinessUnitsFunctions businessUnitsFunctions = new BusinessUnitsFunctions();
 
         [HttpPost]
