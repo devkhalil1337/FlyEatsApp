@@ -87,7 +87,7 @@ namespace FlyEatsApp.Providers
                    var orderDetailsId = dataAccessProvider.ExecuteStoredProcedureWithReturnObject(storedProcedureName, parameters);
                     if (order.ProductHaveSelection)
                     {
-                        int id = (int) Convert.ToInt64(orderDetailsId);
+                        int id = (int) Convert.ToInt64(orderDetailsId.GetId());
                         if (order.productVariants.Count > 0)
                         {
                             orderDetailSelectionRelationProvider.AddNewSelections(order.productVariants, id);
@@ -96,7 +96,8 @@ namespace FlyEatsApp.Providers
                 }
                 catch (Exception ex)
                 {
-                    var logEntry = new LoggingEvent(typeof(OrderDetailsProvider),logger.Logger.Repository,"logger",Level.Error,"Adding order details : " + ex.Message + Environment.NewLine + ex.StackTrace,null); // Exception
+                    var logMessage = $"Error adding order details: {ex.Message}\nStack Trace: {ex.StackTrace}";
+                    var logEntry = new LoggingEvent(typeof(OrderDetailsProvider),logger.Logger.Repository,"logger",Level.Error, logMessage, null); // Exception
                     logger.Logger.Log(logEntry);
                     return results.onError(ex.Message);
                 }
