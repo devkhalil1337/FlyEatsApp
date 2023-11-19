@@ -1,0 +1,4 @@
+2023-11-19 13:36:41,733 [.NET ThreadPool Worker] ERROR logger - Error adding order details: Object reference not set to an instance of an object.
+Stack Trace:    at FlyEatsApp.Providers.OrderDetailsProvider.AddNewOrderDetails(OrderDetails[] orders, Int32 businessId) in C:\Users\Khalil Gulraiz\source\repos\FlyEatsApp\FlyEatsApp\Providers\OrderDetailsProvider.cs:line 91
+2023-11-19 13:38:36,872 [.NET ThreadPool Worker] ERROR logger - Error adding order details: Object reference not set to an instance of an object.
+Stack Trace:    at FlyEatsApp.Providers.OrderDetailsProvider.AddNewOrderDetails(OrderDetails[] orders, Int32 businessId) in C:\Users\Khalil Gulraiz\source\repos\FlyEatsApp\FlyEatsApp\Providers\OrderDetailsProvider.cs:line 91

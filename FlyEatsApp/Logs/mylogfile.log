@@ -1,3 +1,0 @@
-2023-11-19 12:02:08,508 [.NET ThreadPool Worker] ERROR logger - Adding order details : Unable to cast object of type 'DataAccessLayer.ResponseModel' to type 'System.IConvertible'.
-   at System.Convert.ToInt64(Object value)
-   at FlyEatsApp.Providers.OrderDetailsProvider.AddNewOrderDetails(OrderDetails[] orders, Int32 businessId) in C:\Users\Khalil Gulraiz\source\repos\FlyEatsApp\FlyEatsApp\Providers\OrderDetailsProvider.cs:line 90

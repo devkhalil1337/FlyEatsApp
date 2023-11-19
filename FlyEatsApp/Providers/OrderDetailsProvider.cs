@@ -43,7 +43,7 @@ namespace FlyEatsApp.Providers
                     OrderDetails orderDetails = OrderDetails.ExtractObject(dataRow);
                     if (orderDetails.ProductHaveSelection)
                     {
-                        orderDetails.productVariants = orderDetailSelectionRelationProvider.GetSelectionsById(orderDetails.OrderDetailsId);
+                        orderDetails.productChoiceOfGroups = orderDetailSelectionRelationProvider.GetSelectionsById(orderDetails.OrderDetailsId);
                     }
                     orderDetailsList.Add(orderDetails);
                 }
@@ -88,9 +88,9 @@ namespace FlyEatsApp.Providers
                     if (order.ProductHaveSelection)
                     {
                         int id = (int) Convert.ToInt64(orderDetailsId.GetId());
-                        if (order.productVariants.Count > 0)
+                        if (order.productChoiceOfGroups.Count > 0)
                         {
-                            orderDetailSelectionRelationProvider.AddNewSelections(order.productVariants, id);
+                            orderDetailSelectionRelationProvider.AddNewSelections(order.productChoiceOfGroups, id);
                         }
                     }
                 }

@@ -39,7 +39,7 @@ namespace FlyEatsApp.Models
 
         public bool ProductHaveSelection { get; set; }
 
-        public List<OrderDetailSelectionRelation>? productVariants { get;set;}
+        public List<OrderDetailSelectionRelation>? productChoiceOfGroups { get;set;}
 
         public static OrderDetails ExtractObject(DataRow dataRow)
         {
