@@ -4,12 +4,17 @@ using FlyEatsApp.Models;
 using FlyEatsApp.Providers;
 using FlyEatsApp.Functions;
 using Stripe;
+using log4net;
+
 namespace FlyEatsApp.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
     public class PaymentGatewaysController : Controller
     {
+        private static readonly ILog logger = LogManager.GetLogger(typeof(PaymentGatewaysController));
+
+
         //Client Side
         [HttpGet]
         public IEnumerable<PaymentGatewayKeys> GetPaymentGatewaysKeysByBusinessId()
@@ -71,7 +76,7 @@ namespace FlyEatsApp.Controllers
             var options = new PaymentIntentCreateOptions
             {
                 Amount = (long)(paymentCharge.amount * 100), // Stripe uses smallest currency unit, e.g. cents for USD
-                Currency = "usd",
+                Currency = "gbp",
             };
 
             var service = new PaymentIntentService();
