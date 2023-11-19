@@ -6,12 +6,15 @@ using System.Data;
 using DataAccessLayer;
 using Microsoft.Extensions.Logging.Abstractions;
 using System.Security.Cryptography;
+using log4net;
+using log4net.Core;
+
 namespace FlyEatsApp.Providers
 {
     public class UserProvider
     {
         string _ConnectionString;
-
+        private static readonly ILog logger = LogManager.GetLogger(typeof(UserProvider));
         public UserProvider()
         {
             var builder = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json", optional: true);
@@ -48,13 +51,13 @@ namespace FlyEatsApp.Providers
             return user;
         }
 
-        public object InsertUser(User user)
+        public ResponseModel InsertUser(User user)
         {
             byte[] salt = GenerateSalt();
             string saltString = Convert.ToBase64String(salt);
             byte[] passwordHash = HashPasswordDBPassword(user.Password, salt);
             string passwordHashString = Convert.ToBase64String(passwordHash);
-
+            var results = new ResponseModel();
             IDatabaseAccessProvider dataAccessProvider = new SqlDataAccess(_ConnectionString);
             var storedProcedureName = "SP_AddNewCustomer";
             var parameters = new Dictionary<string,
@@ -91,12 +94,15 @@ namespace FlyEatsApp.Providers
 
             try
             {
-                return dataAccessProvider.ExecuteNonQueryStoredProcedure(storedProcedureName, parameters);
+                results = dataAccessProvider.ExecuteStoredProcedureWithReturnObject(storedProcedureName, parameters);
             }
             catch (Exception ex)
             {
-                return -1;
+                var logEntry = new LoggingEvent(typeof(OrderProvider), logger.Logger.Repository, "logger", Level.Error, "An error occurred while trying to Creating New User : " + ex.Message + Environment.NewLine + ex.StackTrace, null); // Exception
+                logger.Logger.Log(logEntry);
+                return results;
             }
+            return results;
         }
 
         public bool UpdateUser(User user)
@@ -184,17 +190,15 @@ namespace FlyEatsApp.Providers
             }
         }
 
-        public User AuthenticateUser(string email, string password,int businessId)
+        public object AuthenticateUser(string email, string password,int businessId)
         {
             IDatabaseAccessProvider dataAccessProvider = new SqlDataAccess(_ConnectionString);
             var storedProcedureName = "SP_GetCustomerByEmail";
-            var parameters = new Dictionary<string,
-              object> {
-          {
-            "@email",
-            email
-          }
-        };
+            var parameters = new Dictionary<string,object> 
+            {
+                {"email",  email},
+                {"businessId",businessId }
+            };
 
             try
             {
@@ -205,10 +209,10 @@ namespace FlyEatsApp.Providers
 
                 var dataRow = dataSet.Tables[0].Rows[0];
                 var user = User.extractObj(dataRow);
-                if(user.BusinessId != businessId)
+                /*if(user.BusinessId != businessId)
                 {
                     return null;
-                }
+                }*/
                 user.PasswordHash = Convert.FromBase64String((string)dataRow["PasswordHash"]);
                 user.Salt = Convert.FromBase64String((string)dataRow["Salt"]);
                 if (VerifyPassword(password, user.Salt, user.PasswordHash))
@@ -223,13 +227,15 @@ namespace FlyEatsApp.Providers
             }
         }
 
-        public User GetUserByEmail(string email)
+        public User GetUserByEmail(string email, int businessId)
         {
             IDatabaseAccessProvider dataAccessProvider = new SqlDataAccess(_ConnectionString);
             var storedProcedureName = "SP_GetCustomerByEmail";
-            var parameters = new Dictionary<string,
-              object>();
-            parameters.Add("@Email", email);
+            var parameters = new Dictionary<string, object>
+            {
+                {"email",  email},
+                {"businessId",businessId }
+            };
 
             try
             {

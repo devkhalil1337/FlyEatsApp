@@ -52,7 +52,6 @@ namespace FlyEatsApp.Providers
             {
                 var logEntry = new LoggingEvent(typeof(OrderDetailsProvider), logger.Logger.Repository, "logger", Level.Error, "An error occurred while trying to retrieve order details: " + ex.Message + Environment.NewLine + ex.StackTrace, null); // Exception
                 logger.Logger.Log(logEntry);
-                // Log the exception
                 Console.WriteLine("An error occurred while trying to retrieve order details: " + ex.Message);
                 return new List<OrderDetails>();
             }

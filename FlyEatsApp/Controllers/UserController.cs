@@ -31,8 +31,19 @@ namespace FlyEatsApp.Controllers
         public IActionResult AddNewUser([FromBody] User user)
         {
             UserProvider userProvider = new UserProvider();
-            userProvider.InsertUser(user);
-            return Ok();
+            int businessId = businessUnitsFunctions.GetBusinessIdFromHeaders(Request);
+            var isNewAccount = userProvider.GetUserByEmail(user.Email, businessId);
+            if (isNewAccount != null)
+            {
+                return Ok(new { success = false, message = "Sorry this email is already registered, please try another one." });
+            }
+           var results = userProvider.InsertUser(user);
+            if (results.success)
+            {
+                return Ok(new { success = true, message = "" });
+            }
+            return Ok(new { success = false, message = "" });
+
         }
 
         [HttpPut]

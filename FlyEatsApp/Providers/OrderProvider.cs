@@ -7,6 +7,8 @@ using System.Data;
 using DataAccessLayer;
 using Microsoft.Extensions.Logging.Abstractions;
 using FlyEatsApp.Payloads;
+using log4net.Core;
+using log4net;
 
 namespace FlyEatsApp.Providers
 {
@@ -14,7 +16,7 @@ namespace FlyEatsApp.Providers
     {
 
         string _ConnectionString;
-
+        private static readonly ILog logger = LogManager.GetLogger(typeof(OrderProvider));
         public OrderProvider()
         {
             var builder = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json", optional: true);
@@ -47,6 +49,8 @@ namespace FlyEatsApp.Providers
             }
             catch (Exception ex)
             {
+                var logEntry = new LoggingEvent(typeof(OrderProvider), logger.Logger.Repository, "logger", Level.Error, "An error occurred while trying to retrieve all orders : " + ex.Message + Environment.NewLine + ex.StackTrace, null); // Exception
+                logger.Logger.Log(logEntry);
                 return new List<Order>();
             }
 
@@ -58,9 +62,6 @@ namespace FlyEatsApp.Providers
             var results = new ResponseModel();
             IDatabaseAccessProvider dataAccessProvider = new SqlDataAccess(_ConnectionString);
             var storedProcedureName = "SP_AddNewOrder";
-
-            var statusChangedDateTime = DateTime.UtcNow;
-
             Dictionary<string, object> parameters = new Dictionary<string, object> {
                 { "BusinessId", order.BusinessId },
                 { "CustomerId", order.CustomerId },
@@ -97,7 +98,8 @@ namespace FlyEatsApp.Providers
             }
             catch (Exception ex)
             {
-
+                var logEntry = new LoggingEvent(typeof(OrderProvider), logger.Logger.Repository, "logger", Level.Error, "An error occurred while trying to Creating New Order : " + ex.Message + Environment.NewLine + ex.StackTrace, null); // Exception
+                logger.Logger.Log(logEntry);
                 return results.onError(ex.Message);
                 /* LogEntry logEntry = new LogEntry()
                  {
@@ -130,6 +132,8 @@ namespace FlyEatsApp.Providers
             }
             catch (Exception ex)
             {
+                var logEntry = new LoggingEvent(typeof(OrderProvider), logger.Logger.Repository, "logger", Level.Error, "An error occurred while trying to Creating New Order : " + ex.Message + Environment.NewLine + ex.StackTrace, null); // Exception
+                logger.Logger.Log(logEntry);
                 results.onError(ex.Message);
             }
 
@@ -161,7 +165,8 @@ namespace FlyEatsApp.Providers
             }
             catch (Exception ex)
             {
-
+                var logEntry = new LoggingEvent(typeof(OrderProvider), logger.Logger.Repository, "logger", Level.Error, "An error occurred while trying to gettig order by Id : " + ex.Message + Environment.NewLine + ex.StackTrace, null); // Exception
+                logger.Logger.Log(logEntry);
             }
 
 
@@ -184,7 +189,8 @@ namespace FlyEatsApp.Providers
             }
             catch (Exception ex)
             {
-
+                var logEntry = new LoggingEvent(typeof(OrderProvider), logger.Logger.Repository, "logger", Level.Error, "An error occurred while trying to deleting order by Id : " + ex.Message + Environment.NewLine + ex.StackTrace, null); // Exception
+                logger.Logger.Log(logEntry);
             }
 
             return false;
@@ -216,6 +222,8 @@ namespace FlyEatsApp.Providers
             }
             catch (Exception ex)
             {
+                var logEntry = new LoggingEvent(typeof(OrderProvider), logger.Logger.Repository, "logger", Level.Error, "An error occurred while trying to GetOrdersByCustomerId : " + ex.Message + Environment.NewLine + ex.StackTrace, null); // Exception
+                logger.Logger.Log(logEntry);
                 return new List<Order>();
             }
 
@@ -253,6 +261,8 @@ namespace FlyEatsApp.Providers
                 }
                 catch (Exception ex)
                 {
+                    var logEntry = new LoggingEvent(typeof(OrderProvider), logger.Logger.Repository, "logger", Level.Error, "An error occurred while trying to GetOrderStatusById : " + ex.Message + Environment.NewLine + ex.StackTrace, null); // Exception
+                    logger.Logger.Log(logEntry);
                     orderStatusList.Add("Error getting order status: " + ex.Message);
                 }
             }
