@@ -118,8 +118,6 @@ namespace FlyEatsApp.Providers
             IDatabaseAccessProvider dataAccessProvider = new SqlDataAccess(_ConnectionString);
             var storedProcedureName = "SP_UpdateOrderStatusByInvoiceNumber";
 
-            var productUpdateChangedDateTime = DateTime.UtcNow;
-
             Dictionary<string, object> parameters = new Dictionary<string, object> {
                 { "orderInvoiceNumber", orderNumber},
                 { "newOrderStatus", orderStatus}
@@ -128,6 +126,14 @@ namespace FlyEatsApp.Providers
             try
             {
                 results = dataAccessProvider.ExecuteStoredProcedureWithReturnObject(storedProcedureName, parameters);
+                if (results.success)
+                {
+                    /* Update custom field of an order */
+                    if (orderStatus.Contains("completed", StringComparison.OrdinalIgnoreCase))
+                    {
+                        updateOrderAttributes(orderNumber);
+                    }
+                }
                 return results;
             }
             catch (Exception ex)
@@ -270,7 +276,48 @@ namespace FlyEatsApp.Providers
             return orderStatusList;
         }
 
+        private void updateOrderAttributes(String orderNumber) 
+        {
+            Order order = new Order();
+            order = GetOrderById(orderNumber);
+            order.PaymentStatus = "PAID";
+            var results = new ResponseModel();
+            IDatabaseAccessProvider dataAccessProvider = new SqlDataAccess(_ConnectionString);
+            var storedProcedureName = "SP_UpdateOrderAttributes";
+            Dictionary<string, object> parameters = new Dictionary<string, object> {
+                { "OrderInvoiceNumber", orderNumber },
+                { "OrderStatus", order.OrderStatus },
+                { "ServiceChargeAmount", order.ServiceChargeAmount },
+                { "DiscountAmount", order.DiscountAmount },
+                { "VoucherId", order.VoucherId },
+                { "VoucherDiscountAmount", order.VoucherDiscountAmount },
+                { "TotalAmount", order.TotalAmount },
+                { "VatAmount", order.VatAmount },
+                { "VatPercentage", order.VatPercentage },
+                { "VatType", order.VatType },
+                { "PaymentStatus", order.PaymentStatus },
+                { "PaymentMethod", order.PaymentMethod },
+                { "AveragePreparationTime", order.AveragePreparationTime },
+                { "Comments", order.Comments },
+                { "DeliveryTime", order.DeliveryTime },
+                { "CustomerDeliveryId", order.CustomerDeliveryId },
+                { "CompletedBy", order.CompletedBy },
+                { "DeliveryCharges", order.DeliveryCharges },
+                { "CardPaymentId", order.CardPaymentId },
+                { "ModifiedDate", order.ModifiedDate }
+             };
 
+            try
+            {
+                results = dataAccessProvider.ExecuteStoredProcedureWithReturnObject(storedProcedureName, parameters);
+            }
+            catch (Exception ex)
+            {
+                var logEntry = new LoggingEvent(typeof(OrderProvider), logger.Logger.Repository, "logger", Level.Error, "An error occurred while trying to update an existing order : " + ex.Message + Environment.NewLine + ex.StackTrace, null);
+                logger.Logger.Log(logEntry);
+            }
+
+        }
 
     }
 }
