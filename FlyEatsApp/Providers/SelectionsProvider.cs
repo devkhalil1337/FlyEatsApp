@@ -6,6 +6,8 @@ using System.Configuration;
 using System.Data;
 using DataAccessLayer;
 using Microsoft.Extensions.Logging.Abstractions;
+using log4net;
+using log4net.Core;
 
 namespace FlyEatsApp.Providers
 {
@@ -14,7 +16,7 @@ namespace FlyEatsApp.Providers
 
 
         string _ConnectionString;
-
+        private static readonly ILog logger = LogManager.GetLogger(typeof(SelectionsProvider));
         public SelectionsProvider()
         {
             var builder = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json", optional: true);
@@ -62,6 +64,8 @@ namespace FlyEatsApp.Providers
             }
             catch (Exception ex)
             {
+                var logEntry = new LoggingEvent(typeof(OrderProvider), logger.Logger.Repository, "logger", Level.Error, "An error occurred while trying to GetAllSelections : " + ex.Message + Environment.NewLine + ex.StackTrace, null); // Exception
+                logger.Logger.Log(logEntry);
             }
 
             return AllSelections;
@@ -104,6 +108,9 @@ namespace FlyEatsApp.Providers
             {
                 results.success = false;
                 results.message = ex.Message;
+                var logEntry = new LoggingEvent(typeof(OrderProvider), logger.Logger.Repository, "logger", Level.Error, "An error occurred while trying to AddNewSelections : " + ex.Message + Environment.NewLine + ex.StackTrace, null); // Exception
+                logger.Logger.Log(logEntry);
+
                 return results;
                 /* LogEntry logEntry = new LogEntry()
                  {
@@ -159,6 +166,8 @@ namespace FlyEatsApp.Providers
             {
                 result.success = false;
                 result.message = ex.Message;
+                var logEntry = new LoggingEvent(typeof(OrderProvider), logger.Logger.Repository, "logger", Level.Error, "An error occurred while trying to UpdateSelections : " + ex.Message + Environment.NewLine + ex.StackTrace, null); // Exception
+                logger.Logger.Log(logEntry);
                 return result;
                 /* LogEntry logEntry = new LogEntry()
                  {
@@ -172,7 +181,7 @@ namespace FlyEatsApp.Providers
 
             return result;
         }
-        public IList<Selections> GetSelectionsById(int selectionId)
+        public IList<Selections> GetSelectionsById(int selectionId,int businessId)
         {
             List<Selections> GetSelection = new List<Selections>();
             SelectionChoicesProvider selectionChoicesProvider = new SelectionChoicesProvider();
@@ -181,7 +190,9 @@ namespace FlyEatsApp.Providers
             var storedProcedureName = "SP_GetSelectionById";
 
             Dictionary<string, object> parameters = new Dictionary<string, object> {
-                   { "SelectionId", selectionId }
+                   { "SelectionId", selectionId },
+                   { "BusinessId", businessId }
+
                };
 
             try
@@ -203,7 +214,8 @@ namespace FlyEatsApp.Providers
             }
             catch (Exception ex)
             {
-
+                var logEntry = new LoggingEvent(typeof(OrderProvider), logger.Logger.Repository, "logger", Level.Error, "An error occurred while trying to GetSelectionsById : " + ex.Message + Environment.NewLine + ex.StackTrace, null); // Exception
+                logger.Logger.Log(logEntry);
             }
 
 
@@ -254,26 +266,31 @@ namespace FlyEatsApp.Providers
             return GetSelection;
 
         }
-        public object DeleteSelectionsBy(long selectionId)
+        public object DeleteSelectionsBy(int[] selectionIds, int businessId)
         {
             IDatabaseAccessProvider dataAccessProvider = new SqlDataAccess(_ConnectionString);
             var storedProcedureName = "SP_DeleteSelectionById";
 
-            Dictionary<string, object> parameters = new Dictionary<string, object> {
-                   { "SelectionId", selectionId}
-               };
-
-            try
+            foreach (var selectionId in selectionIds)
             {
-                var result = dataAccessProvider.ExecuteStoredProcedureWithReturnMessage(storedProcedureName, parameters);
-                return result;
-            }
-            catch (Exception ex)
-            {
+                Dictionary<string, object> parameters = new Dictionary<string, object> {
+                   { "SelectionId", selectionId},
+                   {"BusinessId" , businessId}
+            };
 
+                try
+                {
+                    dataAccessProvider.ExecuteStoredProcedureWithReturnMessage(storedProcedureName, parameters);
+                }
+                catch (Exception ex)
+                {
+                    var logEntry = new LoggingEvent(typeof(OrderProvider), logger.Logger.Repository, "logger", Level.Error, "An error occurred while trying to DeleteSelectionsBy : " + ex.Message + Environment.NewLine + ex.StackTrace, null); // Exception
+                    logger.Logger.Log(logEntry);
+                }
             }
 
-            return false;
+            return true;
         }
+
     }
 }

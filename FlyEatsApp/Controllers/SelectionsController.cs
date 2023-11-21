@@ -31,8 +31,9 @@ namespace FlyEatsApp.Controllers
         [HttpGet]
         public IEnumerable<Selections> GetSelectionsById(int selectionId)
         {
-           SelectionsProvider selectionsProvider = new SelectionsProvider();
-            var result = selectionsProvider.GetSelectionsById(selectionId);
+            SelectionsProvider selectionsProvider = new SelectionsProvider();
+            int businessId = businessUnitsFunctions.GetBusinessIdFromHeaders(Request);
+            var result = selectionsProvider.GetSelectionsById(selectionId, businessId);
             return result;
         }
 
@@ -55,10 +56,11 @@ namespace FlyEatsApp.Controllers
         }
 
         [HttpPost]
-        public object DeleteSelectionsBy(long selectionId)
+        public object DeleteSelectionsBy(int[] selectionIds)
         {
-           SelectionsProvider selectionsProvider = new SelectionsProvider();
-            var result = selectionsProvider.DeleteSelectionsBy(selectionId);
+            SelectionsProvider selectionsProvider = new SelectionsProvider();
+            int businessId = businessUnitsFunctions.GetBusinessIdFromHeaders(Request);
+            var result = selectionsProvider.DeleteSelectionsBy(selectionIds, businessId);
             return result;
         }
     }
