@@ -5,6 +5,7 @@ using FlyEatsApp.Providers;
 using FlyEatsApp.Functions;
 using Stripe;
 using log4net;
+using log4net.Core;
 
 namespace FlyEatsApp.Controllers
 {
@@ -66,29 +67,31 @@ namespace FlyEatsApp.Controllers
         [HttpPost]
         public IActionResult CreatePaymentIntent([FromBody] PaymentCharge paymentCharge)
         {
-            PaymentGateway stripeGateway = GetPaymentGatewaysByBusinessId().FirstOrDefault(pg => pg.GatewayName == "stripe");
-            if (stripeGateway == null)
-            {
-                return BadRequest(new { success = false, message = "No Payment configurations found" });
-            }
-            StripeConfiguration.ApiKey = stripeGateway.ApiSecret;
-
-            var options = new PaymentIntentCreateOptions
-            {
-                Amount = (long)(paymentCharge.amount * 100), // Stripe uses smallest currency unit, e.g. cents for USD
-                Currency = "gbp",
-            };
-
-            var service = new PaymentIntentService();
             try
             {
+                PaymentGateway stripeGateway = GetPaymentGatewaysByBusinessId().FirstOrDefault(pg => pg.GatewayName == "stripe");
+                if (stripeGateway == null)
+                {
+                    return BadRequest(new { success = false, message = "No Payment configurations found" });
+                }
+                StripeConfiguration.ApiKey = stripeGateway.ApiSecret;
+
+                var options = new PaymentIntentCreateOptions
+                {
+                    Amount = (long)(paymentCharge.amount * 100), // Stripe uses smallest currency unit, e.g. cents for USD
+                    Currency = "gbp",
+                };
+
+                var service = new PaymentIntentService();
                 var paymentIntent = service.Create(options);
+
                 return Json(new { client_secret = paymentIntent.ClientSecret, success = true });
             }
-            catch (StripeException e)
+            catch (Exception ex)
             {
-                // Handle Stripe API exception
-                return BadRequest(new { success = false, message = e.Message });
+                var logEntry = new LoggingEvent(typeof(PaymentGatewaysController), logger.Logger.Repository, "logger", Level.Error, "An error occurred while trying to create payment intent : " + ex.Message + Environment.NewLine + ex.StackTrace, null); // Exception
+                logger.Logger.Log(logEntry);
+                return BadRequest(new { success = false, message = "An error occurred while processing the payment." });
             }
         }
 
