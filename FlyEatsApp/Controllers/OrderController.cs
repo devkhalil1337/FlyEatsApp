@@ -82,6 +82,27 @@ namespace FlyEatsApp.Controllers
 
 
 
+        /* Front-end and Manager app API*/
+
+        [HttpGet]
+        public object GetOrderDetailedByOrderId(string orderId)
+        {
+            OrderProvider orderProvider = new OrderProvider();
+            var result = orderProvider.GetOrderDetailedByOrderId(orderId);
+            return result;
+        }
+
+        [HttpPost]
+        public int SyncOrdersCount(OrderPayload orderPayload)
+        {
+            OrderProvider orderProvider = new OrderProvider();
+            BusinessUnitsFunctions businessUnitsFunctions = new BusinessUnitsFunctions();
+            int businessId = businessUnitsFunctions.GetBusinessIdFromHeaders(Request);
+            orderPayload.BusinessId = businessId;
+            var result = orderProvider.SyncOrdersCount(orderPayload);
+            return result;
+        }
+
 
     }
 }

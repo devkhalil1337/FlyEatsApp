@@ -2,3 +2,18 @@
 Stack Trace:    at FlyEatsApp.Providers.OrderDetailsProvider.AddNewOrderDetails(OrderDetails[] orders, Int32 businessId) in C:\Users\Khalil Gulraiz\source\repos\FlyEatsApp\FlyEatsApp\Providers\OrderDetailsProvider.cs:line 91
 2023-11-19 13:38:36,872 [.NET ThreadPool Worker] ERROR logger - Error adding order details: Object reference not set to an instance of an object.
 Stack Trace:    at FlyEatsApp.Providers.OrderDetailsProvider.AddNewOrderDetails(OrderDetails[] orders, Int32 businessId) in C:\Users\Khalil Gulraiz\source\repos\FlyEatsApp\FlyEatsApp\Providers\OrderDetailsProvider.cs:line 91
+2023-12-09 15:09:48,868 [.NET ThreadPool Worker] ERROR logger - An error occurred while trying to gettig order by Id : Procedure or function 'SP_SyncOrdersCount' expects parameter '@BusinessId', which was not supplied.
+   at System.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at System.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   at System.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   at System.Data.SqlClient.SqlDataReader.TryConsumeMetaData()
+   at System.Data.SqlClient.SqlDataReader.get_MetaData()
+   at System.Data.SqlClient.SqlCommand.FinishExecuteReader(SqlDataReader ds, RunBehavior runBehavior, String resetOptionsString)
+   at System.Data.SqlClient.SqlCommand.RunExecuteReaderTds(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, Boolean async, Int32 timeout, Task& task, Boolean asyncWrite, SqlDataReader ds)
+   at System.Data.SqlClient.SqlCommand.ExecuteReader(CommandBehavior behavior)
+   at System.Data.Common.DbCommand.System.Data.IDbCommand.ExecuteReader(CommandBehavior behavior)
+   at System.Data.Common.DbDataAdapter.FillInternal(DataSet dataset, DataTable[] datatables, Int32 startRecord, Int32 maxRecords, String srcTable, IDbCommand command, CommandBehavior behavior)
+   at System.Data.Common.DbDataAdapter.Fill(DataSet dataSet, Int32 startRecord, Int32 maxRecords, String srcTable, IDbCommand command, CommandBehavior behavior)
+   at System.Data.Common.DbDataAdapter.Fill(DataSet dataSet)
+   at DataAccessLayer.SqlDataAccess.ExecuteStoredProcedure(String procName, Dictionary`2 parameters) in C:\Users\Khalil Gulraiz\source\repos\FlyEatsApp\DataAccessLayer\SqlDataAccess.cs:line 79
+   at FlyEatsApp.Providers.OrderProvider.SyncOrdersCount(OrderPayload orderPayload) in C:\Users\Khalil Gulraiz\source\repos\FlyEatsApp\FlyEatsApp\Providers\OrderProvider.cs:line 231

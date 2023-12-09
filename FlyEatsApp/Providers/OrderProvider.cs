@@ -180,6 +180,77 @@ namespace FlyEatsApp.Providers
 
         }
 
+        public object GetOrderDetailedByOrderId(string OrderId)
+        {
+            List<Order> GetOrder = new List<Order>();
+            Order selectedOrder = new Order();
+            IDatabaseAccessProvider dataAccessProvider = new SqlDataAccess(_ConnectionString);
+            var storedProcedureName = "SP_GetOrderById";
+
+            Dictionary<string, object> parameters = new Dictionary<string, object> {
+                   { "OrderInvoiceNumber", OrderId }
+               };
+            try
+            {
+                var dataSet = dataAccessProvider.ExecuteStoredProcedure(storedProcedureName, parameters);
+
+                if (dataSet.Tables.Count < 1 || dataSet.Tables[0].Rows.Count < 1 || dataSet.Tables[0].Rows.Count < 1)
+                    return new Order();
+                foreach (DataRow dataRow in dataSet.Tables[0].Rows)
+                {
+                    var order = Order.ExtractObject(dataRow);
+                    selectedOrder = order;
+                    GetOrder.Add(order);
+                }
+            }
+            catch (Exception ex)
+            {
+                var logEntry = new LoggingEvent(typeof(OrderProvider), logger.Logger.Repository, "logger", Level.Error, "An error occurred while trying to gettig order by Id : " + ex.Message + Environment.NewLine + ex.StackTrace, null); // Exception
+                logger.Logger.Log(logEntry);
+            }
+
+
+            return selectedOrder;
+
+        }
+
+        public int SyncOrdersCount(OrderPayload orderPayload)
+        {
+            List<Order> GetOrder = new List<Order>();
+            Order selectedOrder = new Order();
+            IDatabaseAccessProvider dataAccessProvider = new SqlDataAccess(_ConnectionString);
+            var storedProcedureName = "SP_SyncOrdersCount";
+
+            Dictionary<string, object> parameters = new Dictionary<string, object> {
+                { "BusinessId", orderPayload.BusinessId },
+                { "FromDate", orderPayload.startDate },
+                { "ToDate", orderPayload.endDate },
+            };
+            try
+            {
+                var dataSet = dataAccessProvider.ExecuteStoredProcedure(storedProcedureName, parameters);
+
+                if (dataSet.Tables.Count < 1 || dataSet.Tables[0].Rows.Count < 1 || dataSet.Tables[0].Rows.Count < 1)
+                    return 0;
+                int numberOfOrders = 0;
+                foreach (DataRow dataRow in dataSet.Tables[0].Rows)
+                {
+                    numberOfOrders += Convert.ToInt32(dataRow["NumberOfOrders"]);
+                }
+                return numberOfOrders;
+            }
+            catch (Exception ex)
+            {
+                var logEntry = new LoggingEvent(typeof(OrderProvider), logger.Logger.Repository, "logger", Level.Error, "An error occurred while trying to gettig order by Id : " + ex.Message + Environment.NewLine + ex.StackTrace, null); // Exception
+                logger.Logger.Log(logEntry);
+            }
+
+
+            return -1;
+
+        }
+
+        
         public object DeleteProductById(int productId)
         {
             IDatabaseAccessProvider dataAccessProvider = new SqlDataAccess(_ConnectionString);
