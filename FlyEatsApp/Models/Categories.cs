@@ -18,12 +18,14 @@ namespace FlyEatsApp.Models
         public const string CATEGORY_UPDATE_DATE_COLUMN = "UpdateDate";
         public const string CATEGORY_DELETE_COLUMN = "IsDeleted";
         public const string CATEGORY_ACTIVE_COLUMN = "Active";
+        public const string CATEGORY_TYPE_COLUMN = "categoryType";
 
         public int? CategoryId { get; set; }
         public string? CategoryImage { get; set; }
         public string? CategoryName { get; set; }
         public string? CategoryDetails { get; set; }
         public int? CategorySortBy { get; set; }
+        public string? CategoryType { get; set; }
 
         public static Categories ExtractObject(DataRow dataRow)
         {
@@ -33,6 +35,7 @@ namespace FlyEatsApp.Models
             newObject.CategoryImage = Convert.ToString(dataRow[CATEGORY_IMAGE_COLUMN]);
             newObject.CategoryName = Convert.ToString(dataRow[CATEGORY_NAME_COLUMN]);
             newObject.CategoryDetails = Convert.ToString(dataRow[CATEGORY_DETAIL_COLUMN]);
+            newObject.CategoryType = Convert.ToString(dataRow[CATEGORY_TYPE_COLUMN]);
             newObject.CategorySortBy = Convert.ToInt32(dataRow[CATEGORY_SORT_BY_COLUMN]);
             newObject.CreateDate = dataRow[CATEGORY_CREATE_DATE_COLUMN] == DBNull.Value ? null : (DateTime?)Convert.ToDateTime(dataRow[CATEGORY_CREATE_DATE_COLUMN]);
             newObject.UpdateDate = dataRow[CATEGORY_UPDATE_DATE_COLUMN] == DBNull.Value ? null : (DateTime?)Convert.ToDateTime(dataRow[CATEGORY_UPDATE_DATE_COLUMN]);

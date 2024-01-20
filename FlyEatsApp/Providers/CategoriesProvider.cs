@@ -7,6 +7,9 @@ using System.Data;
 using DataAccessLayer;
 using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Extensions.Configuration;
+using log4net;
+using log4net.Core;
+
 namespace FlyEatsApp.Providers
 {
     public class CategoriesProvider
@@ -14,6 +17,7 @@ namespace FlyEatsApp.Providers
 
 
         string _ConnectionString;
+        private static readonly ILog logger = LogManager.GetLogger(typeof(CategoriesProvider));
         public CategoriesProvider()
         {
             var builder = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json", optional: true);
@@ -44,6 +48,10 @@ namespace FlyEatsApp.Providers
             }
             catch (Exception ex)
             {
+                var logEntry = new LoggingEvent(typeof(CategoriesProvider), logger.Logger.Repository, "logger", Level.Error, "An error occurred while fetching all category: " + ex.Message + Environment.NewLine + ex.StackTrace, null); // Exception
+                logger.Logger.Log(logEntry);
+                Console.WriteLine("An error occurred while fetching all category: " + ex.Message);
+                return new List<Categories>(); ;
             }
 
             return AllCategories;
@@ -63,6 +71,7 @@ namespace FlyEatsApp.Providers
                 { "CategoryImage", categories.CategoryImage },
                 { "CategoryName", categories.CategoryName },
                 { "CategoryDetails", categories.CategoryDetails },
+                { "CategoryType", categories.CategoryType },
                 { "CategorySortBy", categories.CategorySortBy },
                 { "CreationDate", statusChangedDateTime },
                 { "UpdateDate", statusChangedDateTime },
@@ -78,17 +87,12 @@ namespace FlyEatsApp.Providers
             }
             catch (Exception ex)
             {
+                var logEntry = new LoggingEvent(typeof(CategoriesProvider), logger.Logger.Repository, "logger", Level.Error, "An error occurred while adding new category: " + ex.Message + Environment.NewLine + ex.StackTrace, null); // Exception
+                logger.Logger.Log(logEntry);
+                Console.WriteLine("An error occurred while adding new category: " + ex.Message);
                 results.success = false;
                 results.message = ex.Message;
-                /* LogEntry logEntry = new LogEntry()
-                 {
-                     Severity = System.Diagnostics.TraceEventType.Error,
-                     Title = string.Format("Creating New business Info for a customer ", categories.BusinessName),
-                     Message = ex.Message + Environment.NewLine + ex.StackTrace
-                 };
-                 Logger.Write(logEntry);*/
             }
-
 
             return results;
 
@@ -107,6 +111,7 @@ namespace FlyEatsApp.Providers
                 { "CategoryImage", categories.CategoryImage },
                 { "CategoryName", categories.CategoryName },
                 { "CategoryDetails", categories.CategoryDetails },
+                { "CategoryType", categories.CategoryType },
                 { "CategorySortBy", categories.CategorySortBy },
                 { "UpdateDate", statusChangedDateTime },
                 { "IsDeleted", categories.IsDeleted },
@@ -121,9 +126,11 @@ namespace FlyEatsApp.Providers
             }
             catch (Exception ex)
             {
+                var logEntry = new LoggingEvent(typeof(CategoriesProvider), logger.Logger.Repository, "logger", Level.Error, "An error occurred while updating category: " + ex.Message + Environment.NewLine + ex.StackTrace, null); // Exception
+                logger.Logger.Log(logEntry);
+                Console.WriteLine("An error occurred while updating category: " + ex.Message);
                 results.success = false;
                 results.message = ex.Message;
-
             }
             return results;
         }
@@ -152,6 +159,9 @@ namespace FlyEatsApp.Providers
             }
             catch (Exception ex)
             {
+                var logEntry = new LoggingEvent(typeof(CategoriesProvider), logger.Logger.Repository, "logger", Level.Error, "An error occurred while fetching new category: " + ex.Message + Environment.NewLine + ex.StackTrace, null); // Exception
+                logger.Logger.Log(logEntry);
+                Console.WriteLine("An error occurred while fetching category: " + ex.Message);
                 return new List<Categories>();
             }
 
@@ -177,6 +187,9 @@ namespace FlyEatsApp.Providers
             }
             catch (Exception ex)
             {
+                var logEntry = new LoggingEvent(typeof(CategoriesProvider), logger.Logger.Repository, "logger", Level.Error, "An error occurred while deleting category: " + ex.Message + Environment.NewLine + ex.StackTrace, null); // Exception
+                logger.Logger.Log(logEntry);
+                Console.WriteLine("An error occurred while deleting category: " + ex.Message);
                 response.success = false;
                 response.message = ex.Message;
 
