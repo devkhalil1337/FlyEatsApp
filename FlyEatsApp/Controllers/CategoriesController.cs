@@ -49,7 +49,7 @@ namespace FlyEatsApp.Controllers
             return result;
         }
 
-        [HttpPost]
+        [HttpDelete]
         public object DeleteCategoryBy(long categoryId)
         {
             CategoriesProvider categoriesProvider = new CategoriesProvider();
